@@ -1,2 +1,6 @@
+.buildpath
 *.py
 *.pyc
+.project
+.sublime-build
+node_modules/
