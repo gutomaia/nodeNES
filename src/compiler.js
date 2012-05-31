@@ -1,6 +1,7 @@
 (function(exports){
 
     var analyzer = require('./analyzer.js');
+    var c6502 = require('./c6502.js');
 
     var asm65_tokens = [
         {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
@@ -123,6 +124,7 @@
         var x = 0;
         var debug = 0;
         var labels = [];
+        var code = [];
         while (x < tokens.length){
             for (var bnf in asm65_bnf){
                 var leaf = {};
@@ -157,5 +159,49 @@
             }
         }
         return ast;
+    };
+
+    function get_int_value(token){
+        if (token.type == 'T_ADDRESS'){
+            m = asm65_tokens[1].regex.exec(token.value);
+            //console.log(m);
+            return parseInt(m[1], 16);
+        }else if (token.type == 'T_HEX_NUMBER'){
+            m = asm65_tokens[2].regex.exec(token.value);
+            return parseInt(m[1], 16);
+        }
+    }
+
+    exports.semantic = function(ast){
+        var leaf = ast[0];
+        var instruction = leaf.instruction.value;
+        var address_mode = leaf.short;
+        var opcode = c6502.opcodes[instruction][address_mode];
+        var code = [];
+        if (address_mode != 'sngl'){
+            address = get_int_value(leaf.arg);
+/*            if ('rel' == address_mode:
+                    address = 126 + (address - cart.pc)
+                    if address == 128:
+                        address = 0
+                    elif address < 128:
+                        address = address | 0b10000000
+                    elif address > 128:
+                        address = address & 0b01111111
+*/
+                if (c6502.address_mode_def[address_mode].size == 2){
+                    code.push(opcode);
+                    code.push(address);
+                } else {
+                    arg1 = (address & 0x00ff);
+                    arg2 = (address & 0xff00) >> 8;
+                    code.push(opcode);
+                    code.push(arg1);
+                    code.push(arg2);
+                }
+            } else {
+                cart.append_code([opcode]);
+            }
+        return code;
     };
 })(typeof exports === 'undefined'? this['compiler']={}: exports);
