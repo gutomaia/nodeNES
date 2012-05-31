@@ -27,13 +27,15 @@ opcodes['BNE'] = dict(rel=0xd0)
 opcodes['BPL'] = dict(rel=0x10)
 opcodes['BVC'] = dict(rel=0x50)
 opcodes['BVS'] = dict(rel=0x70)
-opcodes['CLC'] = dict(sngl=0x18)
-opcodes['CLD'] = dict(sngl=0xd8)
-opcodes['CLI'] = dict(sngl=0x58)
-opcodes['CLV'] = dict(sngl=0xb8)
-opcodes['CMP'] = dict(imm=0xc9, zp=0xc5, zpx=0xd5, abs=0xcd, absx=0xdd,
-    absy=0xd9, indx=0xc1, indy=0xd1)
-opcodes['CPX'] = dict(imm=0xe0, zp=0xe4, abs=0xec)
+*/
+    opcodes['CLC'] = {sngl:0x18};
+    opcodes['CLD'] = {sngl:0xd8};
+    opcodes['CLI'] = {sngl:0x58};
+    opcodes['CLV'] = {sngl:0xb8};
+    opcodes['CMP'] = {imm:0xc9, zp:0xc5, zpx:0xd5, abs:0xcd, absx:0xdd, absy:0xd9, indx:0xc1, indy:0xd1};
+    opcodes['CPX'] = {imm:0xe0, zp:0xe4, abs:0xec};
+
+/*
 opcodes['CPY'] = dict(imm=0xc0, zp=0xc4, abs=0xcc)
 opcodes['DEC'] = dict(zp=0xc6, zpx=0xd6, abs=0xce, absx=0xde)
 opcodes['DEX'] = dict(sngl=0xca)

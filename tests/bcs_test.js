@@ -10,7 +10,7 @@ exports.test_bcs_rel = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_RELATIVE', ast[0].type);
-    //code = semantic(ast)
-    //self.assertEquals(code, [0xb0, 0x0e])
+    var code = compiler.semantic(ast);
+    // test.deepEqual(code, [0xb0, 0x0e]);
     test.done();
 };

@@ -200,7 +200,7 @@
                     code.push(arg2);
                 }
             } else {
-                cart.append_code([opcode]);
+                code.push(opcode);
             }
         return code;
     };
