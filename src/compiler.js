@@ -2,6 +2,8 @@
 
     var analyzer = require('./analyzer.js');
     var c6502 = require('./c6502.js');
+    var cartridge = require('./cartridge.js');
+
 
     var asm65_tokens = [
         {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
@@ -119,9 +121,6 @@
         {type:"S_INDIRECT_Y", "short":"indy", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
         {type:"S_IMPLIED", "short":"sngl", "bnf":[t_instruction]}
     ];
-    /*
-        #TODO dict(type='S_DIRECTIVE', short='sngl', bnf=[t_directive, [OR, t_num, t_address]]),
-    */
 
     exports.syntax = function(tokens){
         var ast = [];
@@ -187,35 +186,34 @@
     }
 
     exports.semantic = function(ast){
-        var leaf = ast[0];
-        var instruction = leaf.instruction.value;
-        var address_mode = leaf.short;
-        var opcode = c6502.opcodes[instruction][address_mode];
-        var code = [];
-        if (address_mode != 'sngl'){
-            address = get_int_value(leaf.arg);
-/*            if ('rel' == address_mode:
-                    address = 126 + (address - cart.pc)
-                    if address == 128:
-                        address = 0
-                    elif address < 128:
-                        address = address | 0b10000000
-                    elif address > 128:
-                        address = address & 0b01111111
-*/
-                if (c6502.address_mode_def[address_mode].size == 2){
-                    code.push(opcode);
-                    code.push(address);
+        var cart = new cartridge.Cartridge();
+        for (var l in ast) {
+            var leaf = ast[l];
+            var instruction = leaf.instruction.value;
+            var address_mode = leaf.short;
+            var opcode = c6502.opcodes[instruction][address_mode];
+            if (address_mode != 'sngl'){
+                address = get_int_value(leaf.arg);
+    /*            if ('rel' == address_mode:
+                        address = 126 + (address - cart.pc)
+                        if address == 128:
+                            address = 0
+                        elif address < 128:
+                            address = address | 0b10000000
+                        elif address > 128:
+                            address = address & 0b01111111
+    */
+                    if (c6502.address_mode_def[address_mode].size == 2){
+                        cart.append_code([opcode, address]);
+                    } else {
+                        arg1 = (address & 0x00ff);
+                        arg2 = (address & 0xff00) >> 8;
+                        cart.append_code([opcode, arg1, arg2]);
+                    }
                 } else {
-                    arg1 = (address & 0x00ff);
-                    arg2 = (address & 0xff00) >> 8;
-                    code.push(opcode);
-                    code.push(arg1);
-                    code.push(arg2);
+                    cart.append_code([opcode]);
                 }
-            } else {
-                code.push(opcode);
-            }
-        return code;
+        }
+        return cart.get_code();
     };
 })(typeof exports === 'undefined'? this['compiler']={}: exports);

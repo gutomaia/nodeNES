@@ -65,9 +65,9 @@ exports.test_asm_compiler = function(test){
     test.equal('T_INSTRUCTION', ast[8]['instruction'].type);
     //#test.equal('RTS', ast[8]['instruction'].value);
 */
-/*
-    opcodes = compiler.semantic(ast, True);
-    test.equal(1, get_var('inesprg'));
+
+    //opcodes = compiler.semantic(ast, true);
+/*    test.equal(1, get_var('inesprg'));
     test.equal(1, get_var('ineschr'));
     test.equal(0, get_var('inesmap'));
     test.equal(1, get_var('inesmir'));
