@@ -68,7 +68,7 @@ exports.test_inesmir = function(test){
 };
 
 exports.test_bank_0 = function(test){
-    var tokens = compiler.lexical('.bank 0');
+    var tokens = compiler.lexical('.bank 0 ');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);

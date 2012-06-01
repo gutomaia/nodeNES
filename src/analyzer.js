@@ -5,7 +5,7 @@
         var ttype = null;
         var line = 1;
         var column = 1;
-        while (code.length > 0){
+        while (code.length > 0 && code != '0'){ //TODO UNKNOW BUG
             var found = false;
             for (var t in tokenTypes){
                 if (code.match(tokenTypes[t].regex)){

@@ -30,6 +30,34 @@ exports.test_comment = function(test){
     test.done();
 };
 
+exports.test_marker = function(test){
+    var code = "BPL WAITVBLANK";
+    var tokens = compiler.lexical(code);
+    test.equal(2, tokens.length);
+    test.equal('T_INSTRUCTION', tokens[0].type);
+    test.equal('T_MARKER', tokens[1].type);
+    test.done();
+};
+
+exports.test_binary_number = function(test){
+    var code = 'LDA #%10000000';
+    var tokens = compiler.lexical(code);
+    test.equal(2, tokens.length);
+    test.equal('T_INSTRUCTION', tokens[0].type);
+    test.equal('T_BINARY_NUMBER', tokens[1].type);
+    test.done();
+};
+
+exports.test_string = function(test){
+    var code = '.incbin "player.chr"';
+    var tokens = compiler.lexical(code);
+    test.equal(2, tokens.length);
+    test.equal('T_DIRECTIVE', tokens[0].type);
+    test.equal('T_STRING', tokens[1].type);
+    test.done();
+};
+
+
 exports.test_compile_more_than_on_instruction = function(test){
     var code = "SEC     ;clear the carry;\n";
     code += "LDA $20     ;get the low byte of the first number;\n";

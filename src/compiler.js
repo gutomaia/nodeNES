@@ -7,33 +7,20 @@
         {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
         {type:"T_ADDRESS", regex:/^\$([\dA-F]{2,4})/, store:true},
         {type:"T_HEX_NUMBER", regex:/^\#\$?([\dA-F]{2})/, store:true},
+        {type:'T_BINARY_NUMBER', regex:/\#%([01]{8})/, store:true}, 
+        {type:'T_STRING', regex:/^"[^"]*"/, store:true},
         {type:'T_SEPARATOR', regex:/^,/, store:true},
         {type:'T_REGISTER', regex:/^(X|x|Y|y)/, store:true},
         {type:'T_OPEN', regex:/^\(/, store:true},
         {type:'T_CLOSE', regex:/^\)/, store:true},
         {type:'T_LABEL', regex:/^([a-zA-Z][a-zA-Z\d]*)\:/, store:true},
+        {type:'T_MARKER', regex:/^[a-zA-Z][a-zA-Z\d]*/, store:true},
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
         {type:'T_NUM', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
         {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false},
         {type:'T_COMMENT', regex:/^;[^\n]*/, store:false}
     ];
-
-    /*
-        dict(type='T_BINARY_NUMBER', regex=r'\#%([01]{8})', store=True), #TODO: change to BINARY_NUMBER
-        dict(type='T_STRING', regex=r'^"[^"]*"', store=True),
-        dict(type='T_SEPARATOR', regex=r'^,', store=True),
-        dict(type='T_REGISTER', regex=r'^(X|x|Y|y)', store=True),
-        dict(type='T_OPEN', regex=r'^\(', store=True),
-        dict(type='T_CLOSE', regex=r'^\)', store=True),
-        dict(type='T_LABEL', regex=r'^([a-zA-Z][a-zA-Z\d]*)\:', store=True),
-        dict(type='T_MARKER', regex=r'^[a-zA-Z][a-zA-Z\d]*', store=True),
-        dict(type='T_DIRECTIVE', regex=r'^\.[a-z]+', store=True),
-        dict(type='T_NUM', regex=r'^[\d]+', store=True), #TODO change to DECIMAL ARGUMENT
-        dict(type='T_ENDLINE', regex=r'^\n', store=True),
-        dict(type='T_WHITESPACE', regex=r'^[ \t\r]+', store=False),
-        dict(type='T_COMMENT', regex=r'^;[^\n]*', store=False)
-    */
 
     exports.lexical = function(code){
         return analyzer.analyse(code, asm65_tokens);
@@ -111,6 +98,14 @@
         return look_ahead(tokens, index, 'T_ENDLINE', '\n');
     }
 
+    function t_directive(tokens, index){
+        return look_ahead(tokens, index, 'T_DIRECTIVE');
+    }
+
+    function t_num(tokens, index){
+        return look_ahead(tokens, index, 'T_NUM');
+    }
+
     var asm65_bnf = [
         {type:"S_RELATIVE", "short":"rel", "bnf":[t_relative, t_address_or_t_marker]},
         {type:"S_IMMEDIATE", "short":"imm", "bnf":[t_instruction, t_number]},
@@ -135,7 +130,14 @@
         var labels = [];
         var code = [];
         while (x < tokens.length){
-            if (t_endline(tokens,x)){
+            if (t_directive(tokens,x) && t_num(tokens, x+1)){
+                leaf = {};
+                leaf.type = 'S_DIRECTIVE';
+                leaf.directive = tokens[x];
+                leaf.args = tokens[x+1];
+                ast.push(leaf);
+                x += 2;
+            } else if (t_endline(tokens,x)){
                 x++;
             } else {
                 for (var bnf in asm65_bnf){
@@ -177,7 +179,6 @@
     function get_int_value(token){
         if (token.type == 'T_ADDRESS'){
             m = asm65_tokens[1].regex.exec(token.value);
-            //console.log(m);
             return parseInt(m[1], 16);
         }else if (token.type == 'T_HEX_NUMBER'){
             m = asm65_tokens[2].regex.exec(token.value);
