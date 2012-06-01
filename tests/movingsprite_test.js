@@ -8,9 +8,9 @@ var lines = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.
 lines.length = 11;
 var code = lines.join("\n");
 
-//console.log(code);
-//var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes');
+//var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'utf8');
 
+//console.log(bin.length);
 
 exports.test_asm_compiler = function(test){
     var tokens = compiler.lexical(code);
@@ -66,7 +66,7 @@ exports.test_asm_compiler = function(test){
     //#test.equal('RTS', ast[8]['instruction'].value);
 */
 
-    //opcodes = compiler.semantic(ast, true);
+    opcodes = compiler.semantic(ast, true);
 /*    test.equal(1, get_var('inesprg'));
     test.equal(1, get_var('ineschr'));
     test.equal(0, get_var('inesmap'));

@@ -189,29 +189,33 @@
         var cart = new cartridge.Cartridge();
         for (var l in ast) {
             var leaf = ast[l];
-            var instruction = leaf.instruction.value;
-            var address_mode = leaf.short;
-            var opcode = c6502.opcodes[instruction][address_mode];
-            if (address_mode != 'sngl'){
-                address = get_int_value(leaf.arg);
-    /*            if ('rel' == address_mode:
-                        address = 126 + (address - cart.pc)
-                        if address == 128:
-                            address = 0
-                        elif address < 128:
-                            address = address | 0b10000000
-                        elif address > 128:
-                            address = address & 0b01111111
-    */
-                    if (c6502.address_mode_def[address_mode].size == 2){
-                        cart.append_code([opcode, address]);
+            if (leaf.type == 'S_DIRECTIVE'){
+
+            }else {
+                var instruction = leaf.instruction.value;
+                var address_mode = leaf.short;
+                var opcode = c6502.opcodes[instruction][address_mode];
+                if (address_mode != 'sngl'){
+                    address = get_int_value(leaf.arg);
+        /*            if ('rel' == address_mode:
+                            address = 126 + (address - cart.pc)
+                            if address == 128:
+                                address = 0
+                            elif address < 128:
+                                address = address | 0b10000000
+                            elif address > 128:
+                                address = address & 0b01111111
+        */
+                        if (c6502.address_mode_def[address_mode].size == 2){
+                            cart.append_code([opcode, address]);
+                        } else {
+                            arg1 = (address & 0x00ff);
+                            arg2 = (address & 0xff00) >> 8;
+                            cart.append_code([opcode, arg1, arg2]);
+                        }
                     } else {
-                        arg1 = (address & 0x00ff);
-                        arg2 = (address & 0xff00) >> 8;
-                        cart.append_code([opcode, arg1, arg2]);
+                        cart.append_code([opcode]);
                     }
-                } else {
-                    cart.append_code([opcode]);
                 }
         }
         return cart.get_code();
