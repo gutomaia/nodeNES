@@ -10,8 +10,8 @@ exports.test_asl_imm = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_IMMEDIATE', ast[0].type);
-    //code = semantic(ast)
-    //self.assertEquals(code, [0x0a, 0x10])
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x0a, 0x10]);
     test.done();
 };
 
@@ -23,8 +23,8 @@ exports.test_asl_zp = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_ZEROPAGE', ast[0].type);
-    //code = semantic(ast)
-    //self.assertEquals(code, [0x06, 0x00])
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x06, 0x00]);
     test.done();
 };
 
@@ -39,8 +39,8 @@ exports.test_asl_zpx = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_ZEROPAGE_X', ast[0].type);
-    //   code = semantic(ast)
-    //    self.assertEquals(code, [0x16, 0x10])
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x16, 0x10]);
     test.done();
 };
 
@@ -53,8 +53,8 @@ exports.test_asl_abs = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_ABSOLUTE', ast[0].type);
-    //code = semantic(ast)
-    //self.assertEquals(code, [0x0e, 0x34, 0x12])
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x0e, 0x34, 0x12]);
     test.done();
 };
 
@@ -69,7 +69,7 @@ exports.test_asl_absx = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_ABSOLUTE_X', ast[0].type);
-    //code = semantic(ast)
-    //self.assertEquals(code, [0x1e, 0x34, 0x12])
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x1e, 0x34, 0x12]);
     test.done();
 };
