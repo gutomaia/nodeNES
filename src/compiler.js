@@ -15,7 +15,8 @@
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
         {type:'T_NUM', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
-        {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false}
+        {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false},
+        {type:'T_COMMENT', regex:/^;[^\n]*/, store:false}
     ];
 
     /*
