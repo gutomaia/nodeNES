@@ -65,14 +65,13 @@ opcodes['BVS'] = dict(rel=0x70)
     opcodes['STA'] = {zp:0x85, zpx:0x95, abs:0x8d, absx:0x9d, absy:0x99, indx:0x81, indy:0x91};
     opcodes['STX'] = {zp:0x86, zpy:0x96, abs:0x8e};
     opcodes['STY'] = {zp:0x84, zpx:0x94, abs:0x8c};
+    opcodes['TAX'] = {sngl:0xaa};
+    opcodes['TAY'] = {sngl:0xa8};
+    opcodes['TSX'] = {sngl:0xba};
+    opcodes['TXA'] = {sngl:0x8a};
+    opcodes['TXS'] = {sngl:0x9a};
+    opcodes['TYA'] = {sngl:0x98};
 
-/*opcodes['TAX'] = dict(sngl=0xaa)
-opcodes['TAY'] = dict(sngl=0xa8)
-opcodes['TSX'] = dict(sngl=0xba)
-opcodes['TXA'] = dict(sngl=0x8a)
-opcodes['TXS'] = dict(sngl=0x9a)
-opcodes['TYA'] = dict(sngl=0x98)
-*/
     exports.address_mode_def = address_mode_def;
     exports.opcodes = opcodes;
 
