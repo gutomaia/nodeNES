@@ -107,6 +107,10 @@
         return look_ahead(tokens, index, 'T_CLOSE', ')');
     }
 
+    function t_endline(tokens, index){
+        return look_ahead(tokens, index, 'T_ENDLINE', '\n');
+    }
+
     var asm65_bnf = [
         {type:"S_RELATIVE", "short":"rel", "bnf":[t_relative, t_address_or_t_marker]},
         {type:"S_IMMEDIATE", "short":"imm", "bnf":[t_instruction, t_number]},
@@ -131,35 +135,39 @@
         var labels = [];
         var code = [];
         while (x < tokens.length){
-            for (var bnf in asm65_bnf){
-                var leaf = {};
-                var look_ahead = 0;
-                var move = false;
-                for (var i in asm65_bnf[bnf].bnf){
-                    move = asm65_bnf[bnf].bnf[i](tokens, x + look_ahead);
-                    if (!move){
+            if (t_endline(tokens,x)){
+                x++;
+            } else {
+                for (var bnf in asm65_bnf){
+                    var leaf = {};
+                    var look_ahead = 0;
+                    var move = false;
+                    for (var i in asm65_bnf[bnf].bnf){
+                        move = asm65_bnf[bnf].bnf[i](tokens, x + look_ahead);
+                        if (!move){
+                            break;
+                        }
+                        look_ahead++;
+                    }
+                    if (move){
+                        leaf.instruction = tokens[x];
+                        leaf.type = asm65_bnf[bnf].type;
+                        leaf.short = asm65_bnf[bnf].short;
+                        if (leaf.short == 'sngl'){
+                            //Do nothing
+                        } else if (leaf.short == 'indx' || leaf.short == 'indy') {
+                            leaf.arg = tokens[x+2];
+                        } else {
+                            leaf.arg = tokens[x+1];
+                        }
+                        ast.push(leaf);
+                        x += look_ahead;
                         break;
                     }
-                    look_ahead++;
-                }
-                if (move){
-                    leaf.instruction = tokens[x];
-                    leaf.type = asm65_bnf[bnf].type;
-                    leaf.short = asm65_bnf[bnf].short;
-                    if (leaf.short == 'sngl'){
-                        //Do nothing
-                    } else if (leaf.short == 'indx' || leaf.short == 'indy') {
-                        leaf.arg = tokens[x+2];
-                    } else {
-                        leaf.arg = tokens[x+1];
+                    debug++;
+                    if (debug > 1000){
+                        throw "Something";
                     }
-                    ast.push(leaf);
-                    x += look_ahead;
-                    break;
-                }
-                debug++;
-                if (debug > 1000){
-                    throw "Something";
                 }
             }
         }

@@ -40,7 +40,7 @@ exports.test_compile_more_than_on_instruction = function(test){
     test.equal('T_INSTRUCTION', tokens[2].type);
     test.equal('T_ADDRESS', tokens[3].type);
     test.equal('T_ENDLINE', tokens[4].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(2, ast.length);
+    var ast = compiler.syntax(tokens);
+    test.equal(2, ast.length);
     test.done();
 };
