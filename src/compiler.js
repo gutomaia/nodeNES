@@ -11,6 +11,10 @@
         {type:'T_REGISTER', regex:/^(X|x|Y|y)/, store:true},
         {type:'T_OPEN', regex:/^\(/, store:true},
         {type:'T_CLOSE', regex:/^\)/, store:true},
+        {type:'T_LABEL', regex:/^([a-zA-Z][a-zA-Z\d]*)\:/, store:true},
+        {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
+        {type:'T_NUM', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
+        {type:'T_ENDLINE', regex:/^\n/, store:true},
         {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false}
     ];
 
