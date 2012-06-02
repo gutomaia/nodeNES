@@ -109,17 +109,17 @@
     }
 
     var asm65_bnf = [
-        {type:"S_RELATIVE", "short":"rel", "bnf":[t_relative, t_address_or_t_marker]},
-        {type:"S_IMMEDIATE", "short":"imm", "bnf":[t_instruction, t_number]},
-        {type:"S_ZEROPAGE_X", "short":"zpx", "bnf":[t_instruction, t_zeropage, t_separator, t_register_x]},
-        {type:"S_ZEROPAGE_Y", "short":"zpy", "bnf":[t_instruction, t_zeropage, t_separator, t_register_y]},
-        {type:"S_ZEROPAGE", "short":"zp", "bnf":[t_instruction, t_zeropage]},
-        {type:"S_ABSOLUTE_X", "short":"absx", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
-        {type:"S_ABSOLUTE_Y", "short":"absy", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
-        {type:"S_ABSOLUTE", "short":"abs", "bnf":[t_instruction, t_address_or_t_marker]},
-        {type:"S_INDIRECT_X", "short":"indx", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_separator, t_register_x, t_close]},
-        {type:"S_INDIRECT_Y", "short":"indy", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
-        {type:"S_IMPLIED", "short":"sngl", "bnf":[t_instruction]}
+        {type:"S_RELATIVE", "bnf":[t_relative, t_address_or_t_marker]},
+        {type:"S_IMMEDIATE", "bnf":[t_instruction, t_number]},
+        {type:"S_ZEROPAGE_X", "bnf":[t_instruction, t_zeropage, t_separator, t_register_x]},
+        {type:"S_ZEROPAGE_Y", "bnf":[t_instruction, t_zeropage, t_separator, t_register_y]},
+        {type:"S_ZEROPAGE", "bnf":[t_instruction, t_zeropage]},
+        {type:"S_ABSOLUTE_X", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
+        {type:"S_ABSOLUTE_Y", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
+        {type:"S_ABSOLUTE", "bnf":[t_instruction, t_address_or_t_marker]},
+        {type:"S_INDIRECT_X", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_separator, t_register_x, t_close]},
+        {type:"S_INDIRECT_Y", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
+        {type:"S_IMPLIED", "bnf":[t_instruction]}
     ];
 
     exports.syntax = function(tokens){
@@ -158,16 +158,7 @@
                             walk++;
                         }
                         leaf.children = tokens.slice(x, x+size);
-                        leaf.instruction = tokens[x];
                         leaf.type = asm65_bnf[bnf].type;
-                        leaf.short = asm65_bnf[bnf].short;
-                        if (leaf.short == 'sngl'){
-                            //Do nothing
-                        } else if (leaf.short == 'indx' || leaf.short == 'indy') {
-                            leaf.arg = tokens[x+2];
-                        } else {
-                            leaf.arg = tokens[x+1];
-                        }
                         ast.push(leaf);
                         x += look_ahead;
                         break;
@@ -223,7 +214,6 @@
                         address = get_value(leaf.children[2], labels);
                         break;
                 }
-                //instruction = leaf.instruction.value;
                 var address_mode = c6502.address_mode_def[leaf.type].short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
