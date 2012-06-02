@@ -3,6 +3,7 @@
     var analyzer = require('./analyzer.js');
     var c6502 = require('./c6502.js');
     var cartridge = require('./cartridge.js');
+    var directives = require('./directives.js');
 
 
     var asm65_tokens = [
