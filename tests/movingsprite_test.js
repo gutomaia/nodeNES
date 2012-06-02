@@ -56,7 +56,6 @@ exports.test_asm_compiler = function(test){
     test.assertFalse('labels' in ast[7]);
     test.equal('T_INSTRUCTION', ast[7]['instruction'].type);
     test.equal('BPL', ast[7]['instruction'].value);
-
     // RTS;
     test.equal('S_IMPLIED', ast[8].type);
     test.assertFalse('labels' in ast[8]);
@@ -69,22 +68,7 @@ exports.test_asm_compiler = function(test){
     for (var o in opcodes){
         compiled += String.fromCharCode(opcodes[o]);
     }
-/*    test.equal(1, get_var('inesprg'));
-    test.equal(1, get_var('ineschr'));
-    test.equal(0, get_var('inesmap'));
-    test.equal(1, get_var('inesmir'));
-    test.assertIsNotNone(opcodes);
-    #print opcodes;
-    #test.assertTrue(False);
-    bin = ''.join([chr(opcode) for opcode in opcodes]);
-    f = open('fixtures/movingsprite/movingsprite.nes', 'rb');
-    content = f.read(len(bin));
-    #content = f.read();
-    f.close();
-    test.assertHexEquals(content,bin);
-    test.equal(content, bin);
-*/
-
+    //test.equal(bin.substring(0, compiled.length), compiled);
     test.done();
 };
 

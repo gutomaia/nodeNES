@@ -2,7 +2,7 @@ var assert = require('assert');
 
 var compiler = require('../src/compiler.js');
 
-exports.test_tay_sngl = function(test){
+exports.test_label = function(test){
     var tokens = compiler.lexical('label:');
     test.equal(1 , tokens.length);
     test.equal('T_LABEL', tokens[0].type);
@@ -16,12 +16,12 @@ exports.test_inesprg = function(test){
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(1 , ast.length);
-    //test.equal('S_DIRECTIVE', ast[0].type);
-    //var code = compiler.semantic(ast, True);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+    var code = compiler.semantic(ast, true);
     //test.equal(1, get_var('inesprg'));
-    //test.deepEqual(code[4], 1);
+    test.deepEqual(code[4], 1);
     test.done();
 };
 
@@ -30,12 +30,12 @@ exports.test_ineschr = function(test){
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(1 , ast.length);
-    //test.equal('S_DIRECTIVE', ast[0].type);
-    //var code = compiler.semantic(ast, True);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+    var code = compiler.semantic(ast, true);
     //test.equal(1, get_var('ineschr'));
-    //test.deepEqual(code[5], 1);
+    test.deepEqual(code[5], 1);
     test.done();
 };
 
@@ -44,12 +44,12 @@ exports.test_inesmap = function(test){
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(1 , ast.length);
-    //test.equal('S_DIRECTIVE', ast[0].type);
-    //var code = compiler.semantic(ast, True);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+    var code = compiler.semantic(ast, true);
     //#test.equal(1, get_var('inesmap'));
-    //test.deepEqual(code[6], 1);
+    test.deepEqual(code[6], 1);
     test.done();
 };
 
@@ -58,12 +58,12 @@ exports.test_inesmir = function(test){
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(1 , ast.length);
-    //test.equal('S_DIRECTIVE', ast[0].type);
-    //var code = compiler.semantic(ast, True);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+    var code = compiler.semantic(ast, true);
     //test.equal(1, get_var('inesmir'));
-    //test.deepEqual(code[7], 1);
+    test.deepEqual(code[7], 1);
     test.done();
 };
 
@@ -72,10 +72,10 @@ exports.test_bank_0 = function(test){
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
     test.equal('T_NUM', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
-    //test.equal(1 , ast.length);
-    //test.equal('S_DIRECTIVE', ast[0].type);
-    //var code = compiler.semantic(ast);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+    var code = compiler.semantic(ast);
     test.done();
 };
 
