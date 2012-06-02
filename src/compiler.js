@@ -151,6 +151,13 @@
                         look_ahead++;
                     }
                     if (move){
+                        var size = 0;
+                        var walk = 0;
+                        for (var b in asm65_bnf[bnf].bnf) {
+                            size += asm65_bnf[bnf].bnf[b](tokens, x+walk);
+                            walk++;
+                        }
+                        leaf.children = tokens.slice(x, x+size);
                         leaf.instruction = tokens[x];
                         leaf.type = asm65_bnf[bnf].type;
                         leaf.short = asm65_bnf[bnf].short;
@@ -175,7 +182,7 @@
         return ast;
     };
 
-    function get_int_value(token){
+    function get_value(token){
         if (token.type == 'T_ADDRESS'){
             m = asm65_tokens[1].regex.exec(token.value);
             return parseInt(m[1], 16);
@@ -196,7 +203,7 @@
                 var address_mode = leaf.short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
-                    address = get_int_value(leaf.arg);
+                    address = get_value(leaf.arg);
         /*            if ('rel' == address_mode:
                             address = 126 + (address - cart.pc)
                             if address == 128:
