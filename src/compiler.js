@@ -5,7 +5,6 @@
     var cartridge = require('./cartridge.js');
     var directives = require('./directives.js');
 
-
     var asm65_tokens = [
         {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
         {type:"T_ADDRESS", regex:/^\$([\dA-F]{2,4})/, store:true},
@@ -31,15 +30,15 @@
 
     function look_ahead(tokens, index, type, value){
         if (index > tokens.length - 1){
-            return false;
+            return 0;
         }
         var token = tokens[index];
         if (token.type == type){
             if (value === undefined || token.value == value){
-                return true;
+                return 1;
             }
         }
-        return false;
+        return 0;
     }
 
     function t_instruction(tokens, index){
@@ -55,11 +54,11 @@
             var valid = [ 'BCC', 'BCS', 'BEQ', 'BNE', 'BMI', 'BPL', 'BVC', 'BVS'];
             for (var v in valid){
                 if(tokens[index].value == valid[v]){
-                    return true;
+                    return 1;
                 }
             }
         }
-        return false;
+        return 0;
     }
 
     function t_address_or_t_marker(tokens, index){
@@ -72,9 +71,9 @@
 
     function t_zeropage(tokens, index){
         if (t_address(tokens,index) && tokens[index].value.length == 3){
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
 
     function t_separator(tokens, index){
