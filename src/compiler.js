@@ -100,12 +100,21 @@
         return look_ahead(tokens, index, 'T_ENDLINE', '\n');
     }
 
+    function OR(args, tokens, index){
+        for (var t in args){
+            if (args[t](tokens, index)){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
     function t_directive(tokens, index){
         return look_ahead(tokens, index, 'T_DIRECTIVE');
     }
 
     function t_directive_argument(tokens, index){
-        return t_num(tokens, index);
+        return OR([t_num, t_address], tokens, index);
     }
 
     function t_num(tokens, index){
