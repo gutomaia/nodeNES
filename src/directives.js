@@ -16,10 +16,11 @@ function d_inesmir(arg, cart){
     cart.set_iNES_mir(arg);
 }
 
-/*
-def d_bank(arg, cart):
-    cart.set_bank_id(arg)
+function d_bank(arg, cart){
+    cart.set_bank_id(arg);
+}
 
+/*
 def d_org(arg, cart):
     cart.set_org(arg)
 
@@ -50,7 +51,7 @@ exports.directive_list['.inesprg'] = d_inesprg;
 exports.directive_list['.ineschr'] = d_ineschr;
 exports.directive_list['.inesmap'] = d_inesmap;
 exports.directive_list['.inesmir'] = d_inesmir;
-//exports.directive_list['.bank'] = d_bank;
+exports.directive_list['.bank'] = d_bank;
 //exports.directive_list['.org'] = d_org;
 //exports.directive_list['.db'] = d_db;
 //exports.directive_list['.dw'] = d_dw;

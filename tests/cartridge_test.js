@@ -12,15 +12,15 @@ exports.tearDown = function(callback){
     callback();
 };
 
-exports.test_inespgr_1 = function(test){
-    this.cart.set_iNES_pgr(1);
-    test.equal(1, this.cart.inespgr);
+exports.test_inesprg_1 = function(test){
+    this.cart.set_iNES_prg(1);
+    test.equal(1, this.cart.inesprg);
     test.done();
 };
 
-exports.test_inespgr_2 = function(test){
-    this.cart.set_iNES_pgr(2);
-    test.equal(2, this.cart.inespgr);
+exports.test_inesprg_2 = function(test){
+    this.cart.set_iNES_prg(2);
+    test.equal(2, this.cart.inesprg);
     test.done();
 };
 

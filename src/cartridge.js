@@ -4,7 +4,7 @@ function Cartridge() {
     this.banks = [];
     this.bank_id = 0;
     this.pc = 0;
-    this.inespgr = 1;
+    this.inesprg = 1;
     this.ineschr = 1;
     this.inesmap = 1;
     this.inesmir = 1;
@@ -20,7 +20,7 @@ Cartridge.prototype.nes_get_header = function (){
     var unused = [0,0,0,0,0,0,0,0];
     header = [];
     header = header.concat(id);
-    header.push(this.inespgr);
+    header.push(this.inesprg);
     header.push(this.ineschr);
     header.push(this.inesmir);
     header.push(this.inesmap);
@@ -28,8 +28,8 @@ Cartridge.prototype.nes_get_header = function (){
     return header;
 };
 
-Cartridge.prototype.set_iNES_pgr = function (inespgr){
-    this.inespgr = inespgr;
+Cartridge.prototype.set_iNES_prg = function (inesprg){
+    this.inesprg = inesprg;
 };
 
 Cartridge.prototype.set_iNES_chr = function (ineschr){

@@ -17,28 +17,28 @@ exports.test_asm_compiler = function(test){
 
     //.inesprg 1
     test.equal('S_DIRECTIVE', ast[0].type);
-    test.equal('T_DIRECTIVE', ast[0].directive.type);
-    test.equal('.inesprg', ast[0].directive.value);
+    //test.equal('T_DIRECTIVE', ast[0].directive.type);
+    //test.equal('.inesprg', ast[0].directive.value);
 
     //.ineschr 1
     test.equal('S_DIRECTIVE', ast[1].type);
-    test.equal('T_DIRECTIVE', ast[1]['directive'].type);
-    test.equal('.ineschr', ast[1]['directive'].value);
+    //test.equal('T_DIRECTIVE', ast[1]['directive'].type);
+    //test.equal('.ineschr', ast[1]['directive'].value);
 
     //.inesmap 0
     test.equal('S_DIRECTIVE', ast[2].type);
-    test.equal('T_DIRECTIVE', ast[2]['directive'].type);
-    test.equal('.inesmap', ast[2]['directive'].value);
+    //test.equal('T_DIRECTIVE', ast[2]['directive'].type);
+    //test.equal('.inesmap', ast[2]['directive'].value);
 
     //.inesmir 1
     test.equal('S_DIRECTIVE', ast[3].type);
-    test.equal('T_DIRECTIVE', ast[3]['directive'].type);
-    test.equal('.inesmir', ast[3]['directive'].value);
+    //test.equal('T_DIRECTIVE', ast[3]['directive'].type);
+    //test.equal('.inesmir', ast[3]['directive'].value);
 
     //.bank 0
     test.equal('S_DIRECTIVE', ast[4].type);
-    test.equal('T_DIRECTIVE', ast[4]['directive'].type);
-    test.equal('.bank', ast[4]['directive'].value);
+    //test.equal('T_DIRECTIVE', ast[4]['directive'].type);
+    //test.equal('.bank', ast[4]['directive'].value);
 /*
     //.org $C000
     test.equal('S_DIRECTIVE', ast[5].type);

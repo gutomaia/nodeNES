@@ -20,8 +20,7 @@ exports.test_inesprg = function(test){
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast, true);
-    //test.equal(1, get_var('inesprg'));
-    test.deepEqual(code[4], 1);
+    test.equal(code[4], 1);
     test.done();
 };
 
@@ -34,8 +33,7 @@ exports.test_ineschr = function(test){
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast, true);
-    //test.equal(1, get_var('ineschr'));
-    test.deepEqual(code[5], 1);
+    test.equal(code[5], 1);
     test.done();
 };
 

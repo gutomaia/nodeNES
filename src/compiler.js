@@ -104,11 +104,16 @@
         return look_ahead(tokens, index, 'T_DIRECTIVE');
     }
 
+    function t_directive_argument(tokens, index){
+        return t_num(tokens, index);
+    }
+
     function t_num(tokens, index){
         return look_ahead(tokens, index, 'T_NUM');
     }
 
     var asm65_bnf = [
+        {type:"S_DIRECTIVE", bnf:[t_directive, t_directive_argument]},
         {type:"S_RELATIVE", "bnf":[t_relative, t_address_or_t_marker]},
         {type:"S_IMMEDIATE", "bnf":[t_instruction, t_number]},
         {type:"S_ZEROPAGE_X", "bnf":[t_instruction, t_zeropage, t_separator, t_register_x]},
@@ -129,14 +134,7 @@
         var labels = [];
         var code = [];
         while (x < tokens.length){
-            if (t_directive(tokens,x) && t_num(tokens, x+1)){
-                leaf = {};
-                leaf.type = 'S_DIRECTIVE';
-                leaf.directive = tokens[x];
-                leaf.args = tokens[x+1];
-                ast.push(leaf);
-                x += 2;
-            } else if (t_endline(tokens,x)){
+            if (t_endline(tokens,x)){
                 x++;
             } else {
                 for (var bnf in asm65_bnf){
@@ -180,6 +178,8 @@
         }else if (token.type == 'T_HEX_NUMBER'){
             m = asm65_tokens[2].regex.exec(token.value);
             return parseInt(m[1], 16);
+        }else if (token.type == 'T_NUM'){
+            return parseInt(token['value'],10);
         }
     }
 
@@ -189,7 +189,10 @@
         for (var l in ast) {
             var leaf = ast[l];
             if (leaf.type == 'S_DIRECTIVE'){
-
+                var directive = leaf.children[0].value;
+                var argument = get_value(leaf.children[1], labels);
+                //console.log(leaf);
+                directives.directive_list[directive](argument, cart);
             }else {
                 var instruction;
                 switch(leaf.type){
