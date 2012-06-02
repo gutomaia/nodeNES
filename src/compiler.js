@@ -185,7 +185,7 @@
         }
     }
 
-    exports.semantic = function(ast){
+    exports.semantic = function(ast, iNES){
         var cart = new cartridge.Cartridge();
         for (var l in ast) {
             var leaf = ast[l];
@@ -218,6 +218,10 @@
                     }
                 }
         }
-        return cart.get_code();
+        if (iNES){
+            return cart.get_ines_code();
+        } else {
+            return cart.get_code();
+        }
     };
 })(typeof exports === 'undefined'? this['compiler']={}: exports);

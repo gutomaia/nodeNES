@@ -8,9 +8,7 @@ var lines = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.
 lines.length = 11;
 var code = lines.join("\n");
 
-//var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'utf8');
-
-//console.log(bin.length);
+var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
 
 exports.test_asm_compiler = function(test){
     var tokens = compiler.lexical(code);
@@ -67,6 +65,10 @@ exports.test_asm_compiler = function(test){
 */
 
     opcodes = compiler.semantic(ast, true);
+    compiled = '';
+    for (var o in opcodes){
+        compiled += String.fromCharCode(opcodes[o]);
+    }
 /*    test.equal(1, get_var('inesprg'));
     test.equal(1, get_var('ineschr'));
     test.equal(0, get_var('inesmap'));
@@ -82,6 +84,7 @@ exports.test_asm_compiler = function(test){
     test.assertHexEquals(content,bin);
     test.equal(content, bin);
 */
+
     test.done();
 };
 

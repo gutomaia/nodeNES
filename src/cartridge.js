@@ -16,18 +16,16 @@ Cartridge.prototype.nes_id = function (){
 };
 
 Cartridge.prototype.nes_get_header = function (){
-    /*
-    id = self.nes_id();
-    unused = [0,0,0,0,0,0,0,0]
-    header = []
-    header.extend(id)
-    header.append(self.inespgr)
-    header.append(self.ineschr)
-    header.append(self.inesmir)
-    header.append(self.inesmap)
-    header.extend(unused)
-    return header*/
-    return 0;
+    var id = this.nes_id();
+    var unused = [0,0,0,0,0,0,0,0];
+    header = [];
+    header = header.concat(id);
+    header.push(this.inespgr);
+    header.push(this.ineschr);
+    header.push(this.inesmir);
+    header.push(this.inesmap);
+    header = header.concat(unused);
+    return header;
 };
 
 Cartridge.prototype.set_iNES_pgr = function (inespgr){
@@ -86,19 +84,23 @@ Cartridge.prototype.get_code = function (){
     return this.banks[this.bank_id].code;
 };
 
-/*
-    def get_ines_code(self):
-        if self.bank_id not in self.banks:
-            self.set_bank_id(self.bank_id)
-        bin = []
-        nes_header = self.nes_get_header()
-        bin.extend(nes_header)
-        for i in self.banks:
-            for j in range(len(self.banks[i]['code']), self.banks[i]['size']):
-                self.banks[i]['code'].append(0xff)
-            bin.extend(self.banks[i]['code'])
-        return bin
-*/
+
+Cartridge.prototype.get_ines_code = function(){
+    if (this.banks[this.bank_id] === undefined){
+        this.set_bank_id(this.bank_id);
+    }
+    var bin = [];
+    var nes_header = this.nes_get_header();
+    bin = bin.concat(nes_header);
+    for (var b in this.banks){
+        for (var j = this.banks[b].length; j<this.banks[b].size; j++){
+            this.banks[b].code.push(0xff);
+        }
+        bin = bin.concat(this.banks[b].code);
+    }
+    return bin;
+};
+
 exports.Cartridge = Cartridge;
 
 })(typeof exports === 'undefined'? this['cartridge']={}: exports);
