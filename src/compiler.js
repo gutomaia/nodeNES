@@ -217,26 +217,27 @@
                 var address_mode = c6502.address_mode_def[leaf.type].short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
-        /*            if ('rel' == address_mode:
-                            address = 126 + (address - cart.pc)
-                            if address == 128:
-                                address = 0
-                            elif address < 128:
-                                address = address | 0b10000000
-                            elif address > 128:
-                                address = address & 0b01111111
-        */
-                        if (c6502.address_mode_def[leaf.type].size == 2){
-                            cart.append_code([opcode, address]);
-                        } else {
-                            arg1 = (address & 0x00ff);
-                            arg2 = (address & 0xff00) >> 8;
-                            cart.append_code([opcode, arg1, arg2]);
+                    if ('rel' == address_mode){
+                        address = 126 + (address - cart.pc);
+                        if (address == 128){
+                            address = 0;
+                        } else if (address < 128){
+                            address = address | 0x256;
+                        } else if (address > 128){
+                            address = address & 0x256;
                         }
-                    } else {
-                        cart.append_code([opcode]);
                     }
+                    if (c6502.address_mode_def[leaf.type].size == 2){
+                        cart.append_code([opcode, address]);
+                    } else {
+                        arg1 = (address & 0x00ff);
+                        arg2 = (address & 0xff00) >> 8;
+                        cart.append_code([opcode, arg1, arg2]);
+                    }
+                } else {
+                    cart.append_code([opcode]);
                 }
+            }
         }
         if (iNES){
             return cart.get_ines_code();

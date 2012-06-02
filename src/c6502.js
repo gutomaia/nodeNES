@@ -20,15 +20,13 @@
     opcodes['ASL'] = {imm:0x0a, zp:0x06, zpx:0x16, abs:0x0e, absx:0x1e};
     opcodes['BCC'] = {rel:0x90};
     opcodes['BCS'] = {rel:0xb0};
-/*
-opcodes['BEQ'] = dict(rel=0xf0)
-opcodes['BIT'] = dict(zp=0x24, abs=0x2c)
-opcodes['BMI'] = dict(rel=0x30)
-opcodes['BNE'] = dict(rel=0xd0)
-opcodes['BPL'] = dict(rel=0x10)
-opcodes['BVC'] = dict(rel=0x50)
-opcodes['BVS'] = dict(rel=0x70)
-*/
+    opcodes['BEQ'] = {rel:0xf0};
+    opcodes['BIT'] = {zp:0x24, abs:0x2c};
+    opcodes['BMI'] = {rel:0x30};
+    opcodes['BNE'] = {rel:0xd0};
+    opcodes['BPL'] = {rel:0x10};
+    opcodes['BVC'] = {rel:0x50};
+    opcodes['BVS'] = {rel:0x70};
     opcodes['CLC'] = {sngl:0x18};
     opcodes['CLD'] = {sngl:0xd8};
     opcodes['CLI'] = {sngl:0x58};
