@@ -5,7 +5,7 @@ var sys = require('util');
 var compiler = require('../src/compiler.js');
 
 var lines = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.asm', 'utf8').split("\n");
-lines.length = 11;
+lines.length = 12;
 var code = lines.join("\n");
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
@@ -68,7 +68,7 @@ exports.test_asm_compiler = function(test){
     for (var o in opcodes){
         compiled += String.fromCharCode(opcodes[o]);
     }
-    //test.equal(bin.substring(0, compiled.length), compiled);
+    test.equal(bin.substring(0, compiled.length), compiled);
     test.done();
 };
 

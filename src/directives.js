@@ -20,10 +20,11 @@ function d_bank(arg, cart){
     cart.set_bank_id(arg);
 }
 
-/*
-def d_org(arg, cart):
-    cart.set_org(arg)
+function d_org(arg, cart){
+    cart.set_org(arg);
+}
 
+/*
 def d_db(arg, cart):
     l = []
     for token in arg:
