@@ -223,9 +223,8 @@
                         address = get_value(leaf.children[2], labels);
                         break;
                 }
-
-                instruction = leaf.instruction.value;
-                var address_mode = leaf.short;
+                //instruction = leaf.instruction.value;
+                var address_mode = c6502.address_mode_def[leaf.type].short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
         /*            if ('rel' == address_mode:
@@ -237,7 +236,7 @@
                             elif address > 128:
                                 address = address & 0b01111111
         */
-                        if (c6502.address_mode_def[address_mode].size == 2){
+                        if (c6502.address_mode_def[leaf.type].size == 2){
                             cart.append_code([opcode, address]);
                         } else {
                             arg1 = (address & 0x00ff);

@@ -1,17 +1,18 @@
 (function(exports){
 
     var address_mode_def = [];
-    address_mode_def['sngl'] = {size:1};
-    address_mode_def['imm'] = {size:2};
-    address_mode_def['zp'] = {size:2};
-    address_mode_def['zpx'] = {size:2};
-    address_mode_def['zpy'] = {size:2};
-    address_mode_def['abs'] = {size:3};
-    address_mode_def['absx'] = {size:3};
-    address_mode_def['absy'] = {size:3};
-    address_mode_def['indx'] = {size:2};
-    address_mode_def['indy'] = {size:2};
-    address_mode_def['rel'] = {size:2};
+
+    address_mode_def['S_IMPLIED'] = {size:1, short:'sngl'};
+    address_mode_def['S_IMMEDIATE'] = {size:2, short:'imm'};
+    address_mode_def['S_ZEROPAGE'] = {size:2, short:'zp'};
+    address_mode_def['S_ZEROPAGE_X'] = {size:2, short:'zpx'};
+    address_mode_def['S_ZEROPAGE_Y'] = {size:2, short: 'zpy'};
+    address_mode_def['S_ABSOLUTE'] = {size:3, short: 'abs'};
+    address_mode_def['S_ABSOLUTE_X'] = {size:3, short: 'absx'};
+    address_mode_def['S_ABSOLUTE_Y'] = {size:3, short: 'absy'};
+    address_mode_def['S_INDIRECT_X'] = {size:2, short: 'indx'};
+    address_mode_def['S_INDIRECT_Y'] = {size:2, short: 'indy'};
+    address_mode_def['S_RELATIVE'] = {size:2, short: 'rel'};
 
     var opcodes = [];
     opcodes['ADC'] = {imm:0x69, zp:0x65, zpx:0x75, abs:0x6d, absx:0x7d, absy:0x79, indx:0x61, indy:0x71};
