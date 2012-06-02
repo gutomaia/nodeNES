@@ -194,16 +194,40 @@
 
     exports.semantic = function(ast, iNES){
         var cart = new cartridge.Cartridge();
+        var labels = {};
         for (var l in ast) {
             var leaf = ast[l];
             if (leaf.type == 'S_DIRECTIVE'){
 
             }else {
-                var instruction = leaf.instruction.value;
+                var instruction;
+                switch(leaf.type){
+                    case 'S_IMPLIED':
+                        instruction = leaf.children[0].value;
+                        address = false;
+                        break;
+                    case 'S_RELATIVE':
+                    case 'S_IMMEDIATE':
+                    case 'S_ZEROPAGE':
+                    case 'S_ABSOLUTE':
+                    case 'S_ZEROPAGE_X':
+                    case 'S_ZEROPAGE_Y': 
+                    case 'S_ABSOLUTE_X':
+                    case 'S_ABSOLUTE_Y':
+                        instruction = leaf.children[0].value;
+                        address = get_value(leaf.children[1], labels);
+                        break;
+                    case 'S_INDIRECT_X':
+                    case 'S_INDIRECT_Y':
+                        instruction = leaf.children[0].value;
+                        address = get_value(leaf.children[2], labels);
+                        break;
+                }
+
+                instruction = leaf.instruction.value;
                 var address_mode = leaf.short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
-                    address = get_value(leaf.arg);
         /*            if ('rel' == address_mode:
                             address = 126 + (address - cart.pc)
                             if address == 128:
