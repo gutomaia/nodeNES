@@ -61,8 +61,16 @@
         return 0;
     }
 
+    function t_label(tokens, index){
+        return look_ahead(tokens, index, 'T_LABEL');
+    }
+
+    function t_marker(tokens, index){
+        return look_ahead(tokens, index, 'T_MARKER');
+    }
+
     function t_address_or_t_marker(tokens, index){
-        return t_address(tokens, index);
+        return OR([t_address, t_marker], tokens, index);
     }
 
     function t_address(tokens, index){
@@ -143,7 +151,10 @@
         var labels = [];
         var code = [];
         while (x < tokens.length){
-            if (t_endline(tokens,x)){
+            if (t_label(tokens,x)){
+                labels.push(get_value(tokens[x]));
+                x++;
+            }else if (t_endline(tokens,x)){
                 x++;
             } else {
                 for (var bnf in asm65_bnf){
@@ -158,6 +169,10 @@
                         look_ahead++;
                     }
                     if (move){
+                        if (labels.length > 0){
+                            leaf.labels = labels;
+                            labels = [];
+                        }
                         var size = 0;
                         var walk = 0;
                         for (var b in asm65_bnf[bnf].bnf) {
@@ -172,7 +187,8 @@
                     }
                     debug++;
                     if (debug > 1000){
-                        throw "Something";
+                        console.log("DEBUG ERROR");
+                        throw "DEBUG ERROR";
                     }
                 }
             }
@@ -180,7 +196,7 @@
         return ast;
     };
 
-    function get_value(token){
+    function get_value(token, labels){
         if (token.type == 'T_ADDRESS'){
             m = asm65_tokens[1].regex.exec(token.value);
             return parseInt(m[1], 16);
@@ -189,18 +205,45 @@
             return parseInt(m[1], 16);
         }else if (token.type == 'T_NUM'){
             return parseInt(token['value'],10);
+        }else if (token.type == 'T_LABEL'){
+            m = asm65_tokens[9].regex.exec(token.value);
+            return m[1];
+        }else if (token.type == 'T_MARKER'){
+            return labels[token.value];
+        } else {
+            console.log("Could not get that value");
+            console.log(token);
+            throw "Could not get that value";
         }
     }
 
     exports.semantic = function(ast, iNES){
         var cart = new cartridge.Cartridge();
         var labels = {};
+        var leaf;
+        //find all labels o the symbol table
+        var address = 0;
+        for (var la in ast){
+            leaf = ast[la];
+            if (leaf.type == 'S_DIRECTIVE'){
+                var _directive = leaf.children[0].value;
+                if ('.org' == _directive){
+                    address = parseInt(leaf.children[1].value.substr(1),16);
+                }
+            }
+            if (leaf.labels !== undefined){
+                labels[leaf.labels[0]] = address;
+            }
+            if (leaf.type != 'S_DIRECTIVE'){
+                size = c6502.address_mode_def[leaf.type].size;
+                address += size;
+            }
+        }
         for (var l in ast) {
-            var leaf = ast[l];
+            leaf = ast[l];
             if (leaf.type == 'S_DIRECTIVE'){
                 var directive = leaf.children[0].value;
                 var argument = get_value(leaf.children[1], labels);
-                //console.log(leaf);
                 directives.directive_list[directive](argument, cart);
             }else {
                 var instruction;
@@ -234,9 +277,9 @@
                         if (address == 128){
                             address = 0;
                         } else if (address < 128){
-                            address = address | 0x256;
+                            address = address | 128;
                         } else if (address > 128){
-                            address = address & 0x256;
+                            address = address & 128;
                         }
                     }
                     if (c6502.address_mode_def[leaf.type].size == 2){
