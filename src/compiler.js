@@ -241,6 +241,9 @@
                 address += size;
             }
         }
+        labels.palette = 0xE000; //#TODO stealing on test
+        labels.sprites = 0xE000 + 32; //#TODO stealing on test
+
         for (var l in ast) {
             leaf = ast[l];
             if (leaf.type == 'S_DIRECTIVE'){
