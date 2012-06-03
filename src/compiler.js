@@ -34,7 +34,7 @@
         }
         var token = tokens[index];
         if (token.type == type){
-            if (value === undefined || token.value == value){
+            if (value === undefined || token.value.toUpperCase() == value.toUpperCase()){
                 return 1;
             }
         }
@@ -188,6 +188,8 @@
                     debug++;
                     if (debug > 1000){
                         console.log("DEBUG ERROR");
+                        console.log(ast[ast.length - 1]);
+                        console.log(tokens[x]);
                         throw "DEBUG ERROR";
                     }
                 }
