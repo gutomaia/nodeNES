@@ -11,6 +11,6 @@ exports.test_bcs_rel = function(test){
     test.equal(1 , ast.length);
     test.equal('S_RELATIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    // test.deepEqual(code, [0xb0, 0x0e]);
+    test.deepEqual(code, [0xb0, 0x0e]);
     test.done();
 };

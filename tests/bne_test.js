@@ -11,6 +11,6 @@ exports.test_bne_rel = function(test){
     test.equal(1 , ast.length);
     test.equal('S_RELATIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    //TODO: test.deepEqual(code, [0xd0, 0x0e]);
+    test.deepEqual(code, [0xd0, 0x0e]);
     test.done();
 };
