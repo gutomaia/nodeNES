@@ -197,7 +197,7 @@
                     if (debug > 1000){
                         console.log("DEBUG ERROR--");
                         console.log(x);
-                        console.log(ast);
+                        console.log(ast[ast.length-1]);
                         console.log(tokens[x]);
                         throw "DEBUG ERROR";
                     }
@@ -296,7 +296,7 @@
                         } else if (address < 128){
                             address = address | 128;
                         } else if (address > 128){
-                            address = address & 128;
+                            address = address & 127;
                         }
                     }
                     if (c6502.address_mode_def[leaf.type].size == 2){
