@@ -24,14 +24,17 @@ function d_org(arg, cart){
     cart.set_org(arg);
 }
 
-/*
-def d_db(arg, cart):
+
+function d_db(arg, cart){
+    /*
     l = []
     for token in arg:
         if token['type'] == 'T_ADDRESS':
             l.append(int(token['value'][1:], 16))
     cart.append_code(l)
-
+    */
+}
+/*
 def d_dw(arg, cart):
     arg1 = (arg & 0x00ff)
     arg2 = (arg & 0xff00) >> 8
@@ -54,7 +57,7 @@ exports.directive_list['.inesmap'] = d_inesmap;
 exports.directive_list['.inesmir'] = d_inesmir;
 exports.directive_list['.bank'] = d_bank;
 exports.directive_list['.org'] = d_org;
-//exports.directive_list['.db'] = d_db;
+exports.directive_list['.db'] = d_db;
 //exports.directive_list['.dw'] = d_dw;
 //exports.directive_list['.incbin'] = d_incbin;
 

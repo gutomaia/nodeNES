@@ -117,11 +117,12 @@ exports.test_org_fffa = function(test){
 };
 
 exports.test_db_1 = function(test){
-    var tokens = compiler.lexical('.db $0F,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F');
-    test.equal(32 , tokens.length);
+    var tokens = compiler.lexical('.db $0F,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F\n');
+    test.equal(33 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    //#test.equal('T_HEX_NUMBER', tokens[1].type);
-    //var ast = compiler.syntax(tokens);
+    test.equal('T_ADDRESS', tokens[1].type);
+    test.equal('T_SEPARATOR', tokens[2].type);
+    var ast = compiler.syntax(tokens);
     //test.equal(1 , ast.length);
     //test.equal('S_DIRECTIVE', ast[0].type);
     //var code = compiler.semantic(ast);

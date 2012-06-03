@@ -119,7 +119,7 @@
     function OR(args, tokens, index){
         for (var t in args){
             if (args[t](tokens, index)){
-                return 1;
+                return args[t](tokens, index);
             }
         }
         return 0;
@@ -130,11 +130,30 @@
     }
 
     function t_directive_argument(tokens, index){
-        return OR([t_num, t_address], tokens, index);
+        return OR([t_list, t_address, t_num ], tokens, index);
     }
 
     function t_num(tokens, index){
         return look_ahead(tokens, index, 'T_NUM');
+    }
+
+    function t_list(tokens, index){
+        if (t_address(tokens, index) && t_separator(tokens, index+1)){
+            var islist = 1;
+            var arg = 0;
+            while (islist){
+                islist = islist & t_separator(tokens, index + (arg * 2) + 1);
+                islist = islist & t_address(tokens, index + (arg * 2) + 2);
+                if (t_endline(tokens, index + (arg * 2) + 3)){
+                    break;
+                }
+                arg++;
+            }
+            if (islist){
+                return ((arg+1) * 2) +1;
+            }
+        }
+        return 0;
     }
 
     var asm65_bnf = [
@@ -190,7 +209,7 @@
                         leaf.children = tokens.slice(x, x+size);
                         leaf.type = asm65_bnf[bnf].type;
                         ast.push(leaf);
-                        x += look_ahead;
+                        x += size;
                         break;
                     }
                     debug++;
