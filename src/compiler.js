@@ -144,7 +144,7 @@
             while (islist){
                 islist = islist & t_separator(tokens, index + (arg * 2) + 1);
                 islist = islist & t_address(tokens, index + (arg * 2) + 2);
-                if (t_endline(tokens, index + (arg * 2) + 3)){
+                if (t_endline(tokens, index + (arg * 2) + 3) || index + (arg * 2) + 3 == tokens.length){
                     break;
                 }
                 arg++;
@@ -275,11 +275,17 @@
         labels.palette = 0xE000; //#TODO stealing on test
         labels.sprites = 0xE000 + 32; //#TODO stealing on test
 
+        //Translate opcodes
         for (var l in ast) {
             leaf = ast[l];
             if (leaf.type == 'S_DIRECTIVE'){
                 var directive = leaf.children[0].value;
-                var argument = get_value(leaf.children[1], labels);
+                var argument;
+                if (leaf.children.length == 2){
+                    argument = get_value(leaf.children[1], labels);
+                } else {
+                    argument = leaf.children.slice(1, leaf.children.length);
+                }
                 directives.directive_list[directive](argument, cart);
             }else {
                 var instruction;

@@ -26,14 +26,15 @@ function d_org(arg, cart){
 
 
 function d_db(arg, cart){
-    /*
-    l = []
-    for token in arg:
-        if token['type'] == 'T_ADDRESS':
-            l.append(int(token['value'][1:], 16))
-    cart.append_code(l)
-    */
+    var l = [];
+    for (var t in arg){
+        if (arg[t].type == 'T_ADDRESS'){
+            l.push(parseInt(arg[t].value.substring(1, arg[t].value.length), 16));
+        }
+    }
+    cart.append_code(l);
 }
+
 /*
 def d_dw(arg, cart):
     arg1 = (arg & 0x00ff)
