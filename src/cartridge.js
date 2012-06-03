@@ -59,7 +59,7 @@ Cartridge.prototype.set_org = function (org){
         this.banks[this.bank_id].start = org;
         this.pc = org;
     } else {
-        while(this.pc < org){
+        while (this.pc < org){
             this.append_code([0xff]);
         }
         this.pc = org;
@@ -93,7 +93,7 @@ Cartridge.prototype.get_ines_code = function(){
     var nes_header = this.nes_get_header();
     bin = bin.concat(nes_header);
     for (var b in this.banks){
-        for (var j = this.banks[b].length; j<this.banks[b].size; j++){
+        for (var j = this.banks[b].code.length; j < this.banks[b].size; j++){
             this.banks[b].code.push(0xff);
         }
         bin = bin.concat(this.banks[b].code);
