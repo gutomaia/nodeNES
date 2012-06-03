@@ -40,11 +40,15 @@ exports.test_marker = function(test){
 };
 
 exports.test_binary_number = function(test){
-    var code = 'LDA #%10000000';
-    var tokens = compiler.lexical(code);
+    var tokens = compiler.lexical('LDA #%10000000');
     test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_BINARY_NUMBER', tokens[1].type);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_IMMEDIATE', ast[0].type);
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0xa9, 0x80]);
     test.done();
 };
 

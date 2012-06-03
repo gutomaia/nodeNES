@@ -9,7 +9,7 @@
         {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
         {type:"T_ADDRESS", regex:/^\$([\dA-F]{2,4})/, store:true},
         {type:"T_HEX_NUMBER", regex:/^\#\$?([\dA-F]{2})/, store:true},
-        {type:'T_BINARY_NUMBER', regex:/\#%([01]{8})/, store:true}, 
+        {type:'T_BINARY_NUMBER', regex:/^\#%([01]{8})/, store:true}, 
         {type:'T_STRING', regex:/^"[^"]*"/, store:true},
         {type:'T_SEPARATOR', regex:/^,/, store:true},
         {type:'T_REGISTER', regex:/^(X|x|Y|y)/, store:true},
@@ -45,8 +45,16 @@
         return look_ahead(tokens, index, 'T_INSTRUCTION');
     }
 
-    function t_number(tokens, index){
+    function t_hex_number(tokens, index){
         return look_ahead(tokens, index, 'T_HEX_NUMBER');
+    }
+
+    function t_binary_number(tokens, index){
+        return look_ahead(tokens, index, 'T_BINARY_NUMBER');
+    }
+
+    function t_number(tokens, index){
+        return OR([t_hex_number, t_binary_number], tokens, index);
     }
 
     function t_relative(tokens, index){
@@ -187,8 +195,9 @@
                     }
                     debug++;
                     if (debug > 1000){
-                        console.log("DEBUG ERROR");
-                        console.log(ast[ast.length - 1]);
+                        console.log("DEBUG ERROR--");
+                        console.log(x);
+                        console.log(ast);
                         console.log(tokens[x]);
                         throw "DEBUG ERROR";
                     }
@@ -205,6 +214,9 @@
         }else if (token.type == 'T_HEX_NUMBER'){
             m = asm65_tokens[2].regex.exec(token.value);
             return parseInt(m[1], 16);
+        }else if (token.type == 'T_BINARY_NUMBER'){
+            m = asm65_tokens[3].regex.exec(token.value);
+            return parseInt(m[1], 2);
         }else if (token.type == 'T_NUM'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
