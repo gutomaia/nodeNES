@@ -43,17 +43,33 @@ function d_dw(arg, cart) {
 
 
 function d_incbin(arg, cart){
-    console.log(arg);
+    var data;
+    if (typeof jQuery !== 'undefined'){
+        jQuery.ajax({
+            url: 'example/movingsprite/' + arg,
+            xhr: function() {
+                    var xhr = $.ajaxSettings.xhr();
+                    if (typeof xhr.overrideMimeType !== 'undefined') {
+                        xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                    }
+                    self.xhr = xhr;
+                    return xhr;
+                },
+            complete: function(xhr, status) {
+                    data = xhr.responseText;
+                },
+            async: false
+        });          
+    } else {
+        var fs = require('fs');
+        data = fs.readFileSync('fixtures/movingsprite/'+arg, 'binary');
+    }       
+    var bin = [];
+    for (var i = 0; i < data.length ; i++){
+        bin.push(data.charCodeAt(i) & 0xFF);
+    }
+    cart.append_code(bin);
 }
-/*
-
-def d_incbin(arg, cart):
-    f = open('fixtures/movingsprite/'+arg, 'rw')
-    content = f.read()
-    for c in content:
-        cart.append_code([ord(c)])
-    #raise Exception()
-*/
 
 exports.directive_list = {};
 exports.directive_list['.inesprg'] = d_inesprg;

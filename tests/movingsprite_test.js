@@ -6,9 +6,7 @@ var sys = require('util');
 
 var compiler = require('../src/compiler.js');
 
-var lines = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.asm', 'utf8').split("\n");
-//lines.length = 184;
-var code = lines.join("\n");
+var code = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.asm', 'utf8');
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
 
@@ -19,58 +17,66 @@ exports.test_asm_compiler = function(test){
 
     //.inesprg 1
     test.equal('S_DIRECTIVE', ast[0].type);
-    //test.equal('T_DIRECTIVE', ast[0].directive.type);
-    //test.equal('.inesprg', ast[0].directive.value);
+    test.equal('T_DIRECTIVE', ast[0].children[0].type);
+    test.equal('.inesprg', ast[0].children[0].value);
 
     //.ineschr 1
     test.equal('S_DIRECTIVE', ast[1].type);
-    //test.equal('T_DIRECTIVE', ast[1]['directive'].type);
-    //test.equal('.ineschr', ast[1]['directive'].value);
+    test.equal('T_DIRECTIVE', ast[1].children[0].type);
+    test.equal('.ineschr', ast[1].children[0].value);
 
     //.inesmap 0
     test.equal('S_DIRECTIVE', ast[2].type);
-    //test.equal('T_DIRECTIVE', ast[2]['directive'].type);
-    //test.equal('.inesmap', ast[2]['directive'].value);
+    test.equal('T_DIRECTIVE', ast[2].children[0].type);
+    test.equal('.inesmap', ast[2].children[0].value);
 
     //.inesmir 1
     test.equal('S_DIRECTIVE', ast[3].type);
-    //test.equal('T_DIRECTIVE', ast[3]['directive'].type);
-    //test.equal('.inesmir', ast[3]['directive'].value);
+    test.equal('T_DIRECTIVE', ast[3].children[0].type);
+    test.equal('.inesmir', ast[3].children[0].value);
 
     //.bank 0
     test.equal('S_DIRECTIVE', ast[4].type);
-    //test.equal('T_DIRECTIVE', ast[4]['directive'].type);
-    //test.equal('.bank', ast[4]['directive'].value);
-/*
+    test.equal('T_DIRECTIVE', ast[4].children[0].type);
+    test.equal('.bank', ast[4].children[0].value);
+
     //.org $C000
     test.equal('S_DIRECTIVE', ast[5].type);
-    test.equal('T_DIRECTIVE', ast[5]['directive'].type);
-    test.equal('.org', ast[5]['directive'].value);
+    test.equal('T_DIRECTIVE', ast[5].children[0].type);
+    test.equal('.org', ast[5].children[0].value);
 
     // WAITVBLANK: BIT $2002;
     test.equal('S_ABSOLUTE', ast[6].type);
-    test.equal(['WAITVBLANK'], ast[6]['labels']);
-    test.equal('T_INSTRUCTION', ast[6]['instruction'].type);
-    test.equal('BIT', ast[6]['instruction'].value);
+    test.deepEqual(['WAITVBLANK'], ast[6]['labels']);
+    test.equal('T_INSTRUCTION', ast[6].children[0].type);
+    test.equal('BIT', ast[6].children[0].value);
 
     // BPL WAITVBLANK;
     test.equal('S_RELATIVE', ast[7].type);
-    test.assertFalse('labels' in ast[7]);
-    test.equal('T_INSTRUCTION', ast[7]['instruction'].type);
-    test.equal('BPL', ast[7]['instruction'].value);
+    //test.assertFalse('labels' in ast[7]);
+    test.equal('T_INSTRUCTION', ast[7].children[0].type);
+    test.equal('BPL', ast[7].children[0].value);
+
     // RTS;
     test.equal('S_IMPLIED', ast[8].type);
-    test.assertFalse('labels' in ast[8]);
-    test.equal('T_INSTRUCTION', ast[8]['instruction'].type);
-    //#test.equal('RTS', ast[8]['instruction'].value);
-*/
+    //test.assertFalse('labels' in ast[8]);
+    test.equal('T_INSTRUCTION', ast[8].children[0].type);
+    test.equal('RTS', ast[8].children[0].value);
 
     opcodes = compiler.semantic(ast, true);
 
+    var data = String.fromCharCode.apply(undefined, opcodes);
+
+    console.log(data.length );
+
+    test.equal(bin, data);
+
+    /*
     fs.open(__dirname + '/../fixtures/movingsprite/test_movingsprite.nes', 'w', function(status, fd) {
         var buffer = new Buffer(opcodes);
         fs.writeSync(fd, buffer, 0, opcodes.length, 0);
     });
+    */
     test.done();
 };
 
