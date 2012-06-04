@@ -18,7 +18,7 @@
         {type:'T_LABEL', regex:/^([a-zA-Z][a-zA-Z\d]*)\:/, store:true},
         {type:'T_MARKER', regex:/^[a-zA-Z][a-zA-Z\d]*/, store:true},
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
-        {type:'T_NUM', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
+        {type:'T_DECIMAL_ARGUMENT', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
         {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false},
         {type:'T_COMMENT', regex:/^;[^\n]*/, store:false}
@@ -130,11 +130,11 @@
     }
 
     function t_directive_argument(tokens, index){
-        return OR([t_list, t_address, t_marker, t_num, t_string], tokens, index);
+        return OR([t_list, t_address, t_marker, t_decimal_argument, t_string], tokens, index);
     }
 
-    function t_num(tokens, index){
-        return look_ahead(tokens, index, 'T_NUM');
+    function t_decimal_argument(tokens, index){
+        return look_ahead(tokens, index, 'T_DECIMAL_ARGUMENT');
     }
 
     function t_string(tokens, index){
@@ -240,7 +240,7 @@
         }else if (token.type == 'T_BINARY_NUMBER'){
             m = asm65_tokens[3].regex.exec(token.value);
             return parseInt(m[1], 2);
-        }else if (token.type == 'T_NUM'){
+        }else if (token.type == 'T_DECIMAL_ARGUMENT'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
             m = asm65_tokens[9].regex.exec(token.value);

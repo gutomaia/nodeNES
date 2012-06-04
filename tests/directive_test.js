@@ -15,7 +15,7 @@ exports.test_inesprg = function(test){
     var tokens = compiler.lexical('.inesprg 1');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    test.equal('T_NUM', tokens[1].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
@@ -28,7 +28,7 @@ exports.test_ineschr = function(test){
     var tokens = compiler.lexical('.ineschr 1');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    test.equal('T_NUM', tokens[1].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
@@ -41,7 +41,7 @@ exports.test_inesmap = function(test){
     var tokens = compiler.lexical('.inesmap 1');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    test.equal('T_NUM', tokens[1].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
@@ -55,7 +55,7 @@ exports.test_inesmir = function(test){
     var tokens = compiler.lexical('.inesmir 1');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    test.equal('T_NUM', tokens[1].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
@@ -69,7 +69,7 @@ exports.test_bank_0 = function(test){
     var tokens = compiler.lexical('.bank 0 ');
     test.equal(2 , tokens.length);
     test.equal('T_DIRECTIVE', tokens[0].type);
-    test.equal('T_NUM', tokens[1].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
