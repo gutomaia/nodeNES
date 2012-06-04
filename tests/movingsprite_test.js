@@ -67,8 +67,6 @@ exports.test_asm_compiler = function(test){
 
     var data = String.fromCharCode.apply(undefined, opcodes);
 
-    console.log(data.length );
-
     test.equal(bin, data);
 
     /*
