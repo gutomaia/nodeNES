@@ -4,11 +4,10 @@ var Buffer = require('buffer').Buffer;
 
 var sys = require('util');
 
-
 var compiler = require('../src/compiler.js');
 
 var lines = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.asm', 'utf8').split("\n");
-lines.length = 180;
+//lines.length = 184;
 var code = lines.join("\n");
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');

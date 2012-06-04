@@ -35,13 +35,17 @@ function d_db(arg, cart){
     cart.append_code(l);
 }
 
+function d_dw(arg, cart) {
+    var arg1 = (arg & 0x00ff);
+    var arg2 = (arg & 0xff00) >> 8;
+    cart.append_code([arg1, arg2]);
+}
+
+
+function d_incbin(arg, cart){
+    console.log(arg);
+}
 /*
-def d_dw(arg, cart):
-    arg1 = (arg & 0x00ff)
-    arg2 = (arg & 0xff00) >> 8
-    cart.append_code([arg1, arg2])
-
-
 
 def d_incbin(arg, cart):
     f = open('fixtures/movingsprite/'+arg, 'rw')
@@ -59,7 +63,7 @@ exports.directive_list['.inesmir'] = d_inesmir;
 exports.directive_list['.bank'] = d_bank;
 exports.directive_list['.org'] = d_org;
 exports.directive_list['.db'] = d_db;
-//exports.directive_list['.dw'] = d_dw;
-//exports.directive_list['.incbin'] = d_incbin;
+exports.directive_list['.dw'] = d_dw;
+exports.directive_list['.incbin'] = d_incbin;
 
-})(typeof exports === 'undefined'? this['compiler']={}: exports);
+})(typeof exports === 'undefined'? this['directives']={}: exports);

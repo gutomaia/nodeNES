@@ -1,8 +1,12 @@
 
 function mock_require(module){
-    var regex = /([a-z]+)\.js$/;
+    var regex = /([a-z\d]+)\.js$/;
     var m = regex.exec(module);
-    return eval(m[1]);
+    if (m){
+        return eval(m[1]);
+    } else {
+        console.log(module);
+    }
 }
 
 if(typeof require == 'undefined'){

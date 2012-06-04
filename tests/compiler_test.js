@@ -61,7 +61,6 @@ exports.test_string = function(test){
     test.done();
 };
 
-
 exports.test_compile_more_than_on_instruction = function(test){
     var code = "SEC     ;clear the carry;\n";
     code += "LDA $20     ;get the low byte of the first number;\n";

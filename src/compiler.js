@@ -130,11 +130,15 @@
     }
 
     function t_directive_argument(tokens, index){
-        return OR([t_list, t_address, t_num ], tokens, index);
+        return OR([t_list, t_address, t_marker, t_num, t_string], tokens, index);
     }
 
     function t_num(tokens, index){
         return look_ahead(tokens, index, 'T_NUM');
+    }
+
+    function t_string(tokens, index){
+        return look_ahead(tokens, index, 'T_STRING');
     }
 
     function t_list(tokens, index){
@@ -243,6 +247,8 @@
             return m[1];
         }else if (token.type == 'T_MARKER'){
             return labels[token.value];
+        } else if (token.type == 'T_STRING'){
+            return token.value.substr(1, token.value.length - 2);
         } else {
             console.log("Could not get that value");
             console.log(token);
