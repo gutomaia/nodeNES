@@ -338,18 +338,25 @@
                 }
                 var address_mode = c6502.address_mode_def[leaf.type].short;
                 var opcode = c6502.opcodes[instruction][address_mode];
-                if (address_mode != 'sngl'){
-                    if (c6502.address_mode_def[leaf.type].size == 2){
-                        cart.append_code([opcode, address]);
-                    } else {
-                        arg1 = (address & 0x00ff);
-                        arg2 = (address & 0xff00) >> 8;
-                        cart.append_code([opcode, arg1, arg2]);
-                    }
-                } else {
+                if (opcode === undefined){
+                    erro = {};
+                    erro.type = 'SEMANTIC ERROR';
+                    erro.msg = 'invalid opcode';
+                    erro.sentence = leaf;
+                    erros.push(erro);
+                } else if (address_mode == 'sngl'){
                     cart.append_code([opcode]);
+                } else if (c6502.address_mode_def[leaf.type].size == 2){
+                    cart.append_code([opcode, address]);
+                } else {
+                    arg1 = (address & 0x00ff);
+                    arg2 = (address & 0xff00) >> 8;
+                    cart.append_code([opcode, arg1, arg2]);
                 }
             }
+        }
+        if (erros.length > 0){
+            throw erros;
         }
         if (iNES){
             return cart.get_ines_code();
