@@ -23,15 +23,49 @@ exports.test_invalid_token = function(test){
     test.done();
 };
 
-/*
+
 exports.test_invalid_bnf = function(test){
+    var tokens = compiler.lexical('INC "string"\n\n');
+    try {
+        var ast = compiler.syntax(tokens);
+        test.ok(false);
+    } catch (e){
+        test.equal(1, e.erros.length);
+    }
+    test.done();
+};
+
+exports.test_invalid_bnf_2 = function(test){
     var tokens = compiler.lexical('INC "string"');
     try {
         var ast = compiler.syntax(tokens);
-        test.ok(false);]
+        test.ok(false);
     } catch (e){
+        test.equal(1, e.erros.length);
+    }
+    test.done();
+};
+
+
+exports.test_invalid_semantic_2 = function(test){
+    var tokens = compiler.lexical('INC "string"');
+    var ast = [];
+    try {
+        ast = compiler.syntax(tokens);
+        test.ok(false);
+    } catch (e){
+        test.equal(1, e.erros.length);
+        test.equal(1, e.ast.length);
+        ast = e.ast;
+    }
+    try {
+        console.log(ast);
+        console.log(ast[0].children);
+        var data = compiler.semantic(ast);
+        console.log(data);
+    } catch (e){
+        console.log(e);
 
     }
     test.done();
 };
-*/

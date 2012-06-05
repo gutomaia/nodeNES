@@ -33,8 +33,8 @@
             }
             if (!found){
                 var invalid = code.match(/^\S+/);
-                var err = {
-                    type:"INVALID TOKEN:",
+                var erro = {
+                    type:"INVALID TOKEN",
                     line: line,
                     column: column,
                     //position: position,
@@ -43,7 +43,7 @@
                 column += invalid[0].length;
                 code = code.substring(invalid[0].length);
                 //console.log("Unknow Token code: " + code);
-                erros.push(err);
+                erros.push(erro);
             }
         }
         if (erros.length > 0){

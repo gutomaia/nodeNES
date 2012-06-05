@@ -162,17 +162,17 @@
 
     var asm65_bnf = [
         {type:"S_DIRECTIVE", bnf:[t_directive, t_directive_argument]},
-        {type:"S_RELATIVE", "bnf":[t_relative, t_address_or_t_marker]},
-        {type:"S_IMMEDIATE", "bnf":[t_instruction, t_number]},
-        {type:"S_ZEROPAGE_X", "bnf":[t_instruction, t_zeropage, t_separator, t_register_x]},
-        {type:"S_ZEROPAGE_Y", "bnf":[t_instruction, t_zeropage, t_separator, t_register_y]},
-        {type:"S_ZEROPAGE", "bnf":[t_instruction, t_zeropage]},
-        {type:"S_ABSOLUTE_X", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
-        {type:"S_ABSOLUTE_Y", "bnf":[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
-        {type:"S_ABSOLUTE", "bnf":[t_instruction, t_address_or_t_marker]},
-        {type:"S_INDIRECT_X", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_separator, t_register_x, t_close]},
-        {type:"S_INDIRECT_Y", "bnf":[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
-        {type:"S_IMPLIED", "bnf":[t_instruction]}
+        {type:"S_RELATIVE", bnf:[t_relative, t_address_or_t_marker]},
+        {type:"S_IMMEDIATE", bnf:[t_instruction, t_number]},
+        {type:"S_ZEROPAGE_X", bnf:[t_instruction, t_zeropage, t_separator, t_register_x]},
+        {type:"S_ZEROPAGE_Y", bnf:[t_instruction, t_zeropage, t_separator, t_register_y]},
+        {type:"S_ZEROPAGE", bnf:[t_instruction, t_zeropage]},
+        {type:"S_ABSOLUTE_X", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
+        {type:"S_ABSOLUTE_Y", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
+        {type:"S_ABSOLUTE", bnf:[t_instruction, t_address_or_t_marker]},
+        {type:"S_INDIRECT_X", bnf:[t_instruction, t_open, t_address_or_t_marker, t_separator, t_register_x, t_close]},
+        {type:"S_INDIRECT_Y", bnf:[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
+        {type:"S_IMPLIED", bnf:[t_instruction]}
     ];
 
     exports.syntax = function(tokens){
@@ -181,6 +181,7 @@
         var debug = 0;
         var labels = [];
         var code = [];
+        var erros = [];
         while (x < tokens.length){
             if (t_label(tokens,x)){
                 labels.push(get_value(tokens[x]));
@@ -191,7 +192,7 @@
                 for (var bnf in asm65_bnf){
                     var leaf = {};
                     var look_ahead = 0;
-                    var move = false;
+                    move = false;
                     for (var i in asm65_bnf[bnf].bnf){
                         move = asm65_bnf[bnf].bnf[i](tokens, x + look_ahead);
                         if (!move){
@@ -205,10 +206,10 @@
                             labels = [];
                         }
                         var size = 0;
-                        var walk = 0;
+                        look_ahead = 0;
                         for (var b in asm65_bnf[bnf].bnf) {
-                            size += asm65_bnf[bnf].bnf[b](tokens, x+walk);
-                            walk++;
+                            size += asm65_bnf[bnf].bnf[b](tokens, x+look_ahead);
+                            look_ahead++;
                         }
                         leaf.children = tokens.slice(x, x+size);
                         leaf.type = asm65_bnf[bnf].type;
@@ -216,16 +217,22 @@
                         x += size;
                         break;
                     }
-                    debug++;
-                    if (debug > 1000){
-                        console.log("DEBUG ERROR--");
-                        console.log(x);
-                        console.log(ast[ast.length-1]);
-                        console.log(tokens[x]);
-                        throw "DEBUG ERROR";
+                }
+                if (!move){
+                    var walk = 0;
+                    while(!t_endline(tokens,x+walk) && x+walk < tokens.length){
+                        walk++;
                     }
+                    erro = {};
+                    erro.type = "SYNTAX ERROR";
+                    erro.children = tokens.slice(x, x+walk);
+                    erros.push(erro);
+                    x += walk;
                 }
             }
+        }
+        if (erros.length > 0){
+            throw {ast:ast, erros:erros};
         }
         return ast;
     };
@@ -261,6 +268,7 @@
         var labels = {};
         var leaf;
         //find all labels o the symbol table
+        var erros = [];
         var address = 0;
         for (var la in ast){
             leaf = ast[la];
@@ -347,5 +355,34 @@
         } else {
             return cart.get_code();
         }
+    };
+
+    exports.nes_compiler = function(code){
+        var tokens;
+        var erros=[];
+        try {
+            tokens = compiler.lexical(code);
+        } catch (e){
+            tokens = e.tokens;
+            erros = erros.concat(e.erros);
+        }
+        try {
+            ast = compiler.syntax(tokens);
+        } catch (e){
+            ast = e.ast;
+            erros = erros.concat(e.erros);
+        }
+        var data;
+        try {
+            data = compiler.semantic(ast, true);
+        }catch (e){
+            erros = erros.concat(e.erros);
+        }
+        if (erros.length > 0){
+            throw erros;
+        } else {
+            return data;
+        }
+
     };
 })(typeof exports === 'undefined'? this['compiler']={}: exports);
