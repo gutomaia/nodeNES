@@ -62,7 +62,7 @@ function d_incbin(arg, cart){
         });          
     } else {
         var fs = require('fs');
-        data = fs.readFileSync('fixtures/movingsprite/'+arg, 'binary');
+        data = fs.readFileSync('static/example/movingsprite/'+arg, 'binary');
     }       
     var bin = [];
     for (var i = 0; i < data.length ; i++){

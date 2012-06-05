@@ -6,7 +6,7 @@ var sys = require('util');
 
 var compiler = require('../src/compiler.js');
 
-var code = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.asm', 'utf8');
+var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/movingsprite.asm', 'utf8');
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
 
