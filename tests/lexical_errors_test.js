@@ -59,13 +59,9 @@ exports.test_invalid_semantic_2 = function(test){
         ast = e.ast;
     }
     try {
-        console.log(ast);
-        console.log(ast[0].children);
         var data = compiler.semantic(ast);
-        console.log(data);
     } catch (e){
-        console.log(e);
-
+        //console.log(e);
     }
     test.done();
 };
