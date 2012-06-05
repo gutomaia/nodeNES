@@ -28,7 +28,7 @@ clean:
 	@rm -rf node_modules
 	@rm -rf reports
 
-run:
+run: node_modules
 	./node_modules/.bin/supervisor ./app.js
 
 .PHONY: clean run
