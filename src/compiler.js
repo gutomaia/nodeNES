@@ -380,16 +380,16 @@
             ast = e.ast;
             erros = erros.concat(e.erros);
         }
-        var data;
+        var opcodes;
         try {
-            data = compiler.semantic(ast, true);
+            opcodes = compiler.semantic(ast, true);
         }catch (e){
             erros = erros.concat(e.erros);
         }
         if (erros.length > 0){
             throw erros;
         } else {
-            return data;
+            return String.fromCharCode.apply(undefined,opcodes);
         }
 
     };
