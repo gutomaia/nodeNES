@@ -309,6 +309,17 @@
                         address = false;
                         break;
                     case 'S_RELATIVE':
+                        instruction = leaf.children[0].value;
+                        address = get_value(leaf.children[1], labels);
+                        address = 126 + (address - cart.pc);
+                        if (address == 128){
+                            address = 0;
+                        } else if (address < 128){
+                            address = address | 128;
+                        } else if (address > 128){
+                            address = address & 127;
+                        }
+                        break;
                     case 'S_IMMEDIATE':
                     case 'S_ZEROPAGE':
                     case 'S_ABSOLUTE':
@@ -328,16 +339,6 @@
                 var address_mode = c6502.address_mode_def[leaf.type].short;
                 var opcode = c6502.opcodes[instruction][address_mode];
                 if (address_mode != 'sngl'){
-                    if ('rel' == address_mode){
-                        address = 126 + (address - cart.pc);
-                        if (address == 128){
-                            address = 0;
-                        } else if (address < 128){
-                            address = address | 128;
-                        } else if (address > 128){
-                            address = address & 127;
-                        }
-                    }
                     if (c6502.address_mode_def[leaf.type].size == 2){
                         cart.append_code([opcode, address]);
                     } else {
