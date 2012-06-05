@@ -3,18 +3,16 @@
     <meta charset="utf-8">
     <title>noseNES</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="A NES javascript IDE with c6502 compiler and CHR editor">
     <meta name="author" content="Gustavo Maia Neto (Guto Maia)">
 
-    <!-- Le styles -->
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
-        padding-top: 60px;
-        padding-bottom: 40px;
+        padding-top: 30px;
+        padding-bottom: 30px;
       }
     </style>
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="ext/codemirror/codemirror.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -24,6 +22,8 @@
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- TODO -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
@@ -31,56 +31,44 @@
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="/nodeNES">nodeNES</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="http://twitter.github.com/bootstrap/examples/hero.html#">Home</a></li>
-              <li><a href="http://twitter.github.com/bootstrap/examples/hero.html#about">About</a></li>
-              <li><a href="http://twitter.github.com/bootstrap/examples/hero.html#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
     <div class="container">
       <div class="row">
         <div class="span6">
+            <h1><a href="/nodeNES">nodeNES</a></h1>
         </div>
         <div class="span6">
+            <form class="well form-inline files">
+                <div>
+                    <label>Example:
+                        <select class="filename">
+                            <option value="example/movingsprite/movingsprite.asm;example/movingsprite/player.chr">movingsprite.asm</option>
+                        </select>
+                    </label>
+                    <button class="load">Load</button>
+                </div>
+            </form>
         </div>
       </div>
       <div class="row">
-        <div class="span6 editor">
-          <div class="topbar indented">Assembly Editor</div>
+        <div class="span6">
+          <h2>Assembler Editor</h2>
           <textarea id="asm">; Type your ASM Nes Code Here</textarea>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
         </div>
-        <div class="span4">
+        <div class="span3">
+          <h2>CHR Editor</h2>
+            <canvas id="chr-editor" width="161" height="161"></canvas>
+            <canvas id="chr-tiles" width="256" height="256"></canvas>
+        </div>
+        <div class="span3">
+          <h2>Emulator</h2>
           <canvas id="nes-screen" width="256" height="240"></canvas>
-          <h2>Heading</h2>
-           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="http://twitter.github.com/bootstrap/examples/hero.html#">View details »</a></p>
-        </div>
-        <div class="span2">
-          <h2>Heading</h2>
           <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="http://twitter.github.com/bootstrap/examples/hero.html#">View details »</a></p>
         </div>
       </div>
-
       <hr>
-
       <footer>
-        <p>© Company 2012</p>
+        <p>© gUTO.nET 2012</p>
       </footer>
 
     </div> <!-- /container -->
