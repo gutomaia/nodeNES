@@ -81,6 +81,7 @@ exports.test_compile_more_than_on_instruction = function(test){
 };
 
 
+//NesASM compatible
 exports.test_low_modifier = function(test){
     var code = "ADC #LOW($E030)";
     var tokens = compiler.lexical(code);
@@ -96,6 +97,7 @@ exports.test_low_modifier = function(test){
     test.done();
 };
 
+//NesASM compatible
 exports.test_high_modifier = function(test){
     var code = "ADC #HIGH($E030)";
     var tokens = compiler.lexical(code);
@@ -108,5 +110,25 @@ exports.test_high_modifier = function(test){
     var ast = compiler.syntax(tokens);
     var opcodes = compiler.semantic(ast);
     test.deepEqual(opcodes, [0x69, 0x30]);
+    test.done();
+};
+
+
+//NesASM indyY address mode compatible
+
+exports.test_lda_indy = function(test){
+    var tokens = compiler.lexical('LDA [$20],Y');
+    test.equal(6 , tokens.length);
+    test.equal('T_INSTRUCTION', tokens[0].type);
+    test.equal('T_OPEN_SQUARE_BRACKETS', tokens[1].type);
+    test.equal('T_ADDRESS', tokens[2].type);
+    test.equal('T_CLOSE_SQUARE_BRACKETS', tokens[3].type);
+    test.equal('T_SEPARATOR', tokens[4].type);
+    test.equal('T_REGISTER', tokens[5].type);
+    var ast = compiler.syntax(tokens);
+    test.equal(1 , ast.length);
+    test.equal('S_INDIRECT_Y', ast[0].type);
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0xb1, 0x20]);
     test.done();
 };

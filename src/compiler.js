@@ -17,6 +17,8 @@
         {type:'T_MODIFIER', regex:/^(#LOW|#HIGH)/, store:true},
         {type:'T_OPEN', regex:/^\(/, store:true},
         {type:'T_CLOSE', regex:/^\)/, store:true},
+        {type:'T_OPEN_SQUARE_BRACKETS', regex:/^\[/, store:true},
+        {type:'T_CLOSE_SQUARE_BRACKETS', regex:/^\]/, store:true},
         {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
         {type:'T_MARKER', regex:/^[a-zA-Z]{2}[a-zA-Z\d]*/, store:true},
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
@@ -118,6 +120,22 @@
         return look_ahead(tokens, index, 'T_CLOSE', ')');
     }
 
+    function t_open_square_brackets(tokens, index){
+        return look_ahead(tokens, index, 'T_OPEN_SQUARE_BRACKETS', '[');
+    }
+
+    function t_close_square_brackets(tokens, index){
+        return look_ahead(tokens, index, 'T_CLOSE_SQUARE_BRACKETS', ']');
+    }
+
+    function t_nesasm_compatible_open(tokens, index){
+        return OR([t_open, t_open_square_brackets], tokens, index);
+    }
+
+    function t_nesasm_compatible_close(tokens, index){
+        return OR([t_close, t_close_square_brackets], tokens, index);
+    }
+
     function t_endline(tokens, index){
         return look_ahead(tokens, index, 'T_ENDLINE', '\n');
     }
@@ -184,8 +202,8 @@
         {type:"S_ABSOLUTE_X", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
         {type:"S_ABSOLUTE_Y", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
         {type:"S_ABSOLUTE", bnf:[t_instruction, t_address_or_t_marker]},
-        {type:"S_INDIRECT_X", bnf:[t_instruction, t_open, t_address_or_t_marker, t_separator, t_register_x, t_close]},
-        {type:"S_INDIRECT_Y", bnf:[t_instruction, t_open, t_address_or_t_marker, t_close, t_separator, t_register_y]},
+        {type:"S_INDIRECT_X", bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_separator, t_register_x, t_nesasm_compatible_close]},
+        {type:"S_INDIRECT_Y", bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_nesasm_compatible_close, t_separator, t_register_y]},
         {type:"S_IMPLIED", bnf:[t_instruction]}
     ];
 
@@ -269,7 +287,7 @@
         }else if (token.type == 'T_DECIMAL_ARGUMENT'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
-            m = asm65_tokens[11].regex.exec(token.value);
+            m = asm65_tokens[13].regex.exec(token.value);
             return m[1];
         }else if (token.type == 'T_MARKER'){
             return labels[token.value];
