@@ -79,3 +79,19 @@ exports.test_compile_more_than_on_instruction = function(test){
     //TODO: test.equal('LDA', ast[1].instruction.value);
     test.done();
 };
+
+
+exports.test_low_modifier = function(test){
+    var code = "ADC #LOW($E030)";
+    var tokens = compiler.lexical(code);
+    test.equal(5, tokens.length);
+    test.equal('T_INSTRUCTION', tokens[0].type);
+    test.equal('T_MODIFIER', tokens[1].type);
+    test.equal('T_OPEN', tokens[2].type);
+    test.equal('T_ADDRESS', tokens[3].type);
+    test.equal('T_CLOSE', tokens[4].type);
+
+    var ast = compiler.syntax(tokens);
+
+    test.done();
+};

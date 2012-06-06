@@ -14,6 +14,7 @@
         {type:'T_SEPARATOR', regex:/^,/, store:true},
         {type:'T_ACCUMULATOR', regex:/^(A|a)/, store:true},
         {type:'T_REGISTER', regex:/^(X|x|Y|y)/, store:true},
+        {type:'T_MODIFIER', regex:/^(#LOW|#HIGH)/, store:true},
         {type:'T_OPEN', regex:/^\(/, store:true},
         {type:'T_CLOSE', regex:/^\)/, store:true},
         {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
@@ -130,6 +131,11 @@
         return 0;
     }
 
+    function t_modifier(tokens, index){
+        return look_ahead(tokens, index, 'T_MODIFIER');
+    }
+
+
     function t_directive(tokens, index){
         return look_ahead(tokens, index, 'T_DIRECTIVE');
     }
@@ -170,6 +176,7 @@
         {type:"S_DIRECTIVE", bnf:[t_directive, t_directive_argument]},
         {type:"S_RELATIVE", bnf:[t_relative, t_address_or_t_marker]},
         {type:"S_IMMEDIATE", bnf:[t_instruction, t_number]},
+        {type:"S_IMMEDIATE_WITH_MODIFIER", bnf:[t_instruction, t_modifier, t_open, t_address_or_t_marker, t_close]}, //nesasm hack
         {type:"S_ACCUMULATOR", bnf:[t_instruction, t_accumulator]},
         {type:"S_ZEROPAGE_X", bnf:[t_instruction, t_zeropage, t_separator, t_register_x]},
         {type:"S_ZEROPAGE_Y", bnf:[t_instruction, t_zeropage, t_separator, t_register_y]},
@@ -262,7 +269,7 @@
         }else if (token.type == 'T_DECIMAL_ARGUMENT'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
-            m = asm65_tokens[10].regex.exec(token.value);
+            m = asm65_tokens[11].regex.exec(token.value);
             return m[1];
         }else if (token.type == 'T_MARKER'){
             return labels[token.value];
