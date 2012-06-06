@@ -10,6 +10,8 @@
         {type:"T_ADDRESS", regex:/^\$([\dA-F]{2,4})/, store:true},
         {type:"T_HEX_NUMBER", regex:/^\#\$?([\dA-F]{2})/, store:true},
         {type:'T_BINARY_NUMBER', regex:/^\#%([01]{8})/, store:true}, 
+        {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
+        {type:'T_MARKER', regex:/^[a-zA-Z]{2}[a-zA-Z\d]*/, store:true},
         {type:'T_STRING', regex:/^"[^"]*"/, store:true},
         {type:'T_SEPARATOR', regex:/^,/, store:true},
         {type:'T_ACCUMULATOR', regex:/^(A|a)/, store:true},
@@ -19,8 +21,6 @@
         {type:'T_CLOSE', regex:/^\)/, store:true},
         {type:'T_OPEN_SQUARE_BRACKETS', regex:/^\[/, store:true},
         {type:'T_CLOSE_SQUARE_BRACKETS', regex:/^\]/, store:true},
-        {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
-        {type:'T_MARKER', regex:/^[a-zA-Z]{2}[a-zA-Z\d]*/, store:true},
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
         {type:'T_DECIMAL_ARGUMENT', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
@@ -287,7 +287,7 @@
         }else if (token.type == 'T_DECIMAL_ARGUMENT'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
-            m = asm65_tokens[13].regex.exec(token.value);
+            m = asm65_tokens[4].regex.exec(token.value);
             return m[1];
         }else if (token.type == 'T_MARKER'){
             return labels[token.value];
@@ -325,7 +325,8 @@
         }
         labels.palette = 0xE000; //#TODO stealing on test
         labels.sprites = 0xE000 + 32; //#TODO stealing on test
-
+        labels.columnData = 0xe030;
+        labels.attribData = 0xf030;
         //Translate opcodes
         for (var l in ast) {
             leaf = ast[l];
@@ -375,9 +376,9 @@
                         var modifier = leaf.children[1].value;
                         address = get_value(leaf.children[3], labels);
                         if ('#LOW' == modifier){
-                            address = (address & 0xff00) >> 8;
-                        } else if ('#HIGH' == modifier){
                             address = (address & 0x00ff);
+                        } else if ('#HIGH' == modifier){
+                            address = (address & 0xff00) >> 8;
                         }
                         break;
                     case 'S_IMMEDIATE':

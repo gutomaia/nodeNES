@@ -93,7 +93,7 @@ exports.test_low_modifier = function(test){
     test.equal('T_CLOSE', tokens[4].type);
     var ast = compiler.syntax(tokens);
     var opcodes = compiler.semantic(ast);
-    test.deepEqual(opcodes, [0x69, 0xe0]);
+    test.deepEqual(opcodes, [0x69, 0x30]);
     test.done();
 };
 
@@ -109,7 +109,7 @@ exports.test_high_modifier = function(test){
     test.equal('T_CLOSE', tokens[4].type);
     var ast = compiler.syntax(tokens);
     var opcodes = compiler.semantic(ast);
-    test.deepEqual(opcodes, [0x69, 0x30]);
+    test.deepEqual(opcodes, [0x69, 0xe0]);
     test.done();
 };
 

@@ -6,20 +6,23 @@ var sys = require('util');
 
 var compiler = require('../src/compiler.js');
 
-var lines = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.asm', 'utf8').split('\n');
-lines.length = 276;
-
-var code = lines.join('\n');
+var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/scrolling5.asm', 'utf8');
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.nes', 'binary');
 
 exports.test_asm_compiler = function(test){
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
-    opcodes = compiler.semantic(ast, true);
+    var opcodes = compiler.semantic(ast, true);
+    /*
     fs.open(__dirname + '/../fixtures/scrolling/test_scrolling.nes', 'w', function(status, fd) {
         var buffer = new Buffer(opcodes);
         fs.writeSync(fd, buffer, 0, opcodes.length, 0);
     });
+    */
+    var data = String.fromCharCode.apply(undefined, opcodes);
+
+    test.equal(bin, data);
+
     test.done();
 };
