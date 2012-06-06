@@ -95,3 +95,18 @@ exports.test_low_modifier = function(test){
     test.deepEqual(opcodes, [0x69, 0xe0]);
     test.done();
 };
+
+exports.test_high_modifier = function(test){
+    var code = "ADC #HIGH($E030)";
+    var tokens = compiler.lexical(code);
+    test.equal(5, tokens.length);
+    test.equal('T_INSTRUCTION', tokens[0].type);
+    test.equal('T_MODIFIER', tokens[1].type);
+    test.equal('T_OPEN', tokens[2].type);
+    test.equal('T_ADDRESS', tokens[3].type);
+    test.equal('T_CLOSE', tokens[4].type);
+    var ast = compiler.syntax(tokens);
+    var opcodes = compiler.semantic(ast);
+    test.deepEqual(opcodes, [0x69, 0x30]);
+    test.done();
+};
