@@ -7,7 +7,7 @@ var sys = require('util');
 var compiler = require('../src/compiler.js');
 
 var lines = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.asm', 'utf8').split('\n');
-lines.length = 234;
+lines.length = 257;
 
 var code = lines.join('\n');
 

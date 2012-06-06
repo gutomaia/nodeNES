@@ -90,8 +90,8 @@ exports.test_low_modifier = function(test){
     test.equal('T_OPEN', tokens[2].type);
     test.equal('T_ADDRESS', tokens[3].type);
     test.equal('T_CLOSE', tokens[4].type);
-
     var ast = compiler.syntax(tokens);
-
+    var opcodes = compiler.semantic(ast);
+    test.deepEqual(opcodes, [0x69, 0xe0]);
     test.done();
 };

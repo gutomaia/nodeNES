@@ -352,6 +352,16 @@
                             address = address & 127;
                         }
                         break;
+                    case 'S_IMMEDIATE_WITH_MODIFIER':
+                        instruction = leaf.children[0].value;
+                        var modifier = leaf.children[1].value;
+                        address = get_value(leaf.children[3], labels);
+                        if ('#LOW' == modifier){
+                            address = (address & 0xff00) >> 8;
+                        } else if ('#HIGH' == modifier){
+                            address = (address & 0x00ff);
+                        }
+                        break;
                     case 'S_IMMEDIATE':
                     case 'S_ZEROPAGE':
                     case 'S_ABSOLUTE':

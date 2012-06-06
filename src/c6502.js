@@ -4,6 +4,7 @@
 
     address_mode_def['S_IMPLIED'] = {size:1, short:'sngl'};
     address_mode_def['S_IMMEDIATE'] = {size:2, short:'imm'};
+    address_mode_def['S_IMMEDIATE_WITH_MODIFIER'] = {size:2, short:'imm'};
     address_mode_def['S_ACCUMULATOR'] = {size:1, short:'acc'};
     address_mode_def['S_ZEROPAGE'] = {size:2, short:'zp'};
     address_mode_def['S_ZEROPAGE_X'] = {size:2, short:'zpx'};
