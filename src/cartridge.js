@@ -8,6 +8,7 @@ function Cartridge() {
     this.ineschr = 1;
     this.inesmap = 1;
     this.inesmir = 1;
+    this.rs = 0;
 }
 
 Cartridge.prototype.nes_id = function (){
@@ -64,6 +65,10 @@ Cartridge.prototype.set_org = function (org){
         }
         this.pc = org;
     }
+};
+
+Cartridge.prototype.set_rs = function (org){
+    this.rs = org;
 };
 
 Cartridge.prototype.append_code = function (code){

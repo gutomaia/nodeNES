@@ -71,6 +71,14 @@ function d_incbin(arg, cart){
     cart.append_code(bin);
 }
 
+function d_rsset(arg, cart){
+
+}
+
+function d_rs(arg, cart){
+
+}
+
 exports.directive_list = {};
 exports.directive_list['.inesprg'] = d_inesprg;
 exports.directive_list['.ineschr'] = d_ineschr;
@@ -81,5 +89,7 @@ exports.directive_list['.org'] = d_org;
 exports.directive_list['.db'] = d_db;
 exports.directive_list['.dw'] = d_dw;
 exports.directive_list['.incbin'] = d_incbin;
+exports.directive_list['.rsset'] = d_rsset;
+exports.directive_list['.rs'] = d_rs;
 
 })(typeof exports === 'undefined'? this['directives']={}: exports);

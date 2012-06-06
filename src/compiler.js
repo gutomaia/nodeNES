@@ -12,11 +12,12 @@
         {type:'T_BINARY_NUMBER', regex:/^\#%([01]{8})/, store:true}, 
         {type:'T_STRING', regex:/^"[^"]*"/, store:true},
         {type:'T_SEPARATOR', regex:/^,/, store:true},
+        {type:'T_ACCUMULATOR', regex:/^(A|a)/, store:true},
         {type:'T_REGISTER', regex:/^(X|x|Y|y)/, store:true},
         {type:'T_OPEN', regex:/^\(/, store:true},
         {type:'T_CLOSE', regex:/^\)/, store:true},
-        {type:'T_LABEL', regex:/^([a-zA-Z][a-zA-Z\d]*)\:/, store:true},
-        {type:'T_MARKER', regex:/^[a-zA-Z][a-zA-Z\d]*/, store:true},
+        {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
+        {type:'T_MARKER', regex:/^[a-zA-Z]{2}[a-zA-Z\d]*/, store:true},
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
         {type:'T_DECIMAL_ARGUMENT', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
@@ -96,6 +97,10 @@
         return look_ahead(tokens, index, 'T_SEPARATOR', ',');
     }
 
+    function t_accumulator(tokens, index){
+        return look_ahead(tokens, index, 'T_ACCUMULATOR', 'A');
+    }
+
     function t_register_x(tokens, index){
         return look_ahead(tokens, index, 'T_REGISTER', 'X');
     }
@@ -161,9 +166,11 @@
     }
 
     var asm65_bnf = [
+        {type:"S_RS", bnf:[t_marker, t_directive, t_directive_argument]},
         {type:"S_DIRECTIVE", bnf:[t_directive, t_directive_argument]},
         {type:"S_RELATIVE", bnf:[t_relative, t_address_or_t_marker]},
         {type:"S_IMMEDIATE", bnf:[t_instruction, t_number]},
+        {type:"S_ACCUMULATOR", bnf:[t_instruction, t_accumulator]},
         {type:"S_ZEROPAGE_X", bnf:[t_instruction, t_zeropage, t_separator, t_register_x]},
         {type:"S_ZEROPAGE_Y", bnf:[t_instruction, t_zeropage, t_separator, t_register_y]},
         {type:"S_ZEROPAGE", bnf:[t_instruction, t_zeropage]},
@@ -232,7 +239,12 @@
             }
         }
         if (erros.length > 0){
-            throw {ast:ast, erros:erros};
+            var e = new Error();
+            e.name = "Syntax Error";
+            e.message = "Syntax Error Message";
+            e.ast = ast;
+            e.erros = erros;
+            throw e;
         }
         return ast;
     };
@@ -250,7 +262,7 @@
         }else if (token.type == 'T_DECIMAL_ARGUMENT'){
             return parseInt(token['value'],10);
         }else if (token.type == 'T_LABEL'){
-            m = asm65_tokens[9].regex.exec(token.value);
+            m = asm65_tokens[10].regex.exec(token.value);
             return m[1];
         }else if (token.type == 'T_MARKER'){
             return labels[token.value];
@@ -281,7 +293,7 @@
             if (leaf.labels !== undefined){
                 labels[leaf.labels[0]] = address;
             }
-            if (leaf.type != 'S_DIRECTIVE'){
+            if (leaf.type != 'S_DIRECTIVE' && leaf.type != 'S_RS'){
                 size = c6502.address_mode_def[leaf.type].size;
                 address += size;
             }
@@ -292,7 +304,12 @@
         //Translate opcodes
         for (var l in ast) {
             leaf = ast[l];
-            if (leaf.type == 'S_DIRECTIVE'){
+            if (leaf.type == 'S_RS'){
+                //marker
+                labels[leaf.children[0].value] = cart.rs;
+                cart.rs += get_value(leaf.children[2]);
+
+            } else if (leaf.type == 'S_DIRECTIVE'){
                 var directive = leaf.children[0].value;
                 var argument;
                 if (leaf.children.length == 2){
@@ -300,11 +317,19 @@
                 } else {
                     argument = leaf.children.slice(1, leaf.children.length);
                 }
-                directives.directive_list[directive](argument, cart);
+                if (directives.directive_list[directive] !== undefined){
+                    directives.directive_list[directive](argument, cart);
+                } else {
+                    erro = {};
+                    erro.type = "UNKNOW DIRECTIVE";
+                    erros.push(erro);
+                    console.log("UNKNOW DIRECTIVE");
+                }
             }else {
                 var instruction;
                 switch(leaf.type){
                     case 'S_IMPLIED':
+                    case 'S_ACCUMULATOR':
                         instruction = leaf.children[0].value;
                         address = false;
                         break;
@@ -337,14 +362,14 @@
                         break;
                 }
                 var address_mode = c6502.address_mode_def[leaf.type].short;
-                var opcode = c6502.opcodes[instruction][address_mode];
+                var opcode = c6502.opcodes[instruction.toUpperCase()][address_mode];
                 if (opcode === undefined){
                     erro = {};
                     erro.type = 'SEMANTIC ERROR';
                     erro.msg = 'invalid opcode';
                     erro.sentence = leaf;
                     erros.push(erro);
-                } else if (address_mode == 'sngl'){
+                } else if (address_mode == 'sngl' || address_mode == 'acc'){
                     cart.append_code([opcode]);
                 } else if (c6502.address_mode_def[leaf.type].size == 2){
                     cart.append_code([opcode, address]);
@@ -356,7 +381,11 @@
             }
         }
         if (erros.length > 0){
-            throw erros;
+            var e = new Error();
+            e.name = "Semantic Error";
+            e.message = "Semantic Error Message";
+            e.erros = erros;
+            throw e;
         }
         if (iNES){
             return cart.get_ines_code();
