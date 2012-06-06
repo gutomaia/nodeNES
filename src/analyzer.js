@@ -47,7 +47,12 @@
             }
         }
         if (erros.length > 0){
-            throw {erros:erros, tokens:tokens};
+            var e = new Error();
+            e.name = "Lexical Error";
+            e.message = "Lexical Error Message";
+            e.erros = erros;
+            e.tokens = tokens;
+            throw e;
         } else {
             return tokens;
         }
