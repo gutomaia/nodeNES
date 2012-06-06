@@ -4,3 +4,4 @@
 .project
 .sublime-build
 node_modules/
+.DS_Store
