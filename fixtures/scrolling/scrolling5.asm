@@ -327,7 +327,7 @@ DrawNewAttributes:
 
   LDY #$00
   LDA $2002             ; read PPU status to reset the high/low latch
-DrawNewAttributesLoop
+DrawNewAttributesLoop:
   LDA columnHigh
   STA $2006             ; write the high byte of column address
   LDA columnLow
