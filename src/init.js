@@ -120,3 +120,55 @@ $(function() {
         'ui': emulatorUI()
     });
 });
+
+function fillCanvas(s1, imageData, pallete){
+    var a = 0;
+    for (var y=0; y<80; y++){
+        for (var x=0; x<80; x++) {
+            var px = (x/10) >> 0;
+            var py = (y/10) >> 0;
+            var color = pallete[s1[py][px]];
+            imageData[a] = pallete[s1[py][px]] & 0xFF;
+            imageData[a+1] = (pallete[s1[py][px]] >> 8) & 0xFF;
+            imageData[a+2] = (pallete[s1[py][px]] >> 16) & 0xFF;
+            imageData[a+3] = 0xff;
+            a += 4;
+        }
+    }
+}
+
+function sprite_test(){
+    var chr_editor = $('#chr-editor')[0];
+    var canvasContext = chr_editor.getContext('2d');
+    var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
+    var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
+    //one
+    var canvasImageData = canvasContext.getImageData(0, 0, 80, 80);
+    spr = sprite.get_sprite(0, sprites);
+    var imageData = canvasImageData.data;
+    fillCanvas(spr, imageData, pallete);
+    canvasContext.putImageData(canvasImageData, 0, 0);
+
+    //two
+    canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
+    spr = sprite.get_sprite(1, sprites);
+    imageData = canvasImageData.data;
+    fillCanvas(spr, imageData, pallete);
+    canvasContext.putImageData(canvasImageData, 81, 0);
+
+    //three
+    canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
+    spr = sprite.get_sprite(2, sprites);
+    imageData = canvasImageData.data;
+    fillCanvas(spr, imageData, pallete);
+    canvasContext.putImageData(canvasImageData, 0, 81);
+
+    //four
+    canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
+    spr = sprite.get_sprite(3, sprites);
+    imageData = canvasImageData.data;
+    fillCanvas(spr, imageData, pallete);
+    canvasContext.putImageData(canvasImageData, 81, 81);
+
+}
+sprite_test();
