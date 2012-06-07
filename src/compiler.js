@@ -320,6 +320,8 @@
                         address++;
                     }
                 }
+            } else if (leaf.type == 'S_DIRECTIVE' && '.incbin' == leaf.children[0].value){
+                address += 4 * 1024; //TODO check file size;
             }
         }
         return labels;
@@ -330,7 +332,6 @@
         var labels = exports.get_labels(ast);
         //find all labels o the symbol table
         var erros = [];
-        labels.attribData = 0xf030;
         //Translate opcodes
         var address = 0;
         for (var l in ast) {

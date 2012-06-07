@@ -17,7 +17,7 @@ exports.test_get_labels = function(test){
     test.equal(0xe000, labels.palette, 'invalid pallete');
     test.equal(0xe000 + 32, labels.sprites);
     test.equal(0xe030, labels.columnData);
-    //TODO: test.equal(0xf030, labels.attribData);
+    test.equal(0xf030, labels.attribData);
     test.done();
 };
 
