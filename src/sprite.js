@@ -1,13 +1,41 @@
 (function(exports){
 
 exports.load_sprites = function(file){
-    var fs = require('fs');
-    var chr = fs.readFileSync(file, 'binary');
+    var chr;
+    if (typeof jQuery !== 'undefined'){
+        jQuery.ajax({
+            url: file,
+            xhr: function() {
+                    var xhr = $.ajaxSettings.xhr();
+                    if (typeof xhr.overrideMimeType !== 'undefined') {
+                        xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                    }
+                    self.xhr = xhr;
+                    return xhr;
+                },
+            complete: function(xhr, status) {
+                    chr = xhr.responseText;
+                },
+            async: false
+        });          
+    } else {
+        var fs = require('fs');
+        chr = fs.readFileSync(file, 'binary');
+    }
     var sprites = [];
     for (var i = 0; i < chr.length ; i++){
         sprites.push(chr.charCodeAt(i) & 0xFF);
     }
     return sprites;
+};
+
+exports.get_sprite = function(index, sprites){
+    var iA = index * 16;
+    var iB = iA + 8;
+    var iC = iB + 8;
+    var channelA = sprites.slice(iA, iB);
+    var channelB = sprites.slice(iB, iC);
+    return exports.decode_sprite(channelA, channelB);
 };
 
 exports.decode_sprite = function(channelA, channelB){

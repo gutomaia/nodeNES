@@ -13,7 +13,6 @@ exports.test_load_sprites = function(test){
     test.done();
 };
 
-
 exports.test_decode_first_sprite = function(test){
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
@@ -65,5 +64,46 @@ exports.test_decode_second_sprite = function(test){
     ];
 
     test.deepEqual(mario, s1);
+    test.done();
+};
+
+
+exports.test_get_first_sprite = function(test){
+    var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
+    var s1 = sprite.get_sprite(0, sprites);
+
+    var mario =
+    [
+        [0,0,0,0,0,0,1,1],
+        [0,0,0,0,1,1,1,1],
+        [0,0,0,1,1,1,1,1],
+        [0,0,0,1,1,1,1,1],
+        [0,0,0,3,3,3,2,2],
+        [0,0,3,2,2,3,2,2],
+        [0,0,3,2,2,3,3,2],
+        [0,3,3,2,2,3,3,2]
+    ];
+
+    test.deepEqual(mario, s1);
+    test.done();
+};
+
+exports.test_get_second_sprite = function(test){
+    var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
+    var s2 = sprite.get_sprite(1, sprites);
+
+    var mario =
+    [
+        [1,1,1,0,0,0,0,0],
+        [1,1,2,0,0,0,0,0],
+        [1,2,2,0,0,0,0,0],
+        [1,1,1,1,1,1,0,0],
+        [3,2,2,2,0,0,0,0],
+        [3,3,2,2,2,2,0,0],
+        [2,2,2,2,2,2,2,0],
+        [2,2,3,2,2,2,2,0]
+    ];
+
+    test.deepEqual(mario, s2);
     test.done();
 };
