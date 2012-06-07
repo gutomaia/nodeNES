@@ -2,7 +2,19 @@ var assert = require('assert');
 var fs = require('fs');
 var sprite = require('../src/sprite.js');
 
-exports.test_first_sprite = function(test){
+exports.test_load_sprites = function(test){
+    var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
+    var bin = [];
+    for (var i = 0; i < chr.length ; i++){
+        bin.push(chr.charCodeAt(i) & 0xFF);
+    }
+    var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
+    test.deepEqual(bin, sprites);
+    test.done();
+};
+
+
+exports.test_decode_first_sprite = function(test){
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -11,7 +23,7 @@ exports.test_first_sprite = function(test){
     var channelA = bin.slice(0, 8);
     var channelB = bin.slice(8, 16);
 
-    var s1 = sprite.get_sprite(channelA, channelB);
+    var s1 = sprite.decode_sprite(channelA, channelB);
 
     var mario =
     [
@@ -29,7 +41,7 @@ exports.test_first_sprite = function(test){
     test.done();
 };
 
-exports.test_second_sprite = function(test){
+exports.test_decode_second_sprite = function(test){
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -38,7 +50,7 @@ exports.test_second_sprite = function(test){
     var channelA = bin.slice(16, 24);
     var channelB = bin.slice(24, 32);
 
-    var s1 = sprite.get_sprite(channelA, channelB);
+    var s1 = sprite.decode_sprite(channelA, channelB);
 
     var mario =
     [

@@ -1,7 +1,16 @@
 (function(exports){
 
+exports.load_sprites = function(file){
+    var fs = require('fs');
+    var chr = fs.readFileSync(file, 'binary');
+    var sprites = [];
+    for (var i = 0; i < chr.length ; i++){
+        sprites.push(chr.charCodeAt(i) & 0xFF);
+    }
+    return sprites;
+};
 
-exports.get_sprite = function(channelA, channelB){
+exports.decode_sprite = function(channelA, channelB){
     var sprite = [];
 
     for (var y=0; y <8; y++){
