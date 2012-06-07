@@ -121,12 +121,12 @@ $(function() {
     });
 });
 
-function fillCanvas(s1, imageData, pallete){
+function fillCanvas(s1, imageData, pallete, size){
     var a = 0;
-    for (var y=0; y<80; y++){
-        for (var x=0; x<80; x++) {
-            var px = (x/10) >> 0;
-            var py = (y/10) >> 0;
+    for (var y=0; y < 8*size; y++){
+        for (var x=0; x < 8*size; x++) {
+            var px = (x/size) >> 0;
+            var py = (y/size) >> 0;
             var color = pallete[s1[py][px]];
             imageData[a] = pallete[s1[py][px]] & 0xFF;
             imageData[a+1] = (pallete[s1[py][px]] >> 8) & 0xFF;
@@ -146,29 +146,56 @@ function sprite_test(){
     var canvasImageData = canvasContext.getImageData(0, 0, 80, 80);
     spr = sprite.get_sprite(0, sprites);
     var imageData = canvasImageData.data;
-    fillCanvas(spr, imageData, pallete);
+    fillCanvas(spr, imageData, pallete, 10);
     canvasContext.putImageData(canvasImageData, 0, 0);
 
     //two
-    canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
+    canvasImageData = canvasContext.getImageData(81, 0, 80, 80);
     spr = sprite.get_sprite(1, sprites);
     imageData = canvasImageData.data;
-    fillCanvas(spr, imageData, pallete);
+    fillCanvas(spr, imageData, pallete, 10);
     canvasContext.putImageData(canvasImageData, 81, 0);
 
     //three
     canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
     spr = sprite.get_sprite(2, sprites);
     imageData = canvasImageData.data;
-    fillCanvas(spr, imageData, pallete);
+    fillCanvas(spr, imageData, pallete, 10);
     canvasContext.putImageData(canvasImageData, 0, 81);
 
     //four
-    canvasImageData = canvasContext.getImageData(0, 81, 80, 80);
+    canvasImageData = canvasContext.getImageData(81, 81, 80, 80);
     spr = sprite.get_sprite(3, sprites);
     imageData = canvasImageData.data;
-    fillCanvas(spr, imageData, pallete);
+    fillCanvas(spr, imageData, pallete, 10);
     canvasContext.putImageData(canvasImageData, 81, 81);
 
 }
 sprite_test();
+
+function sprite_test2(){
+    var sprite_selector = $('#chr-selector')[0];
+    var canvasContext = sprite_selector.getContext('2d');
+    var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
+    var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
+    var pixelSize = 2;
+    var pixelPadding = 1;
+    //do not change;
+    var spriteSize= pixelSize * 8;
+    var width = sprite_selector.width;
+    var height = sprite_selector.height;
+    var sprite_id = 0;
+
+    for (var y=0; y<8; y++){
+        for (var x=0; x<8; x++){
+            var canvasImageData = canvasContext.getImageData(x * spriteSize + (pixelPadding*x), y*spriteSize + (pixelPadding*y), spriteSize, spriteSize);
+            var imageData = canvasImageData.data;
+            var spr = sprite.get_sprite(sprite_id, sprites);
+            fillCanvas(spr, imageData, pallete, spriteSize/8);
+            canvasContext.putImageData(canvasImageData, x * spriteSize + (pixelPadding*x), y*spriteSize + (pixelPadding*y));
+            sprite_id++;
+        }
+    }
+}
+
+sprite_test2();
