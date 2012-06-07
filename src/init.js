@@ -177,23 +177,35 @@ function sprite_test2(){
     var sprite_selector = $('#chr-selector')[0];
     var canvasContext = sprite_selector.getContext('2d');
     var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-    var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
+    var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff];
     var pixelSize = 2;
-    var pixelPadding = 1;
+    var pixelPadding = 3;
+
     //do not change;
     var spriteSize= pixelSize * 8;
     var width = sprite_selector.width;
     var height = sprite_selector.height;
     var sprite_id = 0;
+    var sprite_total = sprites.length / 16 >> 0;
 
-    for (var y=0; y<8; y++){
-        for (var x=0; x<8; x++){
-            var canvasImageData = canvasContext.getImageData(x * spriteSize + (pixelPadding*x), y*spriteSize + (pixelPadding*y), spriteSize, spriteSize);
+    var sprite_x = (width / (spriteSize + pixelPadding)) >> 0;
+    var sprite_y = (sprite_total / sprite_x);
+    //var sprite_y = width
+
+
+    for (var y=0; y<sprite_y; y++){
+        for (var x=0; x<sprite_x; x++){
+            var px =  x * spriteSize + (pixelPadding*x);
+            var py =  y * spriteSize + (pixelPadding*y);
+            var canvasImageData = canvasContext.getImageData(px, py, spriteSize, spriteSize);
             var imageData = canvasImageData.data;
             var spr = sprite.get_sprite(sprite_id, sprites);
             fillCanvas(spr, imageData, pallete, spriteSize/8);
-            canvasContext.putImageData(canvasImageData, x * spriteSize + (pixelPadding*x), y*spriteSize + (pixelPadding*y));
+            canvasContext.putImageData(canvasImageData, px, py);
             sprite_id++;
+            if (sprite_id == sprite_total){
+                break;
+            }
         }
     }
 }
