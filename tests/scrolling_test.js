@@ -10,6 +10,17 @@ var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/scrollin
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.nes', 'binary');
 
+exports.test_get_labels = function(test){
+    var tokens = compiler.lexical(code);
+    var ast = compiler.syntax(tokens);
+    var labels = compiler.get_labels(ast);
+    test.equal(0xe000, labels.palette, 'invalid pallete');
+    test.equal(0xe000 + 32, labels.sprites);
+    test.equal(0xe030, labels.columnData);
+    //TODO: test.equal(0xf030, labels.attribData);
+    test.done();
+};
+
 exports.test_asm_compiler = function(test){
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);

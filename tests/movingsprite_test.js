@@ -10,6 +10,15 @@ var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/movingsp
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
 
+exports.test_get_labels = function(test){
+    var tokens = compiler.lexical(code);
+    var ast = compiler.syntax(tokens);
+    var labels = compiler.get_labels(ast);
+    test.equal(0xe000, labels.palette);
+    test.equal(0xe000 + 32, labels.sprites);
+    test.done();
+};
+
 exports.test_asm_compiler = function(test){
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);

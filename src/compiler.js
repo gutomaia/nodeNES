@@ -305,11 +305,8 @@
         var address = 0;
         for (var la in ast){
             var leaf = ast[la];
-            if (leaf.type == 'S_DIRECTIVE'){
-                var _directive = leaf.children[0].value;
-                if ('.org' == _directive){
-                    address = parseInt(leaf.children[1].value.substr(1),16);
-                }
+            if (leaf.type == 'S_DIRECTIVE' && '.org' == leaf.children[0].value){
+                address = parseInt(leaf.children[1].value.substr(1),16);
             }
             if (leaf.labels !== undefined){
                 labels[leaf.labels[0]] = address;
@@ -317,6 +314,12 @@
             if (leaf.type != 'S_DIRECTIVE' && leaf.type != 'S_RS'){
                 size = c6502.address_mode_def[leaf.type].size;
                 address += size;
+            } else if (leaf.type == 'S_DIRECTIVE' && '.db' == leaf.children[0].value){
+                for (var i in leaf.children){
+                    if ('T_ADDRESS'==leaf.children[i].type){
+                        address++;
+                    }
+                }
             }
         }
         return labels;
@@ -327,9 +330,6 @@
         var labels = exports.get_labels(ast);
         //find all labels o the symbol table
         var erros = [];
-        labels.palette = 0xE000; //#TODO stealing on test
-        labels.sprites = 0xE000 + 32; //#TODO stealing on test
-        labels.columnData = 0xe030;
         labels.attribData = 0xf030;
         //Translate opcodes
         var address = 0;
