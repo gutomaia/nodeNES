@@ -6,11 +6,10 @@ var sys = require('util');
 
 var compiler = require('../src/compiler.js');
 
-var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/scrolling5.asm', 'utf8');
 
-var bin = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.nes', 'binary');
 
 exports.test_get_labels = function(test){
+    var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling5.asm', 'utf8');
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
     var labels = compiler.get_labels(ast);
@@ -21,8 +20,9 @@ exports.test_get_labels = function(test){
     test.done();
 };
 
-exports.test_asm_compiler = function(test){
-    compiler.path = '/../static/example/movingsprite/';
+exports.test_asm_compiler_scrolling_5 = function(test){
+    compiler.path = '/../static/example/scrolling/';
+    var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling5.asm', 'utf8');
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
     var opcodes = compiler.semantic(ast, true);
@@ -33,8 +33,9 @@ exports.test_asm_compiler = function(test){
     });
     */
     var data = String.fromCharCode.apply(undefined, opcodes);
+    var expected = fs.readFileSync(__dirname + '/../fixtures/scrolling/scrolling5.nes', 'binary');
 
-    test.equal(bin, data);
+    test.equal(expected, data);
 
     test.done();
 };
