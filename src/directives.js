@@ -1,5 +1,8 @@
 (function(exports){
 
+var compiler = require('./compiler.js');
+
+
 function d_inesprg(arg, cart){
     cart.set_iNES_prg(arg);
 }
@@ -44,9 +47,10 @@ function d_dw(arg, cart) {
 
 function d_incbin(arg, cart){
     var data;
+    var path = compiler.path;
     if (typeof jQuery !== 'undefined'){
         jQuery.ajax({
-            url: 'example/movingsprite/' + arg,
+            url: path + arg,
             xhr: function() {
                     var xhr = $.ajaxSettings.xhr();
                     if (typeof xhr.overrideMimeType !== 'undefined') {
@@ -62,7 +66,7 @@ function d_incbin(arg, cart){
         });          
     } else {
         var fs = require('fs');
-        data = fs.readFileSync('static/example/movingsprite/'+arg, 'binary');
+        data = fs.readFileSync('static/' + path + arg, 'binary');
     }       
     var bin = [];
     for (var i = 0; i < data.length ; i++){

@@ -300,6 +300,8 @@
         }
     }
 
+    exports.path = '';
+
     exports.get_labels = function(ast){
         labels = {};
         var address = 0;

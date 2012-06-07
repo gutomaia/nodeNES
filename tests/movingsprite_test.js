@@ -20,6 +20,8 @@ exports.test_get_labels = function(test){
 };
 
 exports.test_asm_compiler = function(test){
+    compiler.path = '/../static/example/movingsprite/';
+
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
     //test.equal(61, ast.length);
