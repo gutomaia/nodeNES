@@ -300,15 +300,11 @@
         }
     }
 
-    exports.semantic = function(ast, iNES){
-        var cart = new cartridge.Cartridge();
-        var labels = {};
-        var leaf;
-        //find all labels o the symbol table
-        var erros = [];
+    exports.get_labels = function(ast){
+        labels = {};
         var address = 0;
         for (var la in ast){
-            leaf = ast[la];
+            var leaf = ast[la];
             if (leaf.type == 'S_DIRECTIVE'){
                 var _directive = leaf.children[0].value;
                 if ('.org' == _directive){
@@ -323,13 +319,22 @@
                 address += size;
             }
         }
+        return labels;
+    };
+
+    exports.semantic = function(ast, iNES){
+        var cart = new cartridge.Cartridge();
+        var labels = exports.get_labels(ast);
+        //find all labels o the symbol table
+        var erros = [];
         labels.palette = 0xE000; //#TODO stealing on test
         labels.sprites = 0xE000 + 32; //#TODO stealing on test
         labels.columnData = 0xe030;
         labels.attribData = 0xf030;
         //Translate opcodes
+        var address = 0;
         for (var l in ast) {
-            leaf = ast[l];
+            var leaf = ast[l];
             if (leaf.type == 'S_RS'){
                 //marker
                 labels[leaf.children[0].value] = cart.rs;
