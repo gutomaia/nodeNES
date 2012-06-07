@@ -1,9 +1,23 @@
 
+$("#source_files").change(function() {
+      var value = $(this).val();
+      open_file(value);
+});
+
+function open_file(file){
+    $.get(file, function(data) {
+        var regex = /(\/[a-z\/]+\/)([a-z\d]+\.asm)/;
+        var m  = regex.exec(file);
+        compiler.path = m[1];
+        console.log(m);
+        asmEditor.setValue(data);
+    });
+}
+
 function update(){
     console.log('compilling');
     var data;
     try {
-        compiler.path = '/example/movingsprite/';
         data = compiler.nes_compiler(asmEditor.getValue());
         _nes.loadRom(data);
         _nes.start();
