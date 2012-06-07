@@ -1,6 +1,5 @@
 (function(exports){
 
-var compiler = require('./compiler.js');
 
 
 function d_inesprg(arg, cart){
@@ -47,6 +46,7 @@ function d_dw(arg, cart) {
 
 function d_incbin(arg, cart){
     var data;
+    var compiler = require('./compiler.js');
     var path = compiler.path;
     if (typeof jQuery !== 'undefined'){
         jQuery.ajax({

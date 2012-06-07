@@ -3,6 +3,7 @@ function update(){
     console.log('compilling');
     var data;
     try {
+        compiler.path = '/example/movingsprite/';
         data = compiler.nes_compiler(asmEditor.getValue());
         _nes.loadRom(data);
         _nes.start();
