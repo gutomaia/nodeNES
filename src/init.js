@@ -229,12 +229,12 @@ function Palette(canvas, position_x, position_y, picker_size){
         for (var x=0; x < 16; x++) {
             context.beginPath();
             context.rect(x * picker_size + position_x, y * picker_size + position_y, picker_size, picker_size);
-            var color = sprite.get_color(color_index);
-            hex = "#000000".substr(1, 6 - color.toString(16).length) + color.toString(16); 
+            var color = sprite.get_color(color_index).toString(16);
+            hex = "#000000".substr(0, 7 - color.length) + color;
             context.fillStyle = hex;
             context.fill();
             context.lineWidth = 3;
-            context.strokeStyle = 'white';
+            context.strokeStyle = '#ffffff';
             context.stroke();
             color_index++;
         }
