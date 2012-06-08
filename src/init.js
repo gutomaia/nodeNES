@@ -140,36 +140,42 @@ function fillCanvas(s1, imageData, palette, size){
 
 function Editor(canvas, position_x, position_y) {
     this.canvas = canvas;
-    var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-    //var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
-    var palette = [0x22, 0x30, 0x21, 0x0f];
+    this.sprites = sprite.load_sprites('/example/scrolling/mario.chr');
+    this.palette = [0x22, 0x30, 0x21, 0x0f];
 
-    this.panels = [0,1,2,3];
+    this.pixelPadding = 1;
+
+    this.panels = [0,1,2,3,4,5,6,7];
 
     this.pixelSize = 10;
     this.spriteSize = this.pixelSize * 8;
-    this.render(sprites, palette);
+    this.render();
 }
 
-Editor.prototype.render = function(sprites, palette){
+Editor.prototype.change_panel = function (panel_id, sprite_id){
+    this.panels[panel_id] = sprite_id;
+    this.render();
+};
+
+Editor.prototype.render = function(panel_id){
     var x = 0;
     var y = 0;
     var canvasContext = this.canvas.getContext('2d');
     for (var p in this.panels){
-        var px = x * this.spriteSize;
-        var py = y * this.spriteSize;
+        var px = (x === 0)? x * this.spriteSize : x * this.spriteSize + this.pixelPadding;
+        var py = (y === 0)? y * this.spriteSize : y * this.spriteSize + this.pixelPadding;
         var canvasImageData = canvasContext.getImageData(px, py, this.spriteSize, this.spriteSize);
-        var spr = sprite.get_sprite(this.panels[p], sprites);
+        var spr = sprite.get_sprite(this.panels[p], this.sprites);
         var imageData = canvasImageData.data;
-        fillCanvas(spr, imageData, palette, this.pixelSize);
+        fillCanvas(spr, imageData, this.palette, this.pixelSize);
         canvasContext.putImageData(canvasImageData, px, py);
         x++;
-        if (x % 2 == 0){
+        if (x % 2 === 0){
             x = 0;
             y++;
         }
     }
-}
+};
 
 function SpriteSelector(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
@@ -181,6 +187,10 @@ function SpriteSelector(canvas, position_x, position_y, opts){
 
     this.spriteSize= this.pixelSize * 8;
 }
+
+SpriteSelector.prototype.was_clicked = function(x,y){
+
+};
 
 SpriteSelector.prototype.render = function(sprites, palette){
     var sprite_id = 0;
