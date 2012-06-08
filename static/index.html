@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A NES javascript IDE with c6502 compiler and CHR editor">
     <meta name="author" content="Gustavo Maia Neto (Guto Maia)">
-
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
@@ -56,6 +55,23 @@
         </div>
       </div>
       <div class="row">
+        <ul class="nav nav-tabs" id="myTab">
+          <li class="active"><a href="#assembler">Assembler</a></li>
+          <li><a href="#sprites">Sprites</a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="assembler">
+          </div>
+          <div class="tab-pane active" id="sprites">
+            <canvas id="chr-editor" width="161" height="161"></canvas>
+            <canvas id="chr-selector" width="520" height="520"></canvas>
+            <canvas id="color-picker" width="640" height="160"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="span6">
           <h2>Assembler Editor</h2>
           <textarea id="asm">; Type your ASM Nes Code Here</textarea>
@@ -63,8 +79,6 @@
         </div>
         <div class="span3">
           <h2>CHR Editor</h2>
-            <canvas id="chr-editor" width="161" height="161"></canvas>
-            <canvas id="chr-selector" width="520" height="520"></canvas>
         </div>
         <div class="span3">
           <h2>Emulator</h2>

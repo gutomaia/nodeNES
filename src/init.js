@@ -121,16 +121,17 @@ $(function() {
     });
 });
 
-function fillCanvas(s1, imageData, pallete, size){
+function fillCanvas(s1, imageData, palette, size){
     var a = 0;
     for (var y=0; y < 8*size; y++){
         for (var x=0; x < 8*size; x++) {
             var px = (x/size) >> 0;
             var py = (y/size) >> 0;
-            var color = pallete[s1[py][px]];
-            imageData[a] = pallete[s1[py][px]] & 0xFF;
-            imageData[a+1] = (pallete[s1[py][px]] >> 8) & 0xFF;
-            imageData[a+2] = (pallete[s1[py][px]] >> 16) & 0xFF;
+            var color_index = palette[s1[py][px]];
+            var color = sprite.get_color(color_index);
+            imageData[a] = color & 0xFF;
+            imageData[a+1] = (color >> 8) & 0xFF;
+            imageData[a+2] = (color >> 16) & 0xFF;
             imageData[a+3] = 0xff;
             a += 4;
         }
@@ -142,6 +143,8 @@ function sprite_test(){
     var canvasContext = chr_editor.getContext('2d');
     var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
     var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
+        pallete = [0x22, 0x30, 0x21, 0x0f];
+
     //one
     var canvasImageData = canvasContext.getImageData(0, 0, 80, 80);
     spr = sprite.get_sprite(0, sprites);
@@ -177,9 +180,25 @@ function sprite_test2(){
     var sprite_selector = $('#chr-selector')[0];
     var canvasContext = sprite_selector.getContext('2d');
     var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-    var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff];
+/*
+palette:
+  .db $22,$29,$1A,$0F,  $22,$36,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
+  .db $22,$1C,$15,$14,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
+*/
+
+    var pallete = [0x22, 0x29, 0x1a, 0x0f];
+    pallete = [0x22, 0x36, 0x17, 0x0f];
+    pallete = [0x22, 0x30, 0x21, 0x0f];
+    pallete = [0x22, 0x27, 0x17, 0x0f];
+    pallete = [0x22, 0x1c, 0x15, 0x14];
+    pallete = [0x22, 0x02, 0x38, 0x3c];
+    pallete = [0x22, 0x1c, 0x15, 0x14];
+    pallete = [0x22, 0x02, 0x38, 0x3c];
+
     var pixelSize = 2;
     var pixelPadding = 3;
+
+
 
     //do not change;
     var spriteSize= pixelSize * 8;
@@ -211,3 +230,26 @@ function sprite_test2(){
 }
 
 sprite_test2();
+
+function color_picker_test(){
+    var color_picker = $('#color-picker')[0];
+    var context = color_picker.getContext('2d');
+    var size = 20;
+    var color_index = 0;
+    for (var y=0; y < 4; y++){
+        for (var x=0; x < 16; x++) {
+            context.beginPath();
+            context.rect(x * 20, y * 20, 20, 20);
+            var color = sprite.get_color(color_index);
+            hex = "#000000".substr(1, 6 - color.toString(16).length) + color.toString(16); 
+            context.fillStyle = hex;
+            context.fill();
+            context.lineWidth = 3;
+            context.strokeStyle = 'white';
+            context.stroke();
+            color_index++;
+        }
+    }
+}
+
+color_picker_test();
