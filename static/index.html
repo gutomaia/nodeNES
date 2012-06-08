@@ -38,7 +38,7 @@
         <div class="span6">
             <form class="well form-inline files">
                 <div>
-                    <label>Example:
+                    <label>Examples:
                         <select id="source_files">
                             <option value="/example/movingsprite/movingsprite.asm">movingsprite.asm</option>
                             <option value="/example/scrolling/scrolling1.asm">scrolling1.asm</option>
@@ -49,25 +49,32 @@
 
                         </select>
                     </label>
-                    <button class="load">Load</button>
                 </div>
             </form>
         </div>
       </div>
       <div class="row">
-        <ul class="nav nav-tabs" id="myTab">
-          <li class="active"><a href="#assembler">Assembler</a></li>
-          <li><a href="#sprites">Sprites</a></li>
-        </ul>
+        <div class="span9">
+          <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#assembler">Source</a></li>
+            <li><a href="#sprites">Sprites</a></li>
+          </ul>
 
-        <div class="tab-content">
-          <div class="tab-pane active" id="assembler">
+          <div class="tab-content">
+            <div class="tab-pane active" id="assembler">
+            </div>
+            <div class="tab-pane active" id="sprites">
+              <canvas id="sprite-editor" width="650" height="650"></canvas>
+              <canvas id="chr-editor" width="161" height="161"></canvas>
+              <canvas id="chr-selector" width="520" height="520"></canvas>
+              <canvas id="color-picker" width="640" height="160"></canvas>
+            </div>
           </div>
-          <div class="tab-pane active" id="sprites">
-            <canvas id="chr-editor" width="161" height="161"></canvas>
-            <canvas id="chr-selector" width="520" height="520"></canvas>
-            <canvas id="color-picker" width="640" height="160"></canvas>
-          </div>
+        </div>
+        <div class="span3">
+          <h2>Emulator</h2>
+          <canvas id="nes-screen" width="256" height="240"></canvas>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
         </div>
       </div>
 
@@ -76,11 +83,6 @@
           <h2>Assembler Editor</h2>
           <textarea id="asm">; Type your ASM Nes Code Here</textarea>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        </div>
-        <div class="span3">
-          <h2>Emulator</h2>
-          <canvas id="nes-screen" width="256" height="240"></canvas>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
         </div>
       </div>
       <hr>

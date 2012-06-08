@@ -231,15 +231,17 @@ palette:
 
 sprite_test2();
 
-function color_picker_test(){
-    var color_picker = $('#color-picker')[0];
-    var context = color_picker.getContext('2d');
-    var size = 20;
+function Palette(canvas, position_x, position_y, picker_size){
+    //this.position_x = (position_x === null)?0:position_x;
+    //this.position_y = (position_y === null)?0:position_y;
+    picker_size = (picker_size === null)?0:picker_size;
+
+    var context = canvas.getContext('2d');
     var color_index = 0;
     for (var y=0; y < 4; y++){
         for (var x=0; x < 16; x++) {
             context.beginPath();
-            context.rect(x * 20, y * 20, 20, 20);
+            context.rect(x * picker_size + position_x, y * picker_size + position_y, picker_size, picker_size);
             var color = sprite.get_color(color_index);
             hex = "#000000".substr(1, 6 - color.toString(16).length) + color.toString(16); 
             context.fillStyle = hex;
@@ -252,7 +254,21 @@ function color_picker_test(){
     }
 }
 
+Palette.prototype.get_color = function (x,y){
+};
+
+function color_picker_test(){
+    var color_picker = $('#color-picker')[0];
+    new Palette(color_picker, 0,0,20);
+}
+
+
 color_picker_test();
+
+var spr_editor = $('#sprite-editor')[0];
+
+new Palette(spr_editor, 40,40,20);
+
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
