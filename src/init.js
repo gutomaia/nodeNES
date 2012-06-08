@@ -138,9 +138,8 @@ function fillCanvas(s1, imageData, palette, size){
     }
 }
 
-function sprite_test(){
-    var chr_editor = $('#chr-editor')[0];
-    var canvasContext = chr_editor.getContext('2d');
+function Editor(canvas, position_x, position_y) {
+    var canvasContext = canvas.getContext('2d');
     var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
     var pallete = [0xffffff, 0xff0000, 0x00ff00, 0x0000ff ];
         pallete = [0x22, 0x30, 0x21, 0x0f];
@@ -172,105 +171,41 @@ function sprite_test(){
     imageData = canvasImageData.data;
     fillCanvas(spr, imageData, pallete, 10);
     canvasContext.putImageData(canvasImageData, 81, 81);
-
-}
-sprite_test();
-
-function sprite_test2(){
-    var sprite_selector = $('#chr-selector')[0];
-    var canvasContext = sprite_selector.getContext('2d');
-    var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-/*
-palette:
-  .db $22,$29,$1A,$0F,  $22,$36,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
-  .db $22,$1C,$15,$14,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
-*/
-
-    var pallete = [0x22, 0x29, 0x1a, 0x0f];
-    pallete = [0x22, 0x36, 0x17, 0x0f];
-    pallete = [0x22, 0x30, 0x21, 0x0f];
-    pallete = [0x22, 0x27, 0x17, 0x0f];
-    pallete = [0x22, 0x1c, 0x15, 0x14];
-    pallete = [0x22, 0x02, 0x38, 0x3c];
-    pallete = [0x22, 0x1c, 0x15, 0x14];
-    pallete = [0x22, 0x02, 0x38, 0x3c];
-
-    var pixelSize = 2;
-    var pixelPadding = 3;
-
-
-
-    //do not change;
-    var spriteSize= pixelSize * 8;
-    var width = sprite_selector.width;
-    var height = sprite_selector.height;
-    var sprite_id = 0;
-    var sprite_total = sprites.length / 16 >> 0;
-
-    var sprite_x = (width / (spriteSize + pixelPadding)) >> 0;
-    var sprite_y = (sprite_total / sprite_x);
-    //var sprite_y = width
-
-
-    for (var y=0; y<sprite_y; y++){
-        for (var x=0; x<sprite_x; x++){
-            var px =  x * spriteSize + (pixelPadding*x);
-            var py =  y * spriteSize + (pixelPadding*y);
-            var canvasImageData = canvasContext.getImageData(px, py, spriteSize, spriteSize);
-            var imageData = canvasImageData.data;
-            var spr = sprite.get_sprite(sprite_id, sprites);
-            fillCanvas(spr, imageData, pallete, spriteSize/8);
-            canvasContext.putImageData(canvasImageData, px, py);
-            sprite_id++;
-            if (sprite_id == sprite_total){
-                break;
-            }
-        }
-    }
 }
 
-sprite_test2();
-
-function SpriteSelector(canvas, position_x, position_y, sprites, palette, opts){
+function SpriteSelector(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
     this.canvas = canvas;
 
-    var canvasContext = canvas.getContext('2d');
+    this.pixelSize = 2;
+    this.pixelPadding = 3;
 
-    var pixelSize = 2;
-    var pixelPadding = 3;
+    this.spriteSize= this.pixelSize * 8;
+}
 
-    //do not change;
-    var spriteSize= pixelSize * 8;
-    var width = canvas.width;
-    var height = canvas.height;
+SpriteSelector.prototype.render = function(sprites, palette){
     var sprite_id = 0;
-    var sprite_total = sprites.length / 16 >> 0;
+    this.sprite_total = sprites.length / 16 >> 0;
+    sprite_x = (this.canvas.width / (this.spriteSize + this.pixelPadding)) >> 0;
+    sprite_y = (this.sprite_total / sprite_x);
+    var canvasContext = this.canvas.getContext('2d');
 
-    var sprite_x = (canvas.width / (spriteSize + pixelPadding)) >> 0;
-    var sprite_y = (sprite_total / sprite_x);
-
-
-    for (var y=0; y<sprite_y; y++){
-        for (var x=0; x<sprite_x; x++){
-            var px =  x * spriteSize + (pixelPadding*x);
-            var py =  y * spriteSize + (pixelPadding*y);
-            var canvasImageData = canvasContext.getImageData(px + position_x, py + position_y, spriteSize, spriteSize);
+    for (var y=0; y < sprite_y; y++){
+        for (var x=0; x < sprite_x; x++){
+            var px =  x * this.spriteSize + (this.pixelPadding * x);
+            var py =  y * this.spriteSize + (this.pixelPadding * y);
+            var canvasImageData = canvasContext.getImageData(px + this.position_x, py + this.position_y, this.spriteSize, this.spriteSize);
             var imageData = canvasImageData.data;
             var spr = sprite.get_sprite(sprite_id, sprites);
-            fillCanvas(spr, imageData, palette, spriteSize/8);
-            canvasContext.putImageData(canvasImageData, px, py);
+            fillCanvas(spr, imageData, palette, this.spriteSize/8);
+            canvasContext.putImageData(canvasImageData, px + this.position_x, py + this.position_y);
             sprite_id++;
-            if (sprite_id == sprite_total){
+            if (sprite_id == this.sprite_total){
                 break;
             }
         }
     }
-}
-
-SpriteSelector.prototype.render = function(){
-
 };
 
 function Palette(canvas, position_x, position_y, picker_size){
@@ -302,8 +237,11 @@ Palette.prototype.get_color = function (x,y){
 var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
 
-new SpriteSelector(spr_editor, 165, 0, sprites, [0x22, 0x02, 0x38, 0x3c]);
-new Palette(spr_editor, 40,40,20);
+new Editor(spr_editor, 0, 0);
+var sselector = new SpriteSelector(spr_editor, 165, 0);
+sselector.render(sprites, [0x22, 0x02, 0x38, 0x3c]);
+
+new Palette(spr_editor, 165,305,20);
 
 
 function getCursorPosition(canvas, event) {
