@@ -24,7 +24,7 @@ var palette = [
 
 exports.get_color = function(index){
     return palette[index];
-}
+};
 
 exports.load_sprites = function(file){
     var chr;

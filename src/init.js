@@ -265,8 +265,9 @@ function getCursorPosition(canvas, event) {
     do {
         totalOffsetX += element.offsetLeft;
         totalOffsetY += element.offsetTop;
+        element = element.offsetParent;
     }
-    while (element = element.offsetParent)
+    while (element !== null);
 
     canvasX = event.pageX - totalOffsetX;
     canvasY = event.pageY - totalOffsetY;
@@ -274,7 +275,7 @@ function getCursorPosition(canvas, event) {
     canvasX = Math.round( canvasX * (canvas.width / canvas.offsetWidth) );
     canvasY = Math.round( canvasY * (canvas.height / canvas.offsetHeight) );
 
-    return {x:canvasX, y:canvasY}
+    return {x:canvasX, y:canvasY};
 }
 
 var color_picker = $('#color-picker').click(
@@ -286,5 +287,5 @@ var color_picker = $('#color-picker').click(
         var color_index = (y * 16) + x;
         console.log(sprite.get_color(color_index).toString(16)); 
     }
-)
+);
 
