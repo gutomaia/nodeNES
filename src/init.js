@@ -253,3 +253,38 @@ function color_picker_test(){
 }
 
 color_picker_test();
+
+function getCursorPosition(canvas, event) {
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+
+    var element = canvas;
+
+    do {
+        totalOffsetX += element.offsetLeft;
+        totalOffsetY += element.offsetTop;
+    }
+    while (element = element.offsetParent)
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+
+    canvasX = Math.round( canvasX * (canvas.width / canvas.offsetWidth) );
+    canvasY = Math.round( canvasY * (canvas.height / canvas.offsetHeight) );
+
+    return {x:canvasX, y:canvasY}
+}
+
+var color_picker = $('#color-picker').click(
+    function(e) {
+        var canvas = $(this)[0];
+        var pos = getCursorPosition(canvas, e);
+        var x = pos.x / 20 >> 0;
+        var y = pos.y / 20 >> 0;
+        var color_index = (y * 16) + x;
+        console.log(sprite.get_color(color_index).toString(16)); 
+    }
+)
+
