@@ -11,10 +11,12 @@ function open_file(file){
         compiler.path = m[1];
         console.log(m);
         asmEditor.setValue(data);
+        update();
     });
 }
 
 function update(){
+    clearTimeout(_idleTimer);
     console.log('compilling');
     var data;
     try {
@@ -162,8 +164,8 @@ Editor.prototype.render = function(panel_id){
     var y = 0;
     var canvasContext = this.canvas.getContext('2d');
     for (var p in this.panels){
-        var px = (x === 0)? x * this.spriteSize : x * this.spriteSize + this.pixelPadding;
-        var py = (y === 0)? y * this.spriteSize : y * this.spriteSize + this.pixelPadding;
+        var px = x * this.spriteSize + (this.pixelPadding * x);
+        var py = y * this.spriteSize + (this.pixelPadding * y);
         var canvasImageData = canvasContext.getImageData(px, py, this.spriteSize, this.spriteSize);
         var spr = sprite.get_sprite(this.panels[p], this.sprites);
         var imageData = canvasImageData.data;
