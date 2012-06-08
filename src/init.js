@@ -231,9 +231,51 @@ palette:
 
 sprite_test2();
 
+function SpriteSelector(canvas, position_x, position_y, sprites, palette, opts){
+    this.position_x = (position_x === null)?0:position_x;
+    this.position_y = (position_y === null)?0:position_y;
+    this.canvas = canvas;
+
+    var canvasContext = canvas.getContext('2d');
+
+    var pixelSize = 2;
+    var pixelPadding = 3;
+
+    //do not change;
+    var spriteSize= pixelSize * 8;
+    var width = canvas.width;
+    var height = canvas.height;
+    var sprite_id = 0;
+    var sprite_total = sprites.length / 16 >> 0;
+
+    var sprite_x = (canvas.width / (spriteSize + pixelPadding)) >> 0;
+    var sprite_y = (sprite_total / sprite_x);
+
+
+    for (var y=0; y<sprite_y; y++){
+        for (var x=0; x<sprite_x; x++){
+            var px =  x * spriteSize + (pixelPadding*x);
+            var py =  y * spriteSize + (pixelPadding*y);
+            var canvasImageData = canvasContext.getImageData(px + position_x, py + position_y, spriteSize, spriteSize);
+            var imageData = canvasImageData.data;
+            var spr = sprite.get_sprite(sprite_id, sprites);
+            fillCanvas(spr, imageData, palette, spriteSize/8);
+            canvasContext.putImageData(canvasImageData, px, py);
+            sprite_id++;
+            if (sprite_id == sprite_total){
+                break;
+            }
+        }
+    }
+}
+
+SpriteSelector.prototype.render = function(){
+
+};
+
 function Palette(canvas, position_x, position_y, picker_size){
-    //this.position_x = (position_x === null)?0:position_x;
-    //this.position_y = (position_y === null)?0:position_y;
+    this.position_x = (position_x === null)?0:position_x;
+    this.position_y = (position_y === null)?0:position_y;
     picker_size = (picker_size === null)?0:picker_size;
 
     var context = canvas.getContext('2d');
@@ -257,16 +299,10 @@ function Palette(canvas, position_x, position_y, picker_size){
 Palette.prototype.get_color = function (x,y){
 };
 
-function color_picker_test(){
-    var color_picker = $('#color-picker')[0];
-    new Palette(color_picker, 0,0,20);
-}
-
-
-color_picker_test();
-
 var spr_editor = $('#sprite-editor')[0];
+var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
 
+new SpriteSelector(spr_editor, 165, 0, sprites, [0x22, 0x02, 0x38, 0x3c]);
 new Palette(spr_editor, 40,40,20);
 
 
