@@ -123,17 +123,17 @@ $(function() {
     });
 });
 
-function fillCanvas(s1, imageData, palette, size){
+function fillCanvas(sprt, imageData, palette, size){
     var a = 0;
     for (var y=0; y < 8*size; y++){
         for (var x=0; x < 8*size; x++) {
             var px = (x/size) >> 0;
             var py = (y/size) >> 0;
-            var color_index = palette[s1[py][px]];
+            var color_index = palette[sprt[py][px]];
             var color = sprite.get_color(color_index);
-            imageData[a] = color & 0xFF;
-            imageData[a+1] = (color >> 8) & 0xFF;
-            imageData[a+2] = (color >> 16) & 0xFF;
+            imageData[a] = (color >> 16) & 0xff;
+            imageData[a+1] = (color >> 8) & 0xff;
+            imageData[a+2] = color & 0xff;
             imageData[a+3] = 0xff;
             a += 4;
         }
@@ -146,18 +146,24 @@ function Editor(canvas, position_x, position_y, opts) {
     this.pixelPadding = 1;
 
     this.panels = [0,1,2,3,4,5,6,7];
+    this.panel_id = 0;
 
     this.pixelSize = 10;
     this.spriteSize = this.pixelSize * 8;
-    if (opts !== null) {
+    if (opts !== undefined) {
         this.sprites = opts.sprites;
         this.palette = opts.palette;
         this.render();
     }
 }
 
-Editor.prototype.change_panel = function (panel_id, sprite_id){
-    this.panels[panel_id] = sprite_id;
+Editor.prototype.change_panel = function (sprite_id, panel_id){
+    if (panel_id !== undefined){
+        this.panel_id = panel_id;
+    }
+    this.panels[this.panel_id] = sprite_id;
+    this.panel_id++;
+    this.panel_id = this.panel_id % 8;
     this.render();
 };
 
@@ -192,7 +198,7 @@ function SpriteSelector(canvas, position_x, position_y, opts){
     this.spriteSize= this.pixelSize * 8;
     this.width = this.canvas.width - this.position_x;
 
-    if (opts !== null) {
+    if (opts !== undefined) {
         this.sprites = opts.sprites;
         this.sprite_total = this.sprites.length / 16 >> 0;
         this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
@@ -218,8 +224,7 @@ SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
     var sprite_id = line * this.sprite_x + col;
-    editor.change_panel(0, sprite_id);
-
+    editor.change_panel(sprite_id);
 };
 
 
@@ -250,11 +255,11 @@ function Palette(canvas, position_x, position_y, opts){
     this.position_y = (position_y === null)?0:position_y;
     this.width = this.picker_size * 4;
     this.height = this.picker_size;
-    if (opts !== null) {
+    if (opts !== undefined) {
         //this.picker_size = opt.picker_size;
         this.palette = opts.palette;
     }
-    this.picker_size = 10;
+    this.picker_size = 20;
     this.render();
 }
 
@@ -288,8 +293,6 @@ function ColorPicker(canvas, position_x, position_y, picker_size){
     this.height = this.picker_size * 4;
     this.render();
 }
-
-
 
 ColorPicker.prototype.render = function(){
     var context = this.canvas.getContext('2d');
@@ -328,9 +331,9 @@ ColorPicker.prototype.get_color = function (x, y){
 
 var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-var palette = [0x22, 0x02, 0x38, 0x3c];
+var palette = [0x22, 0x29, 0x1a, 0x0f];
 var options = {
-        sprites: sprites,
+    sprites: sprites,
     palette: palette
 };
 
