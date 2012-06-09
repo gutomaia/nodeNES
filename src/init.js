@@ -194,6 +194,9 @@ function SpriteSelector(canvas, position_x, position_y, opts){
 
     if (opts !== null) {
         this.sprites = opts.sprites;
+        this.sprite_total = this.sprites.length / 16 >> 0;
+        this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
+        this.sprite_y = (this.sprite_total / this.sprite_x);
         this.palette = opts.palette;
         this.render();
     }
@@ -201,17 +204,15 @@ function SpriteSelector(canvas, position_x, position_y, opts){
 }
 
 SpriteSelector.prototype.was_clicked = function(x, y){
+
 };
 
 SpriteSelector.prototype.render = function(){
     var sprite_id = 0;
-    this.sprite_total = this.sprites.length / 16 >> 0;
-    sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
-    sprite_y = (this.sprite_total / sprite_x);
     var canvasContext = this.canvas.getContext('2d');
 
-    for (var y=0; y < sprite_y; y++){
-        for (var x=0; x < sprite_x; x++){
+    for (var y=0; y < this.sprite_y; y++){
+        for (var x=0; x < this.sprite_x; x++){
             var px =  x * this.spriteSize + (this.pixelPadding * x);
             var py =  y * this.spriteSize + (this.pixelPadding * y);
             var canvasImageData = canvasContext.getImageData(px + this.position_x, py + this.position_y, this.spriteSize, this.spriteSize);
@@ -237,7 +238,12 @@ function Palette(canvas, position_x, position_y, picker_size){
     for (var y=0; y < 4; y++){
         for (var x=0; x < 16; x++) {
             context.beginPath();
-            context.rect(x * picker_size + position_x, y * picker_size + position_y, picker_size, picker_size);
+            context.rect(
+                x * picker_size + position_x, 
+                y * picker_size + position_y, 
+                picker_size, 
+                picker_size
+            );
             var color = sprite.get_color(color_index).toString(16);
             hex = "#000000".substr(0, 7 - color.length) + color;
             context.fillStyle = hex;
@@ -259,7 +265,7 @@ var palette = [0x22, 0x02, 0x38, 0x3c];
 var options = {
     sprites: sprites,
     palette: palette
-}
+};
 
 
 var editor = new Editor(spr_editor, 0, 0, options);
