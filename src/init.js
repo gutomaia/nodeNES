@@ -277,7 +277,7 @@ Palette.prototype.render = function(){
         hex = "#000000".substr(0, 7 - color.length) + color;
         context.fillStyle = hex;
         context.fill();
-        context.lineWidth = 3;
+        context.lineWidth = 1;
         context.strokeStyle = '#ffffff';
         context.stroke();
     }
@@ -332,6 +332,7 @@ ColorPicker.prototype.get_color = function (x, y){
 var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
 var palette = [0x22, 0x29, 0x1a, 0x0f];
+palette = [0x22,0x16,0x27,0x18];
 var options = {
     sprites: sprites,
     palette: palette
@@ -340,7 +341,7 @@ var options = {
 
 var editor = new Editor(spr_editor, 0, 0, options);
 var sselector = new SpriteSelector(spr_editor, 165, 0, options);
-var p = new Palette(spr_editor, 0 , 305, options);
+var p = new Palette(spr_editor, 0 , 325, options);
 var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
 
 
