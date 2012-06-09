@@ -197,7 +197,7 @@ function SpriteSelector(canvas, position_x, position_y, opts){
         this.sprite_total = this.sprites.length / 16 >> 0;
         this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
         this.sprite_y = (this.sprite_total / this.sprite_x) >> 0;
-        this.sprite_y += (this.sprite_total % this.sprite_x != 0)?1:0;
+        this.sprite_y += (this.sprite_total % this.sprite_x !== 0)?1:0;
         this.palette = opts.palette;
         this.width = this.sprite_x * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
         this.height = this.sprite_y * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
@@ -244,6 +244,41 @@ SpriteSelector.prototype.render = function(){
     }
 };
 
+function Palette(canvas, position_x, position_y, opts){
+    this.canvas = canvas;
+    this.position_x = (position_x === null)?0:position_x;
+    this.position_y = (position_y === null)?0:position_y;
+    this.width = this.picker_size * 4;
+    this.height = this.picker_size;
+    if (opts !== null) {
+        //this.picker_size = opt.picker_size;
+        this.palette = opts.palette;
+    }
+    this.picker_size = 10;
+    this.render();
+}
+
+Palette.prototype.render = function(){
+    var context = this.canvas.getContext('2d');
+    for (var x=0; x < 4; x++) {
+        context.beginPath();
+        context.rect(
+            x * this.picker_size + this.position_x, 
+            this.position_y, 
+            this.picker_size, 
+            this.picker_size
+        );
+        var color = sprite.get_color(this.palette[x]).toString(16);
+        hex = "#000000".substr(0, 7 - color.length) + color;
+        context.fillStyle = hex;
+        context.fill();
+        context.lineWidth = 3;
+        context.strokeStyle = '#ffffff';
+        context.stroke();
+    }
+};
+
+
 function ColorPicker(canvas, position_x, position_y, picker_size){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
@@ -278,7 +313,7 @@ ColorPicker.prototype.render = function(){
             color_index++;
         }
     }
-}
+};
 
 ColorPicker.prototype.was_clicked = function(x, y){
     if (x >= this.position_x && x <= this.position_x + this.width &&
@@ -286,7 +321,7 @@ ColorPicker.prototype.was_clicked = function(x, y){
         return true;
     }
     return false;
-}
+};
 
 ColorPicker.prototype.get_color = function (x, y){
 };
@@ -302,6 +337,7 @@ var options = {
 
 var editor = new Editor(spr_editor, 0, 0, options);
 var sselector = new SpriteSelector(spr_editor, 165, 0, options);
+var p = new Palette(spr_editor, 0 , 305, options);
 var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
 
 
