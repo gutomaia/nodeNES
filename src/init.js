@@ -140,10 +140,8 @@ function fillCanvas(s1, imageData, palette, size){
     }
 }
 
-function Editor(canvas, position_x, position_y) {
+function Editor(canvas, position_x, position_y, opts) {
     this.canvas = canvas;
-    this.sprites = sprite.load_sprites('/example/scrolling/mario.chr');
-    this.palette = [0x22, 0x30, 0x21, 0x0f];
 
     this.pixelPadding = 1;
 
@@ -151,7 +149,11 @@ function Editor(canvas, position_x, position_y) {
 
     this.pixelSize = 10;
     this.spriteSize = this.pixelSize * 8;
-    this.render();
+    if (opts !== null) {
+        this.sprites = opts.sprites;
+        this.palette = opts.palette;
+        this.render();
+    }
 }
 
 Editor.prototype.change_panel = function (panel_id, sprite_id){
@@ -188,16 +190,23 @@ function SpriteSelector(canvas, position_x, position_y, opts){
     this.pixelPadding = 3;
 
     this.spriteSize= this.pixelSize * 8;
+    this.width = this.canvas.width - this.position_x;
+
+    if (opts !== null) {
+        this.sprites = opts.sprites;
+        this.palette = opts.palette;
+        this.render();
+    }
+
 }
 
-SpriteSelector.prototype.was_clicked = function(x,y){
-
+SpriteSelector.prototype.was_clicked = function(x, y){
 };
 
-SpriteSelector.prototype.render = function(sprites, palette){
+SpriteSelector.prototype.render = function(){
     var sprite_id = 0;
-    this.sprite_total = sprites.length / 16 >> 0;
-    sprite_x = (this.canvas.width / (this.spriteSize + this.pixelPadding)) >> 0;
+    this.sprite_total = this.sprites.length / 16 >> 0;
+    sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
     sprite_y = (this.sprite_total / sprite_x);
     var canvasContext = this.canvas.getContext('2d');
 
@@ -246,11 +255,16 @@ Palette.prototype.get_color = function (x,y){
 
 var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
+var palette = [0x22, 0x02, 0x38, 0x3c];
+var options = {
+    sprites: sprites,
+    palette: palette
+}
 
-var editor = new Editor(spr_editor, 0, 0);
-var sselector = new SpriteSelector(spr_editor, 165, 0);
-sselector.render(sprites, [0x22, 0x02, 0x38, 0x3c]);
-var color_picker = new Palette(spr_editor, 165,305,20);
+
+var editor = new Editor(spr_editor, 0, 0, options);
+var sselector = new SpriteSelector(spr_editor, 165, 0, options);
+var color_picker = new Palette(spr_editor, 165,305,20, options);
 
 
 function getCursorPosition(canvas, event) {
