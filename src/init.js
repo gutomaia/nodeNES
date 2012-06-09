@@ -244,7 +244,7 @@ SpriteSelector.prototype.render = function(){
     }
 };
 
-function Palette(canvas, position_x, position_y, picker_size){
+function ColorPicker(canvas, position_x, position_y, picker_size){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
@@ -254,7 +254,9 @@ function Palette(canvas, position_x, position_y, picker_size){
     this.render();
 }
 
-Palette.prototype.render = function(){
+
+
+ColorPicker.prototype.render = function(){
     var context = this.canvas.getContext('2d');
     var color_index = 0;
     for (var y=0; y < 4; y++){
@@ -278,7 +280,7 @@ Palette.prototype.render = function(){
     }
 }
 
-Palette.prototype.was_clicked = function(x, y){
+ColorPicker.prototype.was_clicked = function(x, y){
     if (x >= this.position_x && x <= this.position_x + this.width &&
         y >= this.position_y && y <= this.position_y + this.height){
         return true;
@@ -286,21 +288,21 @@ Palette.prototype.was_clicked = function(x, y){
     return false;
 }
 
-Palette.prototype.get_color = function (x, y){
+ColorPicker.prototype.get_color = function (x, y){
 };
 
 var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
 var palette = [0x22, 0x02, 0x38, 0x3c];
 var options = {
-    sprites: sprites,
+        sprites: sprites,
     palette: palette
 };
 
 
 var editor = new Editor(spr_editor, 0, 0, options);
 var sselector = new SpriteSelector(spr_editor, 165, 0, options);
-var color_picker = new Palette(spr_editor, 165,305,20, options);
+var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
 
 
 function getCursorPosition(canvas, event) {
