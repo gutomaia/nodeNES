@@ -11,6 +11,12 @@ node_modules: package.json
 	npm install
 	@touch $@
 
+pathjs:
+	git clone https://github.com/mtrpcic/pathjs.git
+
+static/path.min.js: pathjs
+	cp pathjs/path.min.js static/
+
 build: node_modules
 	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
 	@./node_modules/jshint/bin/hint tests/*.js --config jshint.config
@@ -28,7 +34,7 @@ clean:
 	@rm -rf node_modules
 	@rm -rf reports
 
-run: node_modules
+run: node_modules static/path.min.js
 	./node_modules/.bin/supervisor ./app.js
 
 .PHONY: clean run
