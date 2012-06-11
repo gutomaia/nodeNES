@@ -140,7 +140,24 @@ function fillCanvas(sprt, imageData, palette, size){
     }
 }
 
+function Widget(){
+}
+
+Widget.prototype.was_clicked = function(x, y){
+    if (x >= this.position_x && x <= this.position_x + this.width &&
+        y >= this.position_y && y <= this.position_y + this.height){
+        return true;
+    }
+    return false;
+};
+
+
+Editor.prototype = new Widget();
+Editor.prototype.constructor = Editor;
+
 function Editor(canvas, position_x, position_y, opts) {
+    this.position_x = position_x;
+    this.position_y = position_y;
     this.canvas = canvas;
 
     this.pixelPadding = 1;
@@ -172,8 +189,8 @@ Editor.prototype.render = function(panel_id){
     var y = 0;
     var canvasContext = this.canvas.getContext('2d');
     for (var p in this.panels){
-        var px = x * this.spriteSize + (this.pixelPadding * x);
-        var py = y * this.spriteSize + (this.pixelPadding * y);
+        var px = (x * this.spriteSize + (this.pixelPadding * x)) + this.position_x;
+        var py = (y * this.spriteSize + (this.pixelPadding * y)) + this.position_y;
         var canvasImageData = canvasContext.getImageData(px, py, this.spriteSize, this.spriteSize);
         var spr = sprite.get_sprite(this.panels[p], this.sprites);
         var imageData = canvasImageData.data;
@@ -186,6 +203,9 @@ Editor.prototype.render = function(panel_id){
         }
     }
 };
+
+SpriteSelector.prototype = new Widget();
+SpriteSelector.prototype.constructor = SpriteSelector;
 
 function SpriteSelector(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
@@ -211,14 +231,6 @@ function SpriteSelector(canvas, position_x, position_y, opts){
     }
 
 }
-
-SpriteSelector.prototype.was_clicked = function(x, y){
-    if (x >= this.position_x && x <= this.position_x + this.width &&
-        y >= this.position_y && y <= this.position_y + this.height){
-        return true;
-    }
-    return false;
-};
 
 SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
@@ -249,6 +261,9 @@ SpriteSelector.prototype.render = function(){
     }
 };
 
+Palette.prototype = new Widget();
+Palette.prototype.constructor = Palette;
+
 function Palette(canvas, position_x, position_y, opts){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
@@ -260,6 +275,7 @@ function Palette(canvas, position_x, position_y, opts){
         this.palette = opts.palette;
     }
     this.picker_size = 20;
+    this.palette_id = 0;
     this.render();
 }
 
@@ -283,12 +299,21 @@ Palette.prototype.render = function(){
     }
 };
 
+Palette.prototype.click = function(x, y) {
+    var line = Math.abs((this.position_y - y) / this.picker_size >> 0);
+    var col = Math.abs((this.position_x - x) / this.picker_size >> 0);
+    this.palette_id = line * this.sprite_x + col;
+    console.log(this.palette_id);
+};
 
-function ColorPicker(canvas, position_x, position_y, picker_size){
+ColorPicker.prototype = new Widget();
+ColorPicker.prototype.constructor = ColorPicker;
+
+function ColorPicker(canvas, position_x, position_y, options){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
-    this.picker_size = (picker_size === null)?5:picker_size;
+    this.picker_size = 17;
     this.width = this.picker_size * 16;
     this.height = this.picker_size * 4;
     this.render();
@@ -318,14 +343,6 @@ ColorPicker.prototype.render = function(){
     }
 };
 
-ColorPicker.prototype.was_clicked = function(x, y){
-    if (x >= this.position_x && x <= this.position_x + this.width &&
-        y >= this.position_y && y <= this.position_y + this.height){
-        return true;
-    }
-    return false;
-};
-
 ColorPicker.prototype.get_color = function (x, y){
 };
 
@@ -339,10 +356,10 @@ var options = {
 };
 
 
-var editor = new Editor(spr_editor, 0, 0, options);
 var sselector = new SpriteSelector(spr_editor, 165, 0, options);
 var p = new Palette(spr_editor, 0 , 325, options);
 var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
+var editor = new Editor(spr_editor, 0, 0, options);
 
 
 function getCursorPosition(canvas, event) {
@@ -378,6 +395,8 @@ $('#sprite-editor').click(
             console.log('color_picker');
         }else if (sselector.was_clicked(pos.x, pos.y)){
             sselector.click(pos.x, pos.y);
+        } else if (p.was_clicked(pos.x, pos.y)){
+            p.click(po);
         }
     }
 );
