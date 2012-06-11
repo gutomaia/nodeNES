@@ -182,10 +182,10 @@ Widget.prototype.notifyColorChanged = function() {
 
 
 
-Editor.prototype = new Widget();
-Editor.prototype.constructor = Editor;
+Preview.prototype = new Widget();
+Preview.prototype.constructor = Preview;
 
-function Editor(canvas, position_x, position_y, opts) {
+function Preview(canvas, position_x, position_y, opts) {
     this.position_x = position_x;
     this.position_y = position_y;
     this.canvas = canvas;
@@ -204,7 +204,7 @@ function Editor(canvas, position_x, position_y, opts) {
     }
 }
 
-Editor.prototype.change_panel = function (sprite_id, panel_id){
+Preview.prototype.change_panel = function (sprite_id, panel_id){
     if (panel_id !== undefined){
         this.panel_id = panel_id;
     }
@@ -214,7 +214,7 @@ Editor.prototype.change_panel = function (sprite_id, panel_id){
     this.render();
 };
 
-Editor.prototype.render = function(panel_id){
+Preview.prototype.render = function(panel_id){
     var x = 0;
     var y = 0;
     var canvasContext = this.canvas.getContext('2d');
@@ -234,10 +234,10 @@ Editor.prototype.render = function(panel_id){
     }
 };
 
-Editor.prototype.onColorChanged = function(widget){
+Preview.prototype.onColorChanged = function(widget){
     this.palette = widget.palette;
     this.render();
-}
+};
 
 SpriteSelector.prototype = new Widget();
 SpriteSelector.prototype.constructor = SpriteSelector;
@@ -301,7 +301,7 @@ SpriteSelector.prototype.render = function(){
 SpriteSelector.prototype.onColorChanged = function(widget){
     this.palette = widget.palette;
     this.render();
-}
+};
 
 Palette.prototype = new Widget();
 Palette.prototype.constructor = Palette;
@@ -355,7 +355,7 @@ Palette.prototype.onColorChanged = function(widget){
     this.palette_id = this.palette_id % 4;
     this.render();
     this.notifyColorChanged();
-}
+};
 
 ColorPicker.prototype = new Widget();
 ColorPicker.prototype.constructor = ColorPicker;
@@ -415,10 +415,10 @@ var options = {
 var selector = new SpriteSelector(spr_editor, 165, 0, options);
 var palette = new Palette(spr_editor, 0 , 325, options);
 var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
-var editor = new Editor(spr_editor, 0, 0, options);
+var preview = new Preview(spr_editor, 0, 0, options);
 
-palette.addColorChangeListener(selector);
-palette.addColorChangeListener(editor);
+//palette.addColorChangeListener(selector);
+palette.addColorChangeListener(preview);
 
 color_picker.addColorChangeListener(palette);
 
@@ -456,7 +456,7 @@ $('#sprite-editor').click(
         }else if (selector.was_clicked(pos.x, pos.y)){
             selector.click(pos.x, pos.y);
         } else if (palette.was_clicked(pos.x, pos.y)){
-            palette.click(po);
+            palette.click(pos.x, pos.y);
         }
     }
 );
