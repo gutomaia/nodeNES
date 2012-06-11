@@ -37,4 +37,19 @@ clean:
 run: node_modules static/path.min.js
 	./node_modules/.bin/supervisor ./app.js
 
+
+
+ghpages: deploy
+	mkdir -p /tmp/ghpages
+	cp -Rv static /tmp/ghpages
+	cd /tmp/ghpages && \
+		git init && \
+		git add . && \
+		git commit -q -m "Automatic gh-pages"
+	cd /tmp/ghpages && \
+		git remote add remote git@github.com:gutomaia/nodeNES.git && \
+		git push --force remote +master:gh-pages
+	rm -rf /tmp/ghpages
+
+
 .PHONY: clean run
