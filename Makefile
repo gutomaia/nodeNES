@@ -11,11 +11,35 @@ node_modules: package.json
 	npm install
 	@touch $@
 
-pathjs:
-	git clone https://github.com/mtrpcic/pathjs.git
+deps:
+	mkdir -p deps
 
-static/path.min.js: pathjs
-	cp pathjs/path.min.js static/
+external:
+	mkdir -p external
+
+deps/jsnes: deps
+	cd deps &&\
+		git clone https://github.com/bfirsh/jsnes.git
+
+external/jsnes.js: deps/jsnes
+	cd deps/jsnes/source && \
+		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.js
+
+external/path.min.js: deps/pathjs
+	cp deps/pathjs/path.min.js external/
+
+deps/pathjs: deps
+	cd deps && \
+		git clone https://github.com/mtrpcic/pathjs.git
+
+external/codemirror.js: deps/codemirror.zip
+	cd deps && \
+		unzip codemirror.zip 
+	cp deps/CodeMirror-2.25/lib/codemirror.js external/
+
+deps/codemirror.zip: deps
+	cd deps && \
+		wget http://codemirror.net/codemirror.zip
 
 build: node_modules
 	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
@@ -32,16 +56,18 @@ report:
 
 clean:
 	@rm -rf node_modules
+	@rm -rf deps
 	@rm -rf reports
 
-run: node_modules static/path.min.js
+run: node_modules
 	./node_modules/.bin/supervisor ./app.js
 
-
-
 ghpages: deploy
+	rm -rf /tmp/ghpages
 	mkdir -p /tmp/ghpages
-	cp -Rv static /tmp/ghpages
+	cp -Rv static/* /tmp/ghpages
+	cp -Rv src/*.js /tmp/ghpages
+
 	cd /tmp/ghpages && \
 		git init && \
 		git add . && \
@@ -51,5 +77,4 @@ ghpages: deploy
 		git push --force remote +master:gh-pages
 	rm -rf /tmp/ghpages
 
-
-.PHONY: clean run
+.PHONY: clean run report ghpages
