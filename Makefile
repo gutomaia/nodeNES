@@ -12,34 +12,50 @@ node_modules: package.json
 	@touch $@
 
 deps:
-	mkdir -p deps
+	mkdir -p deps && touch $@
 
 external:
-	mkdir -p external
+	mkdir -p external && touch $@
 
 deps/jsnes: deps
-	cd deps &&\
+	cd deps && \
 		git clone https://github.com/bfirsh/jsnes.git
 
-external/jsnes.js: deps/jsnes
+external/jsnes.js: external deps/jsnes
 	cd deps/jsnes/source && \
-		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.js
+		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
 
-external/path.min.js: deps/pathjs
-	cp deps/pathjs/path.min.js external/
+external/dynamicaudio-min.js: external deps/jsnes
+	cp deps/jsnes/lib/dynamicaudio-min.js external/
+
+external/dynamicaudio.swf: external deps/jsnes
+	cp deps/jsnes/lib/dynamicaudio.swf external/
 
 deps/pathjs: deps
 	cd deps && \
 		git clone https://github.com/mtrpcic/pathjs.git
 
-external/codemirror.js: deps/codemirror.zip
-	cd deps && \
-		unzip codemirror.zip 
-	cp deps/CodeMirror-2.25/lib/codemirror.js external/
+external/path.min.js: external deps/pathjs
+	cp deps/pathjs/path.min.js external/
 
 deps/codemirror.zip: deps
 	cd deps && \
-		wget http://codemirror.net/codemirror.zip
+		wget http://codemirror.net/codemirror.zip && \
+		unzip codemirror.zip
+
+external/codemirror.js: external deps/codemirror.zip
+	cp deps/CodeMirror-2.25/lib/codemirror.js external/
+
+external/codemirror.css: external deps/codemirror.zip
+	cp deps/CodeMirror-2.25/lib/codemirror.css external/
+
+download_deps: external/jsnes.js \
+	external/dynamicaudio-min.js \
+	external/dynamicaudio.swf \
+	external/codemirror.js \
+	external/codemirror.css \
+	external/path.min.js
+	#TODO add bootstrap and jquery that way
 
 build: node_modules
 	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
@@ -57,15 +73,18 @@ report:
 clean:
 	@rm -rf node_modules
 	@rm -rf deps
+	@rm -rf external
 	@rm -rf reports
 
 run: node_modules
+	#download_deps
 	./node_modules/.bin/supervisor ./app.js
 
 ghpages: deploy
 	rm -rf /tmp/ghpages
 	mkdir -p /tmp/ghpages
 	cp -Rv static/* /tmp/ghpages
+	cp -Rv external/* /tmp/ghpages
 	cp -Rv src/*.js /tmp/ghpages
 
 	cd /tmp/ghpages && \
@@ -77,4 +96,4 @@ ghpages: deploy
 		git push --force remote +master:gh-pages
 	rm -rf /tmp/ghpages
 
-.PHONY: clean run report ghpages
+.PHONY: clean run report ghpages download_deps

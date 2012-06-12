@@ -6,7 +6,7 @@ $("#source_files").change(function() {
 
 function open_file(file){
     $.get(file, function(data) {
-        var regex = /(\/[a-z\/]+\/)([a-z\d]+\.asm)/;
+        var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
         var m  = regex.exec(file);
         compiler.path = m[1];
         console.log(m);
@@ -118,7 +118,7 @@ function emulatorUI () {
 
 $(function() {
     new JSNES({
-        'swfPath': '/ext/jsnes/',
+        'swfPath': '',
         'ui': emulatorUI()
     });
 });
@@ -179,16 +179,31 @@ Widget.prototype.notifyColorChanged = function() {
     }
 };
 
+PixelEditor.prototype = new Widget();
 
+function PixelEditor(canvas, position_x, position_y, opts) {
+    this.canvas = canvas;
+    this.position_x = position_x;
+    this.position_y = position_y;
 
+    this.pixelPadding = 1;
+    this.pixelSize = 8;
+    this.render();
+}
+
+PixelEditor.prototype.render = function() {
+    var canvasContext = this.canvas.getContext('2d');
+    fillCanvas(spr, imageData, this.palette, this.pixelSize);
+    canvasContext.putImageData(canvasImageData, this.position_x, this.position_y);
+};
 
 Preview.prototype = new Widget();
 Preview.prototype.constructor = Preview;
 
 function Preview(canvas, position_x, position_y, opts) {
+    this.canvas = canvas;
     this.position_x = position_x;
     this.position_y = position_y;
-    this.canvas = canvas;
 
     this.pixelPadding = 1;
 
@@ -273,7 +288,7 @@ SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
     var sprite_id = line * this.sprite_x + col;
-    editor.change_panel(sprite_id);
+    //editor.change_panel(sprite_id);
 };
 
 
@@ -405,7 +420,7 @@ ColorPicker.prototype.click = function(x, y) {
 
 
 var spr_editor = $('#sprite-editor')[0];
-var sprites = sprite.load_sprites('/example/scrolling/mario.chr');
+var sprites = sprite.load_sprites('example/scrolling/mario.chr');
 var options = {
     sprites: sprites,
     palette: [0x22,0x16,0x27,0x18]
@@ -417,7 +432,7 @@ var palette = new Palette(spr_editor, 0 , 325, options);
 var color_picker = new ColorPicker(spr_editor, 165,305,20, options);
 var preview = new Preview(spr_editor, 0, 0, options);
 
-//palette.addColorChangeListener(selector);
+palette.addColorChangeListener(selector);
 palette.addColorChangeListener(preview);
 
 color_picker.addColorChangeListener(palette);

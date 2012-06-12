@@ -12,7 +12,7 @@
         padding-bottom: 30px;
       }
     </style>
-    <link href="ext/codemirror/codemirror.css" rel="stylesheet">
+    <link href="codemirror.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -40,13 +40,12 @@
                 <div>
                     <label>Examples:
                         <select id="source_files">
-                            <option value="/example/movingsprite/movingsprite.asm">movingsprite.asm</option>
-                            <option value="/example/scrolling/scrolling1.asm">scrolling1.asm</option>
-                            <option value="/example/scrolling/scrolling2.asm">scrolling2.asm</option>
-                            <option value="/example/scrolling/scrolling3.asm">scrolling3.asm</option>
-                            <option value="/example/scrolling/scrolling4.asm">scrolling4.asm</option>
+                            <option value="example/movingsprite/movingsprite.asm">movingsprite.asm</option>
+                            <option value="example/scrolling/scrolling1.asm">scrolling1.asm</option>
+                            <option value="example/scrolling/scrolling2.asm">scrolling2.asm</option>
+                            <option value="example/scrolling/scrolling3.asm">scrolling3.asm</option>
+                            <option value="example/scrolling/scrolling4.asm">scrolling4.asm</option>
                             <!--<option value="example/scrolling/scrolling4.asm">scrolling5.asm</option>-->
-
                         </select>
                     </label>
                 </div>
@@ -88,12 +87,14 @@
 
     </div> <!-- /container -->
 
-    <script src="ext/jquery/jquery-1.7.1.min.js"></script>
-    <script src="ext/codemirror/codemirror.js"></script>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="codemirror.js"></script>
     <script src="asm.js"></script>
-    <script type="text/javascript" src="ext/jsnes/dynamicaudio.min.js"></script>
-    <script type="text/javascript" src="ext/jsnes/jsnes.src.js"></script>
+    <script type="text/javascript" src="dynamicaudio.min.js"></script>
+    <script type="text/javascript" src="jsnes.src.js"></script>
     <script type="text/javascript" src="browser_require.js"></script>
+
+    <!-- nodeNES Script -->
     <script type="text/javascript" src="analyzer.js"></script>
     <script type="text/javascript" src="c6502.js"></script>
     <script type="text/javascript" src="directives.js"></script>
