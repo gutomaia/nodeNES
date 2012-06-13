@@ -272,11 +272,17 @@ function SpriteSelector(canvas, position_x, position_y, opts){
     if (opts !== undefined) {
         this.sprites = opts.sprites;
         this.sprite_total = this.sprites.length / 16 >> 0;
-        //this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
-        //this.sprite_y = (this.sprite_total / this.sprite_x) >> 0;
-        //this.sprite_y += (this.sprite_total % this.sprite_x !== 0)?1:0;
-        this.sprite_x = 8;
-        this.sprite_y = 16;
+        if (opts.sprite_x !== undefined){
+            this.sprite_x = opts.sprite_x;
+        } else {
+            this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
+        }
+        if (opts.sprite_y !== undefined){
+            this.sprite_y = opts.sprite_y;
+        } else {
+            this.sprite_y = (this.sprite_total / this.sprite_x) >> 0;
+            this.sprite_y += (this.sprite_total % this.sprite_x !== 0)?1:0;
+        }
         this.palette = opts.palette;
         this.width = this.sprite_x * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
         this.height = this.sprite_y * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
@@ -286,10 +292,12 @@ function SpriteSelector(canvas, position_x, position_y, opts){
 }
 
 SpriteSelector.prototype.nextPage = function(){
+    this.page++;
 
 };
 
 SpriteSelector.prototype.previousPage = function(){
+    this.page--;
 
 };
 
@@ -423,8 +431,6 @@ ColorPicker.prototype.click = function(x, y) {
     this.color_id = line * 16 + col;
     this.notifyColorChanged();
 };
-
-
 
 
 var spr_editor = $('#sprite-editor')[0];
