@@ -52,13 +52,19 @@ external/codemirror.js: external deps/CodeMirror2
 external/codemirror.css: external deps/CodeMirror2
 	cp deps/CodeMirror2/lib/codemirror.css external/
 
+external/jquery-1.7.2.min.js: external
+	cd external && \
+		wget http://code.jquery.com/jquery-1.7.2.min.js
+	touch $@
+
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
 	external/dynamicaudio.swf \
 	external/path.min.js \
 	external/codemirror.js \
-	external/codemirror.css
-	#TODO add bootstrap and jquery that way
+	external/codemirror.css \
+	external/jquery-1.7.2.min.js
+	#TODO add bootstrap that way
 
 build: node_modules
 	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
