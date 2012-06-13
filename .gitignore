@@ -1,7 +1,8 @@
-.buildpath
 *.py
 *.pyc
+.DS_Store
+.buildpath
 .project
 .sublime-build
+external/
 node_modules/
-.DS_Store
