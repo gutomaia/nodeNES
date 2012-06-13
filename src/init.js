@@ -267,22 +267,31 @@ function SpriteSelector(canvas, position_x, position_y, opts){
 
     this.spriteSize= this.pixelSize * 8;
     this.width = this.canvas.width - this.position_x;
+    this.page = 0;
 
     if (opts !== undefined) {
         this.sprites = opts.sprites;
         this.sprite_total = this.sprites.length / 16 >> 0;
-        this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
-        this.sprite_y = (this.sprite_total / this.sprite_x) >> 0;
-        this.sprite_y += (this.sprite_total % this.sprite_x !== 0)?1:0;
+        //this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
+        //this.sprite_y = (this.sprite_total / this.sprite_x) >> 0;
+        //this.sprite_y += (this.sprite_total % this.sprite_x !== 0)?1:0;
+        this.sprite_x = 8;
+        this.sprite_y = 16;
         this.palette = opts.palette;
-        console.log(this.palette);
-        console.log('aaaa');
         this.width = this.sprite_x * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
         this.height = this.sprite_y * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
         this.render();
     }
 
 }
+
+SpriteSelector.prototype.nextPage = function(){
+
+};
+
+SpriteSelector.prototype.previousPage = function(){
+
+};
 
 SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
@@ -293,9 +302,8 @@ SpriteSelector.prototype.click = function (x, y){
 
 
 SpriteSelector.prototype.render = function(){
-    var sprite_id = 0;
+    var sprite_id = this.page + (this.sprite_x + this.sprite_y);
     var canvasContext = this.canvas.getContext('2d');
-
     for (var y=0; y < this.sprite_y; y++){
         for (var x=0; x < this.sprite_x; x++){
             var px =  x * this.spriteSize + (this.pixelPadding * x);
@@ -423,7 +431,9 @@ var spr_editor = $('#sprite-editor')[0];
 var sprites = sprite.load_sprites('example/scrolling/mario.chr');
 var options = {
     sprites: sprites,
-    palette: [0x22,0x16,0x27,0x18]
+    palette: [0x22,0x16,0x27,0x18],
+    sprite_x: 8,
+    sprite_y: 16
 };
 
 
