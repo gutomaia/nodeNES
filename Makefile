@@ -11,50 +11,53 @@ node_modules: package.json
 	npm install
 	@touch $@
 
-deps:
-	mkdir -p deps && touch $@
-
 external:
-	mkdir -p external && touch $@
+	mkdir -p external
 
-deps/jsnes: deps
+deps/jsnes:
+	mkdir -p deps
 	cd deps && \
 		git clone https://github.com/bfirsh/jsnes.git
+	touch $@
 
-external/jsnes.js: external deps/jsnes
+external/jsnes.src.js: external deps/jsnes
 	cd deps/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
+	touch $@
 
 external/dynamicaudio-min.js: external deps/jsnes
-	cp deps/jsnes/lib/dynamicaudio-min.js external/
+	cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
 
 external/dynamicaudio.swf: external deps/jsnes
-	cp deps/jsnes/lib/dynamicaudio.swf external/
+	cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
 
-deps/pathjs: deps
+deps/pathjs:
+	mkdir -p deps
 	cd deps && \
 		git clone https://github.com/mtrpcic/pathjs.git
+	touch $@
 
 external/path.min.js: external deps/pathjs
 	cp deps/pathjs/path.min.js external/
 
-deps/codemirror.zip: deps
+deps/CodeMirror2:
+	mkdir -p deps
 	cd deps && \
-		wget http://codemirror.net/codemirror.zip && \
-		unzip codemirror.zip
+			git clone https://github.com/marijnh/CodeMirror2.git
+	touch $@
 
-external/codemirror.js: external deps/codemirror.zip
-	cp deps/CodeMirror-2.25/lib/codemirror.js external/
+external/codemirror.js: external deps/CodeMirror2
+	cp deps/CodeMirror2/lib/codemirror.js external/
 
-external/codemirror.css: external deps/codemirror.zip
-	cp deps/CodeMirror-2.25/lib/codemirror.css external/
+external/codemirror.css: external deps/CodeMirror2
+	cp deps/CodeMirror2/lib/codemirror.css external/
 
-download_deps: external/jsnes.js \
+download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
 	external/dynamicaudio.swf \
+	external/path.min.js \
 	external/codemirror.js \
-	external/codemirror.css \
-	external/path.min.js
+	external/codemirror.css
 	#TODO add bootstrap and jquery that way
 
 build: node_modules
@@ -76,8 +79,7 @@ clean:
 	@rm -rf external
 	@rm -rf reports
 
-run: node_modules
-	#download_deps
+run: node_modules download_deps
 	./node_modules/.bin/supervisor ./app.js
 
 ghpages: deploy
