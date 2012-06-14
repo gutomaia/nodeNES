@@ -9,7 +9,6 @@ function open_file(file){
         var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
         var m  = regex.exec(file);
         compiler.path = m[1];
-        console.log(m);
         asmEditor.setValue(data);
         update();
     });
@@ -23,7 +22,6 @@ function update(){
         data = compiler.nes_compiler(asmEditor.getValue());
         _nes.loadRom(data);
         _nes.start();
-        console.log('okay');
     } catch (e){
         console.log(e);
     }
@@ -138,10 +136,14 @@ var palette = new ui.Palette(spr_editor, 0 , 325, options);
 var color_picker = new ui.ColorPicker(spr_editor, 165,305,20, options);
 var preview = new ui.Preview(spr_editor, 0, 0, options);
 
+pixel_editor.addColorChangeListener(palette);
+
 palette.addColorChangeListener(selector);
 palette.addColorChangeListener(preview);
 palette.addColorChangeListener(pixel_editor);
+
 color_picker.addColorChangeListener(palette);
+
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;

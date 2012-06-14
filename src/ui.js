@@ -70,6 +70,7 @@ exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.spriteSize = this.pixelSize * 8;
     this.height = this.width = this.spriteSize;
     this.sprite = sprite.get_sprite(0, this.sprites);
+    this.palette_id = 0;
     this.render();
 };
 
@@ -86,15 +87,14 @@ exports.PixelEditor.prototype.render = function() {
 
 exports.PixelEditor.prototype.onColorChanged = function(widget) {
     this.palette = widget.palette;
+    this.palette_id = widget.palette_id;
     this.render();
 };
 
 exports.PixelEditor.prototype.click = function (x, y){
-    console.log('pixel editor click');
     var line = Math.abs((this.position_y - y) / (this.pixelSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.pixelSize + this.pixelPadding) >> 0);
-    console.log('where:'+line+','+col);
-    this.sprite[line][col] = 1;
+    this.sprite[line][col] = this.palette_id;
     this.render();
 };
 
@@ -203,7 +203,7 @@ exports.SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
     var sprite_id = line * this.sprite_x + col;
-    //editor.change_panel(sprite_id);
+    //TODO preview.change_panel(sprite_id);
 };
 
 
@@ -236,13 +236,12 @@ exports.Palette = function (canvas, position_x, position_y, opts){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
-    this.width = this.picker_size * 4;
-    this.height = this.picker_size;
     if (opts !== undefined) {
-        //this.picker_size = opt.picker_size;
         this.palette = opts.palette;
     }
     this.picker_size = 20;
+    this.width = this.picker_size * 4;
+    this.height = this.picker_size;
     this.palette_id = 0;
     this.render();
 };
