@@ -171,12 +171,12 @@ $('#sprite-editor').click(
     function(e) {
         var canvas = $(this)[0];
         var pos = getCursorPosition(canvas, e);
-        if (color_picker.was_clicked(pos.x, pos.y)){
-            color_picker.click(pos.x, pos.y);
-        }else if (selector.was_clicked(pos.x, pos.y)){
-            selector.click(pos.x, pos.y);
-        } else if (palette.was_clicked(pos.x, pos.y)){
-            palette.click(pos.x, pos.y);
+        var widgets = [pixel_editor, color_picker, selector, palette];
+        for (var w in widgets){
+            if (widgets[w].was_clicked(pos.x, pos.y)){
+                widgets[w].click(pos.x, pos.y);
+                break;
+            }
         }
     }
 );
