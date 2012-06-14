@@ -52,6 +52,22 @@ external/codemirror.js: external deps/CodeMirror2
 external/codemirror.css: external deps/CodeMirror2
 	cp deps/CodeMirror2/lib/codemirror.css external/
 
+deps/glyphicons_free:
+	mkdir -p deps
+	cd deps && \
+		wget http://glyphicons.com/files/glyphicons_free.zip && \
+		unzip glyphicons_free.zip
+	touch $@
+
+external/fast_forward.png: external deps/glyphicons_free
+	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
+
+deps/bootstrap:
+	mkdir -p deps
+	cd deps && \
+		git clone https://github.com/twitter/bootstrap.git
+	touch $@
+
 external/jquery-1.7.2.min.js: external
 	cd external && \
 		wget http://code.jquery.com/jquery-1.7.2.min.js
@@ -63,7 +79,8 @@ download_deps: external/jsnes.src.js \
 	external/path.min.js \
 	external/codemirror.js \
 	external/codemirror.css \
-	external/jquery-1.7.2.min.js
+	external/jquery-1.7.2.min.js \
+	external/fast_forward.png
 	#TODO add bootstrap that way
 
 build: node_modules

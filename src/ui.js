@@ -203,7 +203,7 @@ exports.SpriteSelector.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
     var sprite_id = line * this.sprite_x + col;
-    //TODO preview.change_panel(sprite_id);
+    this.notifySpriteChangeListener();
 };
 
 
@@ -231,6 +231,17 @@ exports.SpriteSelector.prototype.onColorChanged = function(widget){
     this.palette = widget.palette;
     this.render();
 };
+
+exports.SpriteSelector.prototype.addNextPageButton = function(img_src, x, y){
+    this.nextPageButton = new Image();
+    this.nextPageButton.context = this.canvas.getContext('2d');
+    this.nextPageButton.x = x;
+    this.nextPageButton.y = y;
+    this.nextPageButton.onload = function(){
+        this.context.drawImage(this, x,y);
+    };
+    this.nextPageButton.src = img_src;
+}
 
 exports.Palette = function (canvas, position_x, position_y, opts){
     this.canvas = canvas;
