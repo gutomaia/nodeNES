@@ -155,10 +155,21 @@ exports.Preview.prototype.onColorChanged = function(widget){
     this.render();
 };
 
+exports.Preview.prototype.onSpriteChanged = function(widget){
+    var panels = [];
+    console.log(widget);
+    console.log(widget.sprite_id);
+    for (var i = 0; i < 8; i++){
+        panels.push(widget.sprite_id + i);
+    }
+    this.panels = panels;
+    this.render();
+};
+
 exports.SpriteSelector = function(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
-    
+
     this.canvas = canvas;
     this.pixelSize = 2;
     this.pixelPadding = 3;
@@ -214,14 +225,13 @@ exports.SpriteSelector.prototype.click = function (x, y){
         y >= this.position_y && y <= this.position_y + this.height) {
         var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
         var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
-        var sprite_id = line * this.sprite_x + col;
+        this.sprite_id = (this.page * this.sprite_x * this.sprite_y ) + line * this.sprite_x + col;
         this.notifySpriteChangeListener();
     }
 };
 
-
 exports.SpriteSelector.prototype.render = function(){
-    var sprite_id = this.page * (this.sprite_x * this.sprite_y);
+    var sprite_id = this.page * this.sprite_x * this.sprite_y;
     var canvasContext = this.canvas.getContext('2d');
     for (var y=0; y < this.sprite_y; y++){
         for (var x=0; x < this.sprite_x; x++){

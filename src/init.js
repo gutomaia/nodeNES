@@ -107,7 +107,6 @@ function emulatorUI () {
                     prevBuffer[i] = pixel;
                 }
             }
-
             this.canvasContext.putImageData(this.canvasImageData, 0, 0);
         }
     };
@@ -144,8 +143,10 @@ palette.addColorChangeListener(pixel_editor);
 
 color_picker.addColorChangeListener(palette);
 
-selector.addPreviousPageButton("fast_backward.png", 440,315);
-selector.addNextPageButton("fast_forward.png", 475,315);
+selector.addPreviousPageButton("fast_backward.png", 440, 315);
+selector.addNextPageButton("fast_forward.png", 475, 315);
+
+selector.addSpriteChangedListener(preview);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
