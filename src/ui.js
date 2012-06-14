@@ -1,6 +1,9 @@
 (function(exports){
 
-function fillCanvas(sprt, imageData, palette, size){
+function fillCanvas(sprt, imageData, palette, size, padding){
+    if (padding === undefined){
+        padding = 0;
+    }
     var a = 0;
     for (var y=0; y < 8*size; y++){
         for (var x=0; x < 8*size; x++) {
@@ -56,21 +59,31 @@ exports.Widget.prototype.notifyColorChanged = function() {
     }
 };
 
-PixelEditor.prototype = new exports.Widget();
+exports.PixelEditor = {};
 
-function PixelEditor(canvas, position_x, position_y, opts) {
+exports.PixelEditor.prototype = new exports.Widget();
+exports.PixelEditor.prototype.constructor = exports.PixelEditor;
+
+exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.canvas = canvas;
     this.position_x = position_x;
     this.position_y = position_y;
 
-    this.pixelPadding = 1;
-    this.pixelSize = 8;
-    this.render();
-}
+    this.sprites = opts.sprites;
+    this.palette = opts.palette;
 
-PixelEditor.prototype.render = function() {
+    this.pixelPadding = 1;
+    this.pixelSize = 24;
+    this.spriteSize = this.pixelSize * 8;
+    this.render();
+};
+
+exports.PixelEditor.prototype.render = function() {
     var canvasContext = this.canvas.getContext('2d');
-    fillCanvas(spr, imageData, this.palette, this.pixelSize);
+    var canvasImageData = canvasContext.getImageData(this.position_x, this.position_y, this.spriteSize, this.spriteSize);
+    var spr = sprite.get_sprite(0, this.sprites);
+    var imageData = canvasImageData.data;
+    fillCanvas(spr, imageData, this.palette, this.pixelSize, this.pixelPadding);
     canvasContext.putImageData(canvasImageData, this.position_x, this.position_y);
 };
 
@@ -141,13 +154,12 @@ exports.SpriteSelector.prototype.constructor = exports.SpriteSelector;
 exports.SpriteSelector = function(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
+    
     this.canvas = canvas;
-
     this.pixelSize = 2;
     this.pixelPadding = 3;
 
     this.spriteSize= this.pixelSize * 8;
-    this.width = this.canvas.width - this.position_x;
     this.page = 0;
 
     if (opts !== undefined) {
@@ -156,6 +168,7 @@ exports.SpriteSelector = function(canvas, position_x, position_y, opts){
         if (opts.sprite_x !== undefined){
             this.sprite_x = opts.sprite_x;
         } else {
+            this.width = this.canvas.width - this.position_x;
             this.sprite_x = (this.width / (this.spriteSize + this.pixelPadding)) >> 0;
         }
         if (opts.sprite_y !== undefined){

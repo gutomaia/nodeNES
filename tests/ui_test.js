@@ -63,6 +63,18 @@ exports.test_on_sprite_changed = function(test){
     test.done();
 };
 
+exports.test_pixel_editor_extends_widget = function(test){
+    test.equal(ui.Widget.addColorChangeListener, ui.PixelEditor.addColorChangeListener);
+    test.equal(ui.Widget.addSpriteChangedListener, ui.PixelEditor.addSpriteChangedListener);
+    test.equal(ui.Widget.notifyColorChanged, ui.PixelEditor.notifyColorChanged);
+    test.equal(ui.Widget.notifySpriteChangeListener, ui.PixelEditor.notifySpriteChangeListener);
+    test.equal(ui.Widget.onColorChanged, ui.PixelEditor.onColorChanged);
+    test.equal(ui.Widget.onSpriteChanged, ui.PixelEditor.onSpriteChanged);
+    test.equal(ui.Widget.was_clicked, ui.PixelEditor.was_clicked);
+    test.done();
+};
+
+
 exports.test_sprite_selector_extends_widget = function(test){
     test.equal(ui.Widget.addColorChangeListener, ui.SpriteSelector.addColorChangeListener);
     test.equal(ui.Widget.addSpriteChangedListener, ui.SpriteSelector.addSpriteChangedListener);
@@ -75,12 +87,13 @@ exports.test_sprite_selector_extends_widget = function(test){
 };
 
 exports.test_new_sprite_selector = function(test){
-    var sprite_selector = new ui.SpriteSelector(this.mockCanvas, 0, 0);
+    var options = {};
+    //var sprite_selector = new ui.SpriteSelector(this.mockCanvas, 0, 0, options);
 
     test.done();
 };
 
-exports.test_sprite_selector_extends_widget = function(test){
+exports.test_preview_extends_widget = function(test){
     test.equal(ui.Widget.addColorChangeListener, ui.Preview.addColorChangeListener);
     test.equal(ui.Widget.addSpriteChangedListener, ui.Preview.addSpriteChangedListener);
     test.equal(ui.Widget.notifyColorChanged, ui.Preview.notifyColorChanged);

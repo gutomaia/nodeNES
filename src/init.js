@@ -132,16 +132,16 @@ var options = {
     sprite_y: 16
 };
 
-
-var selector = new ui.SpriteSelector(spr_editor, 165, 0, options);
+var pixel_editor = new ui.PixelEditor(spr_editor, 165, 0, options);
+var selector = new ui.SpriteSelector(spr_editor, 365, 0, options);
 var palette = new ui.Palette(spr_editor, 0 , 325, options);
 var color_picker = new ui.ColorPicker(spr_editor, 165,305,20, options);
 var preview = new ui.Preview(spr_editor, 0, 0, options);
 
-palette.addColorChangeListener(selector);
-palette.addColorChangeListener(preview);
-
-color_picker.addColorChangeListener(palette);
+//TODO fix listeners
+//palette.addColorChangeListener(selector);
+//palette.addColorChangeListener(preview);
+//color_picker.addColorChangeListener(palette);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
