@@ -200,10 +200,18 @@ exports.SpriteSelector.prototype.previousPage = function(){
 };
 
 exports.SpriteSelector.prototype.click = function (x, y){
-    var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
-    var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
-    var sprite_id = line * this.sprite_x + col;
-    this.notifySpriteChangeListener();
+    if (this.nextPageButton !== undefined &&
+        x >= this.nextPageButton.position_x && x <= this.nextPageButton.position_x + this.nextPageButton.width &&
+        y >= this.nextPageButton.position_y && y <= this.nextPageButton.position_y + this.nextPageButton.height){
+        this.nextPage();
+        this.render();
+    } else if (x >= this.position_x && x <= this.position_x + this.width &&
+        y >= this.position_y && y <= this.position_y + this.height) {
+        var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
+        var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
+        var sprite_id = line * this.sprite_x + col;
+        this.notifySpriteChangeListener();
+    }
 };
 
 
@@ -235,13 +243,27 @@ exports.SpriteSelector.prototype.onColorChanged = function(widget){
 exports.SpriteSelector.prototype.addNextPageButton = function(img_src, x, y){
     this.nextPageButton = new Image();
     this.nextPageButton.context = this.canvas.getContext('2d');
-    this.nextPageButton.x = x;
-    this.nextPageButton.y = y;
+    this.nextPageButton.position_x = x;
+    this.nextPageButton.position_y = y;
     this.nextPageButton.onload = function(){
-        this.context.drawImage(this, x,y);
+        this.context.drawImage(this, this.position_x, this.position_y);
     };
     this.nextPageButton.src = img_src;
-}
+};
+
+
+exports.SpriteSelector.prototype.was_clicked = function(x, y){
+    if (this.nextPageButton !== undefined &&
+        x >= this.nextPageButton.position_x && x <= this.nextPageButton.position_x + this.nextPageButton.width &&
+        y >= this.nextPageButton.position_y && y <= this.nextPageButton.position_y + this.nextPageButton.height){
+        return true;
+    } else if (x >= this.position_x && x <= this.position_x + this.width &&
+        y >= this.position_y && y <= this.position_y + this.height){
+        return true;
+    }
+    return false;
+};
+
 
 exports.Palette = function (canvas, position_x, position_y, opts){
     this.canvas = canvas;
@@ -275,13 +297,19 @@ exports.Palette.prototype.render = function(){
         context.fillStyle = hex;
         context.fill();
         context.lineWidth = 2;
-        if (x == this.palette_id){
-            context.strokeStyle = '#ff0000';
-        } else {
-            context.strokeStyle = '#ffffff';
-        }
+        context.strokeStyle = '#ffffff';
         context.stroke();
     }
+    context.beginPath();
+    context.rect(
+        this.palette_id * this.picker_size + this.position_x,
+        this.position_y,
+        this.picker_size,
+        this.picker_size
+    );
+    context.lineWidth = 2;
+    context.strokeStyle = '#ff0000';
+    context.stroke();
 };
 
 exports.Palette.prototype.click = function(x, y) {
