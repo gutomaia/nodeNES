@@ -37,8 +37,7 @@ exports.Widget.prototype.addSpriteChangedListener = function (widget){
     this.spriteListeners.push(widget);
 };
 
-exports.Widget.prototype.onSpriteChanged = function(widget){
-};
+exports.Widget.prototype.onSpriteChanged = function(widget){};
 
 exports.Widget.prototype.notifySpriteChangeListener = function() {
     for (var l in this.spriteListeners){
@@ -50,8 +49,7 @@ exports.Widget.prototype.addColorChangeListener = function (widget){
     this.colorListeners.push(widget);
 };
 
-exports.Widget.prototype.onColorChanged = function (widget){
-};
+exports.Widget.prototype.onColorChanged = function (widget){};
 
 exports.Widget.prototype.notifyColorChanged = function() {
     for (var l in this.colorListeners){
@@ -67,9 +65,11 @@ exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.sprites = opts.sprites;
     this.palette = opts.palette;
 
-    this.pixelPadding = 1;
+    this.pixelPadding = 0;
     this.pixelSize = 24;
     this.spriteSize = this.pixelSize * 8;
+    this.height = this.width = this.spriteSize;
+    this.sprite = sprite.get_sprite(0, this.sprites);
     this.render();
 };
 
@@ -79,16 +79,24 @@ exports.PixelEditor.prototype.constructor = exports.PixelEditor;
 exports.PixelEditor.prototype.render = function() {
     var canvasContext = this.canvas.getContext('2d');
     var canvasImageData = canvasContext.getImageData(this.position_x, this.position_y, this.spriteSize, this.spriteSize);
-    var spr = sprite.get_sprite(0, this.sprites);
     var imageData = canvasImageData.data;
-    fillCanvas(spr, imageData, this.palette, this.pixelSize, this.pixelPadding);
+    fillCanvas(this.sprite, imageData, this.palette, this.pixelSize, this.pixelPadding);
     canvasContext.putImageData(canvasImageData, this.position_x, this.position_y);
 };
 
 exports.PixelEditor.prototype.onColorChanged = function(widget) {
     this.palette = widget.palette;
     this.render();
-}
+};
+
+exports.PixelEditor.prototype.click = function (x, y){
+    console.log('pixel editor click');
+    var line = Math.abs((this.position_y - y) / (this.pixelSize + this.pixelPadding) >> 0);
+    var col = Math.abs((this.position_x - x) / (this.pixelSize + this.pixelPadding) >> 0);
+    console.log('where:'+line+','+col);
+    this.sprite[line][col] = 1;
+    this.render();
+};
 
 exports.Preview = function (canvas, position_x, position_y, opts) {
     this.canvas = canvas;
@@ -178,7 +186,6 @@ exports.SpriteSelector = function(canvas, position_x, position_y, opts){
         this.height = this.sprite_y * (this.spriteSize + this.pixelPadding) - this.pixelPadding;
         this.render();
     }
-
 };
 
 exports.SpriteSelector.prototype = new exports.Widget();
@@ -186,12 +193,10 @@ exports.SpriteSelector.prototype.constructor = exports.SpriteSelector;
 
 exports.SpriteSelector.prototype.nextPage = function(){
     this.page++;
-
 };
 
 exports.SpriteSelector.prototype.previousPage = function(){
     this.page--;
-
 };
 
 exports.SpriteSelector.prototype.click = function (x, y){
