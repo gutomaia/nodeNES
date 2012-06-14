@@ -66,7 +66,7 @@ exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.palette = opts.palette;
 
     this.pixelPadding = 0;
-    this.pixelSize = 24;
+    this.pixelSize = 32;
     this.spriteSize = this.pixelSize * 8;
     this.height = this.width = this.spriteSize;
     this.sprite = sprite.get_sprite(0, this.sprites);
@@ -263,8 +263,12 @@ exports.Palette.prototype.render = function(){
         hex = "#000000".substr(0, 7 - color.length) + color;
         context.fillStyle = hex;
         context.fill();
-        context.lineWidth = 1;
-        context.strokeStyle = '#ffffff';
+        context.lineWidth = 2;
+        if (x == this.palette_id){
+            context.strokeStyle = '#ff0000';
+        } else {
+            context.strokeStyle = '#ffffff';
+        }
         context.stroke();
     }
 };
@@ -273,6 +277,7 @@ exports.Palette.prototype.click = function(x, y) {
     var line = Math.abs((this.position_y - y) / this.picker_size >> 0);
     var col = Math.abs((this.position_x - x) / this.picker_size >> 0);
     this.palette_id = line * this.picker_size + col;
+    this.render();
     this.notifyColorChanged();
 };
 
