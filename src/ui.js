@@ -85,6 +85,11 @@ exports.PixelEditor.prototype.render = function() {
     canvasContext.putImageData(canvasImageData, this.position_x, this.position_y);
 };
 
+exports.PixelEditor.prototype.onColorChanged = function(widget) {
+    this.palette = widget.palette;
+    this.render();
+}
+
 exports.Preview = function (canvas, position_x, position_y, opts) {
     this.canvas = canvas;
     this.position_x = position_x;

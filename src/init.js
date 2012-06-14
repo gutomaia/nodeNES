@@ -140,6 +140,7 @@ var preview = new ui.Preview(spr_editor, 0, 0, options);
 
 palette.addColorChangeListener(selector);
 palette.addColorChangeListener(preview);
+palette.addColorChangeListener(pixel_editor);
 color_picker.addColorChangeListener(palette);
 
 function getCursorPosition(canvas, event) {
