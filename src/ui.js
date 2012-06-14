@@ -59,11 +59,6 @@ exports.Widget.prototype.notifyColorChanged = function() {
     }
 };
 
-exports.PixelEditor = {};
-
-exports.PixelEditor.prototype = new exports.Widget();
-exports.PixelEditor.prototype.constructor = exports.PixelEditor;
-
 exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.canvas = canvas;
     this.position_x = position_x;
@@ -78,6 +73,9 @@ exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.render();
 };
 
+exports.PixelEditor.prototype = new exports.Widget();
+exports.PixelEditor.prototype.constructor = exports.PixelEditor;
+
 exports.PixelEditor.prototype.render = function() {
     var canvasContext = this.canvas.getContext('2d');
     var canvasImageData = canvasContext.getImageData(this.position_x, this.position_y, this.spriteSize, this.spriteSize);
@@ -86,11 +84,6 @@ exports.PixelEditor.prototype.render = function() {
     fillCanvas(spr, imageData, this.palette, this.pixelSize, this.pixelPadding);
     canvasContext.putImageData(canvasImageData, this.position_x, this.position_y);
 };
-
-exports.Preview = {};
-
-exports.Preview.prototype = new exports.Widget();
-exports.Preview.prototype.constructor = exports.Preview;
 
 exports.Preview = function (canvas, position_x, position_y, opts) {
     this.canvas = canvas;
@@ -110,6 +103,9 @@ exports.Preview = function (canvas, position_x, position_y, opts) {
         this.render();
     }
 };
+
+exports.Preview.prototype = new exports.Widget();
+exports.Preview.prototype.constructor = exports.Preview;
 
 exports.Preview.prototype.change_panel = function (sprite_id, panel_id){
     if (panel_id !== undefined){
@@ -146,11 +142,6 @@ exports.Preview.prototype.onColorChanged = function(widget){
     this.render();
 };
 
-exports.SpriteSelector = {};
-
-exports.SpriteSelector.prototype = new exports.Widget();
-exports.SpriteSelector.prototype.constructor = exports.SpriteSelector;
-
 exports.SpriteSelector = function(canvas, position_x, position_y, opts){
     this.position_x = (position_x === null)?0:position_x;
     this.position_y = (position_y === null)?0:position_y;
@@ -184,6 +175,9 @@ exports.SpriteSelector = function(canvas, position_x, position_y, opts){
     }
 
 };
+
+exports.SpriteSelector.prototype = new exports.Widget();
+exports.SpriteSelector.prototype.constructor = exports.SpriteSelector;
 
 exports.SpriteSelector.prototype.nextPage = function(){
     this.page++;
@@ -228,11 +222,6 @@ exports.SpriteSelector.prototype.onColorChanged = function(widget){
     this.render();
 };
 
-exports.Palette = {};
-
-exports.Palette.prototype = new exports.Widget();
-exports.Palette.prototype.constructor = exports.Palette;
-
 exports.Palette = function (canvas, position_x, position_y, opts){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
@@ -247,6 +236,9 @@ exports.Palette = function (canvas, position_x, position_y, opts){
     this.palette_id = 0;
     this.render();
 };
+
+exports.Palette.prototype = new exports.Widget();
+exports.Palette.prototype.constructor = exports.Palette;
 
 exports.Palette.prototype.render = function(){
     var context = this.canvas.getContext('2d');
@@ -272,8 +264,7 @@ exports.Palette.prototype.click = function(x, y) {
     var line = Math.abs((this.position_y - y) / this.picker_size >> 0);
     var col = Math.abs((this.position_x - x) / this.picker_size >> 0);
     this.palette_id = line * this.picker_size + col;
-
-    //this.notifyColorChanged();
+    this.notifyColorChanged();
 };
 
 exports.Palette.prototype.onColorChanged = function(widget){
@@ -284,11 +275,6 @@ exports.Palette.prototype.onColorChanged = function(widget){
     this.notifyColorChanged();
 };
 
-exports.ColorPicker = {};
-
-exports.ColorPicker.prototype = new exports.Widget();
-exports.ColorPicker.prototype.constructor = exports.ColorPicker;
-
 exports.ColorPicker = function(canvas, position_x, position_y, options){
     this.canvas = canvas;
     this.position_x = (position_x === null)?0:position_x;
@@ -298,6 +284,9 @@ exports.ColorPicker = function(canvas, position_x, position_y, options){
     this.height = this.picker_size * 4;
     this.render();
 };
+
+exports.ColorPicker.prototype = new exports.Widget();
+exports.ColorPicker.prototype.constructor = exports.ColorPicker;
 
 exports.ColorPicker.prototype.render = function(){
     var context = this.canvas.getContext('2d');

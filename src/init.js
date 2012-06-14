@@ -138,10 +138,9 @@ var palette = new ui.Palette(spr_editor, 0 , 325, options);
 var color_picker = new ui.ColorPicker(spr_editor, 165,305,20, options);
 var preview = new ui.Preview(spr_editor, 0, 0, options);
 
-//TODO fix listeners
-//palette.addColorChangeListener(selector);
-//palette.addColorChangeListener(preview);
-//color_picker.addColorChangeListener(palette);
+palette.addColorChangeListener(selector);
+palette.addColorChangeListener(preview);
+color_picker.addColorChangeListener(palette);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
@@ -169,7 +168,6 @@ function getCursorPosition(canvas, event) {
 
 $('#sprite-editor').click(
     function(e) {
-        console.log('click');
         var canvas = $(this)[0];
         var pos = getCursorPosition(canvas, e);
         if (color_picker.was_clicked(pos.x, pos.y)){
