@@ -69,7 +69,8 @@ exports.PixelEditor = function (canvas, position_x, position_y, opts) {
     this.pixelSize = 32;
     this.spriteSize = this.pixelSize * 8;
     this.height = this.width = this.spriteSize;
-    this.sprite = sprite.get_sprite(0, this.sprites);
+    this.sprite_id = 0;
+    this.sprite = sprite.get_sprite(this.sprite_id, this.sprites);
     this.palette_id = 0;
     this.render();
 };
@@ -88,6 +89,12 @@ exports.PixelEditor.prototype.render = function() {
 exports.PixelEditor.prototype.onColorChanged = function(widget) {
     this.palette = widget.palette;
     this.palette_id = widget.palette_id;
+    this.render();
+};
+
+exports.PixelEditor.prototype.onSpriteChanged = function(widget) {
+    this.sprite_id = widget.sprite_id;
+    this.sprite = sprite.get_sprite(this.sprite_id, this.sprites);
     this.render();
 };
 
@@ -110,11 +117,16 @@ exports.Preview = function (canvas, position_x, position_y, opts) {
 
     this.pixelSize = 10;
     this.spriteSize = this.pixelSize * 8;
+
+    this.width = (this.spriteSize + this.pixelPadding) * 2 - this.pixelPadding;
+    this.height = (this.spriteSize + this.pixelPadding) * 4 - this.pixelPadding;
     if (opts !== undefined) {
         this.sprites = opts.sprites;
         this.palette = opts.palette;
         this.render();
     }
+    this.width = (this.spriteSize + this.pixelPadding) * 2 - this.pixelPadding;
+    this.height = (this.spriteSize + this.pixelPadding) * 4 - this.pixelPadding;
 };
 
 exports.Preview.prototype = new exports.Widget();
@@ -157,13 +169,18 @@ exports.Preview.prototype.onColorChanged = function(widget){
 
 exports.Preview.prototype.onSpriteChanged = function(widget){
     var panels = [];
-    console.log(widget);
-    console.log(widget.sprite_id);
     for (var i = 0; i < 8; i++){
         panels.push(widget.sprite_id + i);
     }
     this.panels = panels;
     this.render();
+};
+
+exports.Preview.prototype.click = function (x, y){
+    var line = Math.abs((this.position_y - y) / (this.spriteSize + this.pixelPadding) >> 0);
+    var col = Math.abs((this.position_x - x) / (this.spriteSize + this.pixelPadding) >> 0);
+    this.sprite_id = this.panels[line * 2 + col];
+    this.notifySpriteChangeListener();
 };
 
 exports.SpriteSelector = function(canvas, position_x, position_y, opts){
@@ -293,7 +310,6 @@ exports.SpriteSelector.prototype.was_clicked = function(x, y){
     }
     return false;
 };
-
 
 exports.Palette = function (canvas, position_x, position_y, opts){
     this.canvas = canvas;

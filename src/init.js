@@ -147,6 +147,7 @@ selector.addPreviousPageButton("fast_backward.png", 440, 315);
 selector.addNextPageButton("fast_forward.png", 475, 315);
 
 selector.addSpriteChangedListener(preview);
+preview.addSpriteChangedListener(pixel_editor);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
@@ -176,7 +177,7 @@ $('#sprite-editor').click(
     function(e) {
         var canvas = $(this)[0];
         var pos = getCursorPosition(canvas, e);
-        var widgets = [pixel_editor, color_picker, selector, palette];
+        var widgets = [pixel_editor, palette, preview, color_picker, selector];
         for (var w in widgets){
             if (widgets[w].was_clicked(pos.x, pos.y)){
                 widgets[w].click(pos.x, pos.y);
