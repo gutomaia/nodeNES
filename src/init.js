@@ -144,8 +144,8 @@ palette.addColorChangeListener(pixel_editor);
 
 color_picker.addColorChangeListener(palette);
 
-selector.addNextPageButton("fast_forward.png", 440,310);
-
+selector.addPreviousPageButton("fast_backward.png", 440,315);
+selector.addNextPageButton("fast_forward.png", 475,315);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;

@@ -200,7 +200,12 @@ exports.SpriteSelector.prototype.previousPage = function(){
 };
 
 exports.SpriteSelector.prototype.click = function (x, y){
-    if (this.nextPageButton !== undefined &&
+    if (this.previousPageButton !== undefined &&
+        x >= this.previousPageButton.position_x && x <= this.previousPageButton.position_x + this.previousPageButton.width &&
+        y >= this.previousPageButton.position_y && y <= this.previousPageButton.position_y + this.previousPageButton.height){
+        this.previousPage();
+        this.render();
+    } else if (this.nextPageButton !== undefined &&
         x >= this.nextPageButton.position_x && x <= this.nextPageButton.position_x + this.nextPageButton.width &&
         y >= this.nextPageButton.position_y && y <= this.nextPageButton.position_y + this.nextPageButton.height){
         this.nextPage();
@@ -216,7 +221,7 @@ exports.SpriteSelector.prototype.click = function (x, y){
 
 
 exports.SpriteSelector.prototype.render = function(){
-    var sprite_id = this.page + (this.sprite_x + this.sprite_y);
+    var sprite_id = this.page * (this.sprite_x * this.sprite_y);
     var canvasContext = this.canvas.getContext('2d');
     for (var y=0; y < this.sprite_y; y++){
         for (var x=0; x < this.sprite_x; x++){
@@ -240,6 +245,17 @@ exports.SpriteSelector.prototype.onColorChanged = function(widget){
     this.render();
 };
 
+exports.SpriteSelector.prototype.addPreviousPageButton = function(img_src, x, y){
+    this.previousPageButton = new Image();
+    this.previousPageButton.context = this.canvas.getContext('2d');
+    this.previousPageButton.position_x = x;
+    this.previousPageButton.position_y = y;
+    this.previousPageButton.onload = function(){
+        this.context.drawImage(this, this.position_x, this.position_y);
+    };
+    this.previousPageButton.src = img_src;
+};
+
 exports.SpriteSelector.prototype.addNextPageButton = function(img_src, x, y){
     this.nextPageButton = new Image();
     this.nextPageButton.context = this.canvas.getContext('2d');
@@ -253,7 +269,11 @@ exports.SpriteSelector.prototype.addNextPageButton = function(img_src, x, y){
 
 
 exports.SpriteSelector.prototype.was_clicked = function(x, y){
-    if (this.nextPageButton !== undefined &&
+    if (this.previousPageButton !== undefined &&
+        x >= this.previousPageButton.position_x && x <= this.previousPageButton.position_x + this.previousPageButton.width &&
+        y >= this.previousPageButton.position_y && y <= this.previousPageButton.position_y + this.previousPageButton.height){
+        return true;
+    } else if (this.nextPageButton !== undefined &&
         x >= this.nextPageButton.position_x && x <= this.nextPageButton.position_x + this.nextPageButton.width &&
         y >= this.nextPageButton.position_y && y <= this.nextPageButton.position_y + this.nextPageButton.height){
         return true;

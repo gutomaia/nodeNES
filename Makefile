@@ -59,6 +59,9 @@ deps/glyphicons_free:
 		unzip glyphicons_free.zip
 	touch $@
 
+external/fast_backward.png: external deps/glyphicons_free
+	cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
+
 external/fast_forward.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 
@@ -80,6 +83,7 @@ download_deps: external/jsnes.src.js \
 	external/codemirror.js \
 	external/codemirror.css \
 	external/jquery-1.7.2.min.js \
+	external/fast_backward.png \
 	external/fast_forward.png
 	#TODO add bootstrap that way
 
