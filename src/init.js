@@ -1,9 +1,17 @@
+var spr_editor = $('#sprite-editor')[0];
+
 // Filter the files opened with the compiler
+var loader = new ui.SpriteLoader(spr_editor);
+
 var files_opened = [];
 
 function ide_open_file(file){
     files_opened.push(file);
-    return compiler.default_open_file(file);
+    if (loader.file == file){
+        return String.fromCharCode.apply(undefined, loader.sprites);
+    } else {
+        return compiler.default_open_file(file);
+    }
 }
 
 compiler.set_open_file_handle(ide_open_file);
@@ -14,7 +22,6 @@ $("#source_files").change(function() {
       open_file(value);
 });
 
-var loader = new ui.SpriteLoader();
 
 function open_file(file){
     $.get(file, function(data) {
@@ -27,10 +34,10 @@ function open_file(file){
             update();
             for (var f in files_opened){
                 if (files_opened[f].match(/\.chr$/)){
-                    loader.load(compiler.path + files_opened[f]);
+                    loader.load(files_opened[f]);
                     break;
                 }
-            };
+            }
         }
     });
 }
@@ -142,6 +149,7 @@ $(function() {
 //sprite editor
 
 var sprites = sprite.load_sprites('example/scrolling/mario.chr');
+
 var options = {
     sprites: sprites,
     palette: [0x22,0x16,0x27,0x18],
@@ -149,7 +157,6 @@ var options = {
     sprite_y: 16
 };
 
-var spr_editor = $('#sprite-editor')[0];
 var pixel_editor = new ui.PixelEditor(spr_editor, 165, 0, options);
 var selector = new ui.SpriteSelector(spr_editor, 440, 0, options);
 var palette = new ui.Palette(spr_editor, 0 , 325, options);
@@ -175,6 +182,9 @@ pixel_editor.addRedrawListener(selector);
 loader.addRedrawListener(selector);
 loader.addRedrawListener(preview);
 loader.addRedrawListener(pixel_editor);
+loader.updater = update;
+loader.addUpdateCompileButton("check.png", 510, 315);
+
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
@@ -204,7 +214,7 @@ $('#sprite-editor').click(
     function(e) {
         var canvas = $(this)[0];
         var pos = getCursorPosition(canvas, e);
-        var widgets = [pixel_editor, palette, preview, color_picker, selector];
+        var widgets = [pixel_editor, palette, preview, color_picker, selector, loader];
         for (var w in widgets){
             if (widgets[w].was_clicked(pos.x, pos.y)){
                 widgets[w].click(pos.x, pos.y);

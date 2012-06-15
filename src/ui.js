@@ -443,19 +443,45 @@ exports.ColorPicker.prototype.click = function(x, y) {
     this.notifyColorChanged();
 };
 
-exports.SpriteLoader = function(){
-    this.position_x = -1;
-    this.position_y = -1;
-    this.width = 0;
-    this.height = 0;
+exports.SpriteLoader = function(canvas){
+    this.canvas = canvas;
 };
 
 exports.SpriteLoader.prototype = new exports.Widget();
 exports.SpriteLoader.prototype.constructor = exports.SpriteLoader;
 
 exports.SpriteLoader.prototype.load = function (file){
-    this.sprites = sprite.load_sprites(file);
+    var compiler = require('./compiler.js');
+    this.sprites = sprite.load_sprites(compiler.path + file);
+    this.file = file;
     this.notifyRedraw();
+};
+
+exports.SpriteLoader.prototype.addUpdateCompileButton = function(img_src, x, y){
+    this.updateCompileButton = new Image();
+    this.updateCompileButton.context = this.canvas.getContext('2d');
+    this.updateCompileButton.position_x = x;
+    this.updateCompileButton.position_y = y;
+    this.updateCompileButton.onload = function(){
+        this.context.drawImage(this, this.position_x, this.position_y);
+    };
+    this.updateCompileButton.src = img_src;
+};
+
+exports.SpriteLoader.prototype.was_clicked = function (x,y){
+    if (this.updateCompileButton !== undefined &&
+        x >= this.updateCompileButton.position_x && x <= this.updateCompileButton.position_x + this.updateCompileButton.width &&
+        y >= this.updateCompileButton.position_y && y <= this.updateCompileButton.position_y + this.updateCompileButton.height){
+        return true;
+    }
+};
+
+exports.SpriteLoader.prototype.updater = null;
+
+exports.SpriteLoader.prototype.click = function (x,y){
+    if (this.updater !== null){
+        this.updater();
+    }
 };
 
 })(typeof exports === 'undefined'? this['ui']={}: exports);
