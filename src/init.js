@@ -59,19 +59,16 @@ function emulatorUI () {
         this.canvasContext = this.screen.getContext('2d');
         this.canvasImageData = this.canvasContext.getImageData(0, 0, 256, 240);
         this.resetCanvas();
-
-        /*
         $(document).
             bind('keydown', function(evt) {
-                this.nes.keyboard.keyDown(evt); 
+                _nes.keyboard.keyDown(evt); 
             }).
             bind('keyup', function(evt) {
-                this.nes.keyboard.keyUp(evt); 
+                _nes.keyboard.keyUp(evt); 
             }).
             bind('keypress', function(evt) {
-                this.nes.keyboard.keyPress(evt);
+                _nes.keyboard.keyPress(evt);
             });
-        */
         this.dynamicaudio = new DynamicAudio({
             swf: nes.opts.swfPath+'dynamicaudio.swf'
         });
