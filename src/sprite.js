@@ -66,7 +66,6 @@ exports.get_sprite = function(index, sprites){
 
 exports.decode_sprite = function(channelA, channelB){
     var sprite = [];
-
     for (var y=0; y <8; y++){
         var a = channelA[y];
         var b = channelB[y];
@@ -88,6 +87,43 @@ exports.decode_sprite = function(channelA, channelB){
         sprite.push(line);
     }
     return sprite;
+};
+
+exports.put_sprite = function (index, sprites, spr){
+    var start = index * 16;
+    var encoded = exports.encode_sprite(spr);
+    for (var i=start; i < 16; i++){
+        sprites[i] = encoded[i];
+    }
+    return sprites;
+};
+
+exports.encode_sprite = function(spr){
+    var channelA = [];
+    var channelB = [];
+    for (var y=0; y <8; y++){
+        var a = 0;
+        var b = 0;
+        for (var x=0; x < 8; x++){
+            var pixel = spr[y][x];
+            var bit = Math.pow(2,7-x);
+            switch(pixel){
+                case 1:
+                    a = a | bit;
+                    break;
+                case 2:
+                    b = b | bit;
+                    break;
+                case 3:
+                    a = a | bit;
+                    b = b | bit;
+                    break;
+            }
+        }
+        channelA.push(a);
+        channelB.push(b);
+    }
+    return channelA.concat(channelB);
 };
 
 })(typeof exports === 'undefined'? this['sprite']={}: exports);
