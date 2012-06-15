@@ -1,3 +1,5 @@
+BOOTSTRAP_LESS = deps/bootstrap/less/bootstrap.less
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -38,7 +40,7 @@ deps/pathjs:
 	touch $@
 
 external/path.min.js: external deps/pathjs
-	cp deps/pathjs/path.min.js external/
+	cp deps/pathjs/path.min.js external/ && touch $@
 
 deps/CodeMirror2:
 	mkdir -p deps
@@ -47,10 +49,10 @@ deps/CodeMirror2:
 	touch $@
 
 external/codemirror.js: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.js external/
+	cp deps/CodeMirror2/lib/codemirror.js external/ && touch $@
 
 external/codemirror.css: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.css external/
+	cp deps/CodeMirror2/lib/codemirror.css external/ && touch $@
 
 deps/glyphicons_free:
 	mkdir -p deps
@@ -71,10 +73,20 @@ deps/bootstrap:
 		git clone https://github.com/twitter/bootstrap.git
 	touch $@
 
-external/jquery-1.7.2.min.js: external
-	cd external && \
+external/bootstrap.css: deps/bootstrap
+	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+
+external/bootstrap-tab.js: deps/bootstrap
+	cp deps/bootstrap/js/bootstrap-tab.js external/ && touch $@
+
+deps/jquery-1.7.2.min.js:
+	mkdir -p deps
+	cd deps && \
 		wget http://code.jquery.com/jquery-1.7.2.min.js
 	touch $@
+
+external/jquery-1.7.2.min.js: external deps/jquery-1.7.2.min.js
+	cp deps/jquery-1.7.2.min.js external/ && touch $@
 
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
@@ -84,8 +96,9 @@ download_deps: external/jsnes.src.js \
 	external/codemirror.css \
 	external/jquery-1.7.2.min.js \
 	external/fast_backward.png \
-	external/fast_forward.png
-	#TODO add bootstrap that way
+	external/fast_forward.png \
+	external/bootstrap.css \
+	external/bootstrap-tab.js
 
 build: node_modules
 	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
@@ -109,7 +122,7 @@ clean:
 run: node_modules download_deps
 	./node_modules/.bin/supervisor ./app.js
 
-ghpages: deploy
+ghpages: deploy download_deps
 	rm -rf /tmp/ghpages
 	mkdir -p /tmp/ghpages
 	cp -Rv static/* /tmp/ghpages

@@ -187,3 +187,19 @@ $('#sprite-editor').click(
     }
 );
 
+$('#tabs li:eq(0) a').tab('show');
+
+Path.map("#source").to(function(){
+    $('#tabs li:eq(0) a').tab('show');
+});
+
+Path.map("#sprites").to(function(){
+    $('#tabs li:eq(1) a').tab('show');
+});
+
+Path.map("#about").to(function(){
+    $('#tabs li:eq(2) a').tab('show');
+});
+
+Path.listen();
+

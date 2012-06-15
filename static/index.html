@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A NES javascript IDE with c6502 compiler and CHR editor">
     <meta name="author" content="Gustavo Maia Neto (Guto Maia)">
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 30px;
@@ -54,19 +54,24 @@
       </div>
       <div class="row">
         <div class="span9">
-          <ul class="nav nav-tabs" id="myTab">
-            <li class="active"><a href="#source">Source</a></li>
+          <ul class="nav nav-tabs" id="tabs">
+            <li><a href="#source">Source</a></li>
             <li><a href="#sprites">Sprites</a></li>
+            <li><a href="#about">About</a></li>
           </ul>
 
           <div class="tab-content">
-            <div class="tab-pane active" id="source">
+            <div class="tab-pane" id="source">
               <textarea id="asm">; Type your ASM Nes Code Here</textarea>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+
             </div>
-            <div class="tab-pane active" id="sprites">
+            <div class="tab-pane" id="sprites">
               <canvas id="sprite-editor" width="660" height="400"></canvas>
             </div>
+            <div class="tab-pane" id="about">
+            </div>
+
           </div>
         </div>
         <div class="span3">
@@ -92,6 +97,8 @@
     <script src="asm.js"></script>
     <script type="text/javascript" src="dynamicaudio-min.js"></script>
     <script type="text/javascript" src="jsnes.src.js"></script>
+    <script type="text/javascript" src="path.min.js"></script>
+    <script type="text/javascript" src="bootstrap-tab.js"></script>
     <script type="text/javascript" src="browser_require.js"></script>
 
     <!-- nodeNES Script -->
