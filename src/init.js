@@ -149,6 +149,9 @@ selector.addNextPageButton("fast_forward.png", 475, 315);
 selector.addSpriteChangedListener(preview);
 preview.addSpriteChangedListener(pixel_editor);
 
+pixel_editor.addRedrawListener(preview);
+pixel_editor.addRedrawListener(selector);
+
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
     var totalOffsetY = 0;

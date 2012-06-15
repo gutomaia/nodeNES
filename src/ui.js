@@ -23,6 +23,7 @@ function fillCanvas(sprt, imageData, palette, size, padding){
 exports.Widget = function(){
     this.colorListeners=[];
     this.spriteListeners=[];
+    this.redrawListeners=[];
 };
 
 exports.Widget.prototype.was_clicked = function(x, y){
@@ -54,6 +55,21 @@ exports.Widget.prototype.onColorChanged = function (widget){};
 exports.Widget.prototype.notifyColorChanged = function() {
     for (var l in this.colorListeners){
          this.colorListeners[l].onColorChanged(this);
+    }
+};
+
+exports.Widget.prototype.addRedrawListener = function (widget){
+    this.redrawListeners.push(widget);
+};
+
+exports.Widget.prototype.onRedraw = function (widget){
+    this.sprites = widget.sprites;
+    this.render();
+};
+
+exports.Widget.prototype.notifyRedraw = function() {
+    for (var l in this.redrawListeners){
+         this.redrawListeners[l].onRedraw(this);
     }
 };
 
@@ -102,7 +118,9 @@ exports.PixelEditor.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.pixelSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.pixelSize + this.pixelPadding) >> 0);
     this.sprite[line][col] = this.palette_id;
+    this.sprites = sprite.put_sprite(this.sprite_id, this.sprites, this.sprite);
     this.render();
+    this.notifyRedraw();
 };
 
 exports.Preview = function (canvas, position_x, position_y, opts) {
