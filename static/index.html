@@ -45,10 +45,15 @@
         <div class="span6">
             <h1><a href="/nodeNES">nodeNES</a></h1>
         </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <p>This project is aim to became a full NES ide in the browser. It features a c6502 javascript compiler and a CHR sprite editor. Both builded with TDD. If you know ASM, just type your code below, and it will be compiled and run on the fly or click on the box one of the listed demos.</p>
+        </div>
         <div class="span6">
             <form class="well form-inline files">
                 <div>
-                    <label>Examples:
+                    <label>Demos:
                         <select id="source_files">
                             <option value="example/movingsprite/movingsprite.asm">movingsprite.asm</option>
                             <option value="example/scrolling/scrolling1.asm">scrolling1.asm</option>
@@ -72,7 +77,9 @@
 
           <div class="tab-content">
             <div class="tab-pane" id="source">
-              <textarea id="asm">; Type your ASM Nes Code Here</textarea>
+              <textarea id="asm">; Type your ASM Nes code here
+; or select one from the demo list above
+              </textarea>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
 
             </div>
