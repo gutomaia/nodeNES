@@ -2,7 +2,7 @@
   "author" : "Guto Maia <a href=\"mailto:guto@guto.net\">guto@guto.net</a>",
   "name" : "nodeNES",
   "description" : "A JavaScript NES C6502 compiler",
-  "homepage" : "<a href=\"http://github.com/gutomaia/nodeNES\">http://github.com/gutomaia/nodeNES</a>",
+  "homepage" : "<a href=\"http://gutomaia.net/nodeNES\">http://gutomaia.net/nodeNES</a>",
   "keywords" : ["util", "functional", "client", "browser"],
   "contributors" : [],
   "dependencies" : {
@@ -14,13 +14,14 @@
   "devDependencies" : {
     "nodeunit":"0.7.x",
     "jshint": "0.6.1",
+    "recess": "1.0.3",
     "uglify-js": "1.2.6",
     "supervisor": "0.3.1"
     },
-  "repository" : {"type": "git", "url": "git://github.com/gutomaia/nodeNES"},
+  "repository" : {"type": "git", "url": "https://github.com/gutomaia/nodeNES.git"},
   "main": "./app.js",
   "version" : "0.0.1",
   "scripts": {
-    "test": "node runner.js"
+    "test": "nodeunit tests"
   }
 }
