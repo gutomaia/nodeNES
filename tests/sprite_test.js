@@ -155,3 +155,23 @@ exports.test_put_first_sprite = function(test){
     test.done();
 
 };
+
+exports.test_put_second_sprite = function(test){
+    var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
+    var expected =
+    [
+        [0,1,2,3,0,1,2,3],
+        [1,0,1,2,3,0,1,2],
+        [2,1,0,1,2,3,0,1],
+        [3,2,1,0,1,2,3,0],
+        [0,3,2,1,0,1,2,3],
+        [1,0,3,2,1,0,1,2],
+        [2,1,0,3,2,1,0,1],
+        [3,2,1,0,3,2,1,0]
+    ];
+    sprites = sprite.put_sprite(1, sprites, expected);
+    var s2 = sprite.get_sprite(1, sprites);
+    test.deepEqual(expected, s2);
+    test.done();
+
+};

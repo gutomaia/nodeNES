@@ -92,8 +92,8 @@ exports.decode_sprite = function(channelA, channelB){
 exports.put_sprite = function (index, sprites, spr){
     var start = index * 16;
     var encoded = exports.encode_sprite(spr);
-    for (var i=start; i < 16; i++){
-        sprites[i] = encoded[i];
+    for (var i=start, j=0; i < (start + 16); i++, j++){
+        sprites[i] = encoded[j];
     }
     return sprites;
 };
