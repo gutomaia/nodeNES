@@ -114,6 +114,13 @@ exports.PixelEditor.prototype.onSpriteChanged = function(widget) {
     this.render();
 };
 
+exports.PixelEditor.prototype.onRedraw = function (widget){
+    this.sprites = widget.sprites;
+    this.sprite = sprite.get_sprite(0, this.sprites);
+    this.render();
+};
+
+
 exports.PixelEditor.prototype.click = function (x, y){
     var line = Math.abs((this.position_y - y) / (this.pixelSize + this.pixelPadding) >> 0);
     var col = Math.abs((this.position_x - x) / (this.pixelSize + this.pixelPadding) >> 0);
@@ -274,7 +281,7 @@ exports.SpriteSelector.prototype.render = function(){
             var py =  y * this.spriteSize + (this.pixelPadding * y);
             var canvasImageData = canvasContext.getImageData(px + this.position_x, py + this.position_y, this.spriteSize, this.spriteSize);
             var imageData = canvasImageData.data;
-            var spr = sprite.get_sprite(sprite_id, sprites);
+            var spr = sprite.get_sprite(sprite_id, this.sprites);
             fillCanvas(spr, imageData, this.palette, this.spriteSize/8);
             canvasContext.putImageData(canvasImageData, px + this.position_x, py + this.position_y);
             sprite_id++;
@@ -434,6 +441,21 @@ exports.ColorPicker.prototype.click = function(x, y) {
     var col = Math.abs((this.position_x - x) / this.picker_size >> 0);
     this.color_id = line * 16 + col;
     this.notifyColorChanged();
+};
+
+exports.SpriteLoader = function(){
+    this.position_x = -1;
+    this.position_y = -1;
+    this.width = 0;
+    this.height = 0;
+};
+
+exports.SpriteLoader.prototype = new exports.Widget();
+exports.SpriteLoader.prototype.constructor = exports.SpriteLoader;
+
+exports.SpriteLoader.prototype.load = function (file){
+    this.sprites = sprite.load_sprites(file);
+    this.notifyRedraw();
 };
 
 })(typeof exports === 'undefined'? this['ui']={}: exports);

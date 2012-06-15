@@ -1,20 +1,40 @@
+// Filter the files opened with the compiler
+var files_opened = [];
 
+function ide_open_file(file){
+    files_opened.push(file);
+    return compiler.default_open_file(file);
+}
+
+compiler.set_open_file_handle(ide_open_file);
+
+//combo behavior on change;
 $("#source_files").change(function() {
       var value = $(this).val();
       open_file(value);
 });
+
+var loader = new ui.SpriteLoader();
 
 function open_file(file){
     $.get(file, function(data) {
         var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
         var m  = regex.exec(file);
         if (m) {
+            files_opened = [];
             compiler.path = m[1];
             asmEditor.setValue(data);
             update();
+            for (var f in files_opened){
+                if (files_opened[f].match(/\.chr$/)){
+                    loader.load(compiler.path + files_opened[f]);
+                    break;
+                }
+            };
         }
     });
 }
+
 
 function update(){
     clearTimeout(_idleTimer);
@@ -119,7 +139,8 @@ $(function() {
     });
 });
 
-var spr_editor = $('#sprite-editor')[0];
+//sprite editor
+
 var sprites = sprite.load_sprites('example/scrolling/mario.chr');
 var options = {
     sprites: sprites,
@@ -128,6 +149,7 @@ var options = {
     sprite_y: 16
 };
 
+var spr_editor = $('#sprite-editor')[0];
 var pixel_editor = new ui.PixelEditor(spr_editor, 165, 0, options);
 var selector = new ui.SpriteSelector(spr_editor, 440, 0, options);
 var palette = new ui.Palette(spr_editor, 0 , 325, options);
@@ -135,13 +157,10 @@ var color_picker = new ui.ColorPicker(spr_editor, 165,270,20, options);
 var preview = new ui.Preview(spr_editor, 0, 0, options);
 
 pixel_editor.addColorChangeListener(palette);
-
 palette.addColorChangeListener(selector);
 palette.addColorChangeListener(preview);
 palette.addColorChangeListener(pixel_editor);
-
 color_picker.addColorChangeListener(palette);
-
 selector.addPreviousPageButton("fast_backward.png", 440, 315);
 selector.addNextPageButton("fast_forward.png", 475, 315);
 
@@ -150,9 +169,12 @@ selector.addNextPageButton("fast_forward.png", 475, 315);
 
 selector.addSpriteChangedListener(preview);
 preview.addSpriteChangedListener(pixel_editor);
-
 pixel_editor.addRedrawListener(preview);
 pixel_editor.addRedrawListener(selector);
+
+loader.addRedrawListener(selector);
+loader.addRedrawListener(preview);
+loader.addRedrawListener(pixel_editor);
 
 function getCursorPosition(canvas, event) {
     var totalOffsetX = 0;
@@ -192,6 +214,8 @@ $('#sprite-editor').click(
     }
 );
 
+
+//
 $('#tabs li:eq(0) a').tab('show');
 
 Path.map("#source").to(function(){
