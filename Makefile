@@ -67,6 +67,9 @@ external/fast_backward.png: external deps/glyphicons_free
 external/fast_forward.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 
+external/check.png: external deps/glyphicons_free
+	cp deps/glyphicons_free/glyphicons/png/glyphicons_150_check.png external/check.png
+
 deps/bootstrap:
 	mkdir -p deps
 	cd deps && \
@@ -74,6 +77,7 @@ deps/bootstrap:
 	touch $@
 
 external/bootstrap.css: deps/bootstrap
+	#TODO: cp snippets/variables.less deps/bootstrap/less
 	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
 
 external/bootstrap-tab.js: deps/bootstrap
@@ -97,6 +101,7 @@ download_deps: external/jsnes.src.js \
 	external/jquery-1.7.2.min.js \
 	external/fast_backward.png \
 	external/fast_forward.png \
+	external/check.png \
 	external/bootstrap.css \
 	external/bootstrap-tab.js
 
