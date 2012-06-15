@@ -266,7 +266,10 @@
         if (erros.length > 0){
             var e = new Error();
             e.name = "Syntax Error";
-            e.message = "Syntax Error Message";
+            e.message = "There were found " + erros.length + " erros:\n";
+            for (var err in erros){
+                //console.log(erros[err]);
+            }
             e.ast = ast;
             e.erros = erros;
             throw e;
@@ -464,6 +467,42 @@
         } else {
             return String.fromCharCode.apply(undefined,opcodes);
         }
-
     };
+
+exports.default_open_file = function(file){
+    var path = exports.path;
+    if (typeof jQuery !== 'undefined'){
+        jQuery.ajax({
+            url: path + file,
+            xhr: function() {
+                    var xhr = $.ajaxSettings.xhr();
+                    if (typeof xhr.overrideMimeType !== 'undefined') {
+                        xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                    }
+                    self.xhr = xhr;
+                    return xhr;
+                },
+            complete: function(xhr, status) {
+                    data = xhr.responseText;
+                },
+            async: false
+        });          
+    } else {
+        var fs = require('fs');
+        //TODO: fix this static
+        data = fs.readFileSync('static/' + path + file, 'binary');
+    }
+    return data;
+};
+
+var _file_handle = exports.default_open_file;
+
+exports.set_open_file_handle = function(file_handle){
+    _file_handle = file_handle;
+};
+
+exports.open_file = function(file){
+    return _file_handle(file);
+};
+
 })(typeof exports === 'undefined'? this['compiler']={}: exports);
