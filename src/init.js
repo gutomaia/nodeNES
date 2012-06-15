@@ -8,9 +8,11 @@ function open_file(file){
     $.get(file, function(data) {
         var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
         var m  = regex.exec(file);
-        compiler.path = m[1];
-        asmEditor.setValue(data);
-        update();
+        if (m) {
+            compiler.path = m[1];
+            asmEditor.setValue(data);
+            update();
+        }
     });
 }
 
@@ -142,6 +144,9 @@ color_picker.addColorChangeListener(palette);
 
 selector.addPreviousPageButton("fast_backward.png", 440, 315);
 selector.addNextPageButton("fast_forward.png", 475, 315);
+
+//TODO selector sprite one by one
+//TODO selector sprite 8 by 8
 
 selector.addSpriteChangedListener(preview);
 preview.addSpriteChangedListener(pixel_editor);
