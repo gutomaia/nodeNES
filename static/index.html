@@ -21,11 +21,10 @@
       .sidebar-nav-fixed {
         padding: 9px 0;
         position:fixed;
-        right:40px;
-        top:60px;
-        width:250px;
+        right:0px;
+        top:70px;
+        width:260px;
       }
-
       .row-fluid > .span-fixed-sidebar {
         margin-left: 290px;
       }
@@ -57,17 +56,14 @@
     </script>
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="span3">
           <h1><a href="http://gutomaia.net/nodeNES">nodeNES</a></h1>
         </div>
-        <div class="span9">
-          <p>This project is aim to became a full NES ide in the browser. It features a c6502 javascript compiler and a CHR sprite editor. Both builded with TDD. If you know ASM, just type your code below, and it will be compiled and run on the fly or click on the box one of the listed demos.</p>
-        </div>
       </div>
-      <div class="row">
-        <div class="span8">
+      <div class="row-fluid">
+        <div class="span9">
           <ul class="nav nav-tabs" id="tabs">
             <li><a href="#source">Source</a></li>
             <li><a href="#sprites">Sprites</a></li>
@@ -89,8 +85,11 @@
 
           <div class="tab-content">
             <div class="tab-pane" id="source">
-              <textarea id="asm">; Type your ASM Nes code here
-; or select one from the demo list above
+              <textarea id="asm">
+; This project is aim to became a full NES ide in the browser. It features a 
+; c6502 javascript compiler and a CHR sprite editor. Both builded with TDD. 
+; If you know ASM, just type your code here, and it will be compiled and run
+; on the fly or click on the box one of the listed demos.
               </textarea>
             </div>
             <div class="tab-pane" id="sprites">
@@ -100,7 +99,6 @@
               <p>This is a dream comming true. When I was ten, I was facinated by these games. With nodeNES I could really understand what was happening underneath the cartdridge. How NES works and how game programers were made. Back them they were made of blood and steel. Blood of countless game lifes wasted in the first level, witch didn't have easy mode. And Steel from cartridges forged in the fire of mount doom.</p>
               <p>Nowadays anyone can write an "if" and praises theirselfs as programmers. They have tendencies to curse every high level programming language for their own faults.</p>
             </div>
-
           </div>
         </div>
         <div class="span3">
