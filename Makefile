@@ -1,4 +1,5 @@
 BOOTSTRAP_LESS = deps/bootstrap/less/bootstrap.less
+BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap/less/responsive.less
 
 ifeq "" "$(shell which npm)"
 default:
@@ -80,6 +81,9 @@ external/bootstrap.css: deps/bootstrap
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
 
+external/bootstrap-responsive.css: deps/bootstrap
+	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+
 external/bootstrap-tab.js: deps/bootstrap
 	cp deps/bootstrap/js/bootstrap-tab.js external/ && touch $@
 
@@ -103,6 +107,7 @@ download_deps: external/jsnes.src.js \
 	external/fast_forward.png \
 	external/check.png \
 	external/bootstrap.css \
+	external/bootstrap-responsive.css \
 	external/bootstrap-tab.js
 
 build: node_modules

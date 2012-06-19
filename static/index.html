@@ -6,6 +6,7 @@
     <meta name="description" content="A NES javascript IDE with c6502 compiler and CHR editor">
     <meta name="author" content="Gustavo Maia Neto (Guto Maia)">
     <link href="bootstrap.css" rel="stylesheet">
+    <link href="bootstrap-responsive.css" rel="stylesheet">
     <link href="codemirror.css" rel="stylesheet">
     <style type="text/css">
       body {
@@ -16,6 +17,17 @@
         height: auto;
         overflow-y: hidden;
         overflow-x: auto;
+      }
+      .sidebar-nav-fixed {
+        padding: 9px 0;
+        position:fixed;
+        right:40px;
+        top:60px;
+        width:250px;
+      }
+
+      .row-fluid > .span-fixed-sidebar {
+        margin-left: 290px;
       }
     </style>
 
@@ -47,33 +59,11 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="span6">
+        <div class="span3">
           <h1><a href="http://gutomaia.net/nodeNES">nodeNES</a></h1>
         </div>
-      </div>
-      <hr />
-      <div class="row">
-        <div class="span6">
+        <div class="span9">
           <p>This project is aim to became a full NES ide in the browser. It features a c6502 javascript compiler and a CHR sprite editor. Both builded with TDD. If you know ASM, just type your code below, and it will be compiled and run on the fly or click on the box one of the listed demos.</p>
-        </div>
-        <div class="span6">
-            <form class="well form-inline files">
-                <div>
-                    <label>Demos:
-                        <select id="source_files">
-                            <option value="#">choose one</option>
-                            <optgroup label="By Klaus Silveira">
-                            <option value="example/movingsprite/movingsprite.asm">movingsprite.asm</option>
-                            <optgroup label="Unknow, if you know let me know">
-                            <option value="example/scrolling/scrolling1.asm">scrolling1.asm</option>
-                            <option value="example/scrolling/scrolling2.asm">scrolling2.asm</option>
-                            <option value="example/scrolling/scrolling3.asm">scrolling3.asm</option>
-                            <option value="example/scrolling/scrolling4.asm">scrolling4.asm</option>
-                            <!--<option value="example/scrolling/scrolling4.asm">scrolling5.asm</option>-->
-                        </select>
-                    </label>
-                </div>
-            </form>
         </div>
       </div>
       <div class="row">
@@ -82,6 +72,19 @@
             <li><a href="#source">Source</a></li>
             <li><a href="#sprites">Sprites</a></li>
             <li><a href="#about">About</a></li>
+            <li class="pull-right">
+              <select id="source_files">
+                  <option value="#">Choose one demo</option>
+                  <optgroup label="By Klaus Silveira">
+                  <option value="example/movingsprite/movingsprite.asm">movingsprite.asm</option>
+                  <optgroup label="Unknow, if you know let me know">
+                  <option value="example/scrolling/scrolling1.asm">scrolling1.asm</option>
+                  <option value="example/scrolling/scrolling2.asm">scrolling2.asm</option>
+                  <option value="example/scrolling/scrolling3.asm">scrolling3.asm</option>
+                  <option value="example/scrolling/scrolling4.asm">scrolling4.asm</option>
+                  <!--<option value="example/scrolling/scrolling4.asm">scrolling5.asm</option>-->
+              </select>
+            </li>
           </ul>
 
           <div class="tab-content">
@@ -101,10 +104,11 @@
           </div>
         </div>
         <div class="span3">
-          <h2>Emulator</h2>
-          <canvas id="nes-screen" width="256" height="240"></canvas>
-          <p>I'm using the awesome <a href="http://fir.sh/projects/jsnes/">JSNES</a> from Ben Firshman. A NES emulator in Javascript to run the compiled code from nodeNES.</p>
-        </div>
+          <div class="sidebar-nav-fixed">
+            <h2>Emulator</h2>
+            <canvas id="nes-screen" width="256" height="240"></canvas>
+            <p>I'm using the awesome <a href="http://fir.sh/projects/jsnes/">JSNES</a> from Ben Firshman. A NES emulator in Javascript to run the compiled code from nodeNES.</p>
+          </div>
       </div>
 
       <div class="row">
