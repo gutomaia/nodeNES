@@ -88,6 +88,8 @@ function emulatorUI () {
         this.canvasContext = this.screen.getContext('2d');
         this.canvasImageData = this.canvasContext.getImageData(0, 0, 256, 240);
         this.resetCanvas();
+        /*
+        TODO: by enabling it. The source editor stops working
         $(document).
             bind('keydown', function(evt) {
                 _nes.keyboard.keyDown(evt); 
@@ -98,6 +100,7 @@ function emulatorUI () {
             bind('keypress', function(evt) {
                 _nes.keyboard.keyPress(evt);
             });
+        */
         this.dynamicaudio = new DynamicAudio({
             swf: nes.opts.swfPath+'dynamicaudio.swf'
         });
