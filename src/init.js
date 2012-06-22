@@ -3,52 +3,64 @@ var spr_editor = $('#sprite-editor')[0];
 // Filter the files opened with the compiler
 var loader = new ui.SpriteLoader(spr_editor);
 
-var files_opened = [];
-
-function ide_open_file(file){
-    files_opened.push(file);
-    if (loader.file == file){
-        return String.fromCharCode.apply(undefined, loader.sprites);
-    } else {
-        return compiler.default_open_file(file);
-    }
-}
-
-compiler.set_open_file_handle(ide_open_file);
-
-//combo behavior on change;
-$("#source_files").change(function() {
-      var value = $(this).val();
-      open_file(value);
-});
-
-
-function open_file(file){
-    $.get(file, function(data) {
-        var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
-        var m  = regex.exec(file);
-        if (m) {
-            files_opened = [];
-            compiler.path = m[1];
-            asmEditor.setValue(data);
-            update();
-            for (var f in files_opened){
-                if (files_opened[f].match(/\.chr$/)){
-                    loader.load(files_opened[f]);
-                    break;
+var ide = {
+    source: $('#asm')[0],
+    files_opened: [],
+    init: function(){
+        compiler.set_open_file_handle(this.compiler_open_file);
+        $(function() {
+            ide.codemirror = CodeMirror.fromTextArea($("#asm")[0], {
+                lineNumbers: true,
+                matchBrackets: true,
+                useCPP: true,
+                mode: "text/x-asm",
+                onChange: scheduleUpdate
+                });
+        });
+    },
+    open_file: function(file){
+        $.get(file, function(data) {
+            var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
+            var m  = regex.exec(file);
+            if (m) {
+                files_opened = [];
+                compiler.path = m[1];
+                ide.codemirror.setValue(data);
+                update();
+                for (var f in this.files_opened){
+                    if (this.files_opened[f].match(/\.chr$/)){
+                        loader.load(this.files_opened[f]);
+                        break;
+                    }
                 }
             }
+        });
+    },
+    compiler_open_file: function(file){
+        this.files_opened.push(file);
+        if (loader.file == file){
+            return String.fromCharCode.apply(undefined, loader.sprites);
+        } else {
+            return compiler.default_open_file(file);
         }
-    });
-}
+    }
+};
 
+
+ide.init();
+
+
+$("#source_files").change(function() {
+      var value = $(this).val();
+      ide.open_file(value);
+});
 
 function update(){
     clearTimeout(_idleTimer);
     console.log('compilling');
     var data;
     try {
-        data = compiler.nes_compiler(asmEditor.getValue());
+        data = compiler.nes_compiler(ide.codemirror.getValue());
         _nes.loadRom(data);
         _nes.start();
     } catch (e){
@@ -64,16 +76,6 @@ function scheduleUpdate(){
     }
     _idleTimer = setTimeout(update, 3000);
 }
-
-$(function() {
-    asmEditor = CodeMirror.fromTextArea($("#asm")[0], {
-        lineNumbers: true,
-        matchBrackets: true,
-        useCPP: true,
-        mode: "text/x-asm",
-        onChange: scheduleUpdate
-        });
-});
 
 var _nes;
 
@@ -141,6 +143,7 @@ function emulatorUI () {
     };
     return UI;
 }
+
 
 $(function() {
     new JSNES({
