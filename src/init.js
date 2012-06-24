@@ -3,11 +3,14 @@ var spr_editor = $('#sprite-editor')[0];
 // Filter the files opened with the compiler
 var loader = new ui.SpriteLoader(spr_editor);
 
+window.requestFileSystem  = window.MozBlobBuilder || window.webkitRequestFileSystem || window.requestFileSystem;
+BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder || window.BlobBuilder;
+
 var ide = {
-    source: $('#asm')[0],
     files_opened: [],
     init: function(){
         compiler.set_open_file_handle(this.compiler_open_file);
+        this.init_fs();
         $(function() {
             ide.codemirror = CodeMirror.fromTextArea($("#asm")[0], {
                 lineNumbers: true,
@@ -18,7 +21,62 @@ var ide = {
                 });
         });
     },
-    open_file: function(file){
+    errorFileHandler: function (e) {
+        var msg = '';
+        switch (e.code) {
+            case FileError.QUOTA_EXCEEDED_ERR:
+              msg = 'QUOTA_EXCEEDED_ERR';
+              break;
+            case FileError.NOT_FOUND_ERR:
+              msg = 'NOT_FOUND_ERR';
+              break;
+            case FileError.SECURITY_ERR:
+              msg = 'SECURITY_ERR';
+              break;
+            case FileError.INVALID_MODIFICATION_ERR:
+              msg = 'INVALID_MODIFICATION_ERR';
+              break;
+            case FileError.INVALID_STATE_ERR:
+              msg = 'INVALID_STATE_ERR';
+              break;
+            default:
+              msg = 'Unknown Error';
+              break;
+        }
+        console.log('Error: ' + msg);
+    },
+    onInitFs: function(fs){
+        ide._fs = fs;
+    },
+    init_fs: function (grantedBytes) {
+        window.requestFileSystem(TEMPORARY, 1024*1024, ide.onInitFs, ide.errorFileHandler, function(e) {console.log('Error', e);});
+    },
+    write_nesfile: function (filename, data){
+        if (this._fs === undefined){
+            this.init_fs();
+        } else {
+            var buf = new ArrayBuffer(data.length);
+            var uint = new Uint8Array(buf);
+            for (var i=0, strLen=data.length; i<strLen; i++) {
+                uint[i] = data.charCodeAt(i);
+            }
+            this._fs.root.getFile(filename, {create: true}, function(fileEntry) {
+                console.log(fileEntry.toURL());
+                fileEntry.createWriter(function(fileWriter) {
+                    fileWriter.onwriteend = function(e) {
+                        console.log('Write completed.');
+                    };
+                    fileWriter.onerror = function(e) {
+                        console.log('Write failed: ' + e.toString());
+                    };
+                    var bb = new BlobBuilder();
+                    bb.append(uint.buffer);
+                    fileWriter.write(bb.getBlob("application/octet-stream"));
+                }, ide.errorHandler);
+            }, ide.errorHandler);
+        }
+    },
+    load_file: function(file){
         $.get(file, function(data) {
             var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
             var m  = regex.exec(file);
@@ -46,13 +104,11 @@ var ide = {
     }
 };
 
-
 ide.init();
-
 
 $("#source_files").change(function() {
       var value = $(this).val();
-      ide.open_file(value);
+      ide.load_file(value);
 });
 
 function update(){
@@ -61,6 +117,7 @@ function update(){
     var data;
     try {
         data = compiler.nes_compiler(ide.codemirror.getValue());
+        ide.write_nesfile('file.nes', data);
         _nes.loadRom(data);
         _nes.start();
     } catch (e){
