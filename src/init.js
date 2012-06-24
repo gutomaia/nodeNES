@@ -3,7 +3,7 @@ var spr_editor = $('#sprite-editor')[0];
 // Filter the files opened with the compiler
 var loader = new ui.SpriteLoader(spr_editor);
 
-window.requestFileSystem  = window.MozBlobBuilder || window.webkitRequestFileSystem || window.requestFileSystem;
+window.requestFileSystem  = window.MozRequestFileSystem || window.webkitRequestFileSystem || window.requestFileSystem;
 BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder || window.BlobBuilder;
 
 var ide = {
@@ -48,8 +48,10 @@ var ide = {
     onInitFs: function(fs){
         ide._fs = fs;
     },
-    init_fs: function (grantedBytes) {
-        window.requestFileSystem(TEMPORARY, 1024*1024, ide.onInitFs, ide.errorFileHandler, function(e) {console.log('Error', e);});
+    init_fs: function () {
+        if (window.requestFileSystem !== undefined){
+            window.requestFileSystem(TEMPORARY, 1024*1024, ide.onInitFs, ide.errorFileHandler, function(e) {console.log('Error', e);});
+        }
     },
     write_nesfile: function (filename, data){
         if (this._fs === undefined){
