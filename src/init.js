@@ -1,6 +1,5 @@
 var spr_editor = $('#sprite-editor')[0];
 
-// Filter the files opened with the compiler
 var loader = new ui.SpriteLoader(spr_editor);
 
 window.requestFileSystem  = window.MozRequestFileSystem || window.webkitRequestFileSystem || window.requestFileSystem;
@@ -8,6 +7,7 @@ BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlob
 
 var ide = {
     files_opened: [],
+    //TODO: sprite_canvas: $('#sprite-editor')[0],
     init: function(){
         compiler.set_open_file_handle(this.compiler_open_file);
         this.init_fs();
@@ -83,13 +83,13 @@ var ide = {
             var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
             var m  = regex.exec(file);
             if (m) {
-                files_opened = [];
+                ide.files_opened = []; //
                 compiler.path = m[1];
                 ide.codemirror.setValue(data);
                 update();
-                for (var f in this.files_opened){
-                    if (this.files_opened[f].match(/\.chr$/)){
-                        loader.load(this.files_opened[f]);
+                for (var f in ide.files_opened){
+                    if (ide.files_opened[f].match(/\.chr$/)){
+                        loader.load(ide.files_opened[f]);
                         break;
                     }
                 }
@@ -97,7 +97,7 @@ var ide = {
         });
     },
     compiler_open_file: function(file){
-        this.files_opened.push(file);
+        ide.files_opened.push(file);
         if (loader.file == file){
             return String.fromCharCode.apply(undefined, loader.sprites);
         } else {
@@ -108,6 +108,9 @@ var ide = {
 
 ide.init();
 
+
+
+
 $("#source_files").change(function() {
       var value = $(this).val();
       ide.load_file(value);
@@ -115,7 +118,6 @@ $("#source_files").change(function() {
 
 function update(){
     clearTimeout(_idleTimer);
-    console.log('compilling');
     var data;
     try {
         data = compiler.nes_compiler(ide.codemirror.getValue());
