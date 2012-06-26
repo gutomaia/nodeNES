@@ -34,15 +34,16 @@
             if (!found){
                 var invalid = code.match(/^\S+/);
                 var erro = {
-                    type:"INVALID TOKEN",
+                    name:"Invalid Token",
                     line: line,
                     column: column,
                     //position: position,
                     value: invalid[0]
                 };
+                //TODO: better way to deal with message
+                erro.message = "Token " + erro.value + " at line " + line + " column " + column + " is invalid";
                 column += invalid[0].length;
                 code = code.substring(invalid[0].length);
-                //console.log("Unknow Token code: " + code);
                 erros.push(erro);
             }
         }

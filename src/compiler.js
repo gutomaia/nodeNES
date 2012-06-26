@@ -267,9 +267,6 @@
             var e = new Error();
             e.name = "Syntax Error";
             e.message = "There were found " + erros.length + " erros:\n";
-            for (var err in erros){
-                //console.log(erros[err]);
-            }
             e.ast = ast;
             e.erros = erros;
             throw e;
