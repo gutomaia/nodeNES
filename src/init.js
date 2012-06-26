@@ -108,14 +108,6 @@ var ide = {
 
 ide.init();
 
-
-
-
-$("#source_files").change(function() {
-      var value = $(this).val();
-      ide.load_file(value);
-});
-
 function update(){
     clearTimeout(_idleTimer);
     var data;
@@ -292,8 +284,15 @@ $('#sprite-editor').click(
 );
 
 
-//
+//Bootstrap
 $('#tabs li:eq(0) a').tab('show');
+$('.dropdown-toggle').dropdown()
+
+Path.map("#example/:path/:file").to(function(){
+    var path = this.params['path'];
+    var file = this.params['file'];
+    ide.load_file('example/'+path+'/'+file);
+});
 
 Path.map("#source").to(function(){
     $('#tabs li:eq(0) a').tab('show');

@@ -87,6 +87,9 @@ external/bootstrap-responsive.css: deps/bootstrap
 external/bootstrap-tab.js: deps/bootstrap
 	cp deps/bootstrap/js/bootstrap-tab.js external/ && touch $@
 
+external/bootstrap-dropdown.js: deps/bootstrap
+	cp deps/bootstrap/js/bootstrap-dropdown.js external/ && touch $@
+
 deps/jquery-1.7.2.min.js:
 	mkdir -p deps
 	cd deps && \
@@ -107,7 +110,7 @@ download_deps: external/jsnes.src.js \
 	external/fast_forward.png \
 	external/check.png \
 	external/bootstrap.css \
-	external/bootstrap-responsive.css \
+	external/bootstrap-dropdown.js \
 	external/bootstrap-tab.js
 
 build: node_modules
