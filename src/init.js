@@ -108,16 +108,28 @@ var ide = {
 
 ide.init();
 
+function add_status_msg(name, msg, type){
+    var div = $('<div />');
+    div.addClass('alert');
+    div.addClass('alert-'+type);
+    div.append("<b>" + name + "</b> " + msg);
+    $('#status').append(div);
+}
+
 function update(){
     clearTimeout(_idleTimer);
     var data;
+    $('#status').empty();
     try {
         data = compiler.nes_compiler(ide.codemirror.getValue());
         ide.write_nesfile('file.nes', data);
         _nes.loadRom(data);
         _nes.start();
+        add_status_msg('Succefully compiled','OK', 'success');
     } catch (e){
-        console.log(e);
+        for (var err in e){
+            add_status_msg(e[err].name,e[err].message, 'error');
+        }
     }
 }
 
@@ -196,6 +208,7 @@ function emulatorUI () {
     };
     return UI;
 }
+
 
 
 $(function() {
@@ -286,11 +299,12 @@ $('#sprite-editor').click(
 
 //Bootstrap
 $('#tabs li:eq(0) a').tab('show');
-$('.dropdown-toggle').dropdown()
+$('.dropdown-toggle').dropdown();
 
 Path.map("#example/:path/:file").to(function(){
     var path = this.params['path'];
     var file = this.params['file'];
+    $('#tabs li:eq(0) a').tab('show');
     ide.load_file('example/'+path+'/'+file);
 });
 

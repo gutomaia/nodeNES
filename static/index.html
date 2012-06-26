@@ -17,21 +17,15 @@
         margin-bottom:1px;
       }
 
-      #content .top {
-        position: absolute;
-        top: -6px;
+      .alert {
+        font-size: 11px;
+        padding: 0px 10px 0px 10px;
+        margin-bottom: 2px;
       }
 
       #content .source {
         height: 100%;
         display: block;
-      }
-
-      #content .CodeMirror-wrapping {
-        width: 100%;
-        height: 100%;
-        border-width: 1px;
-        border-color: #bbb;
       }
 
       #content textarea {
@@ -101,7 +95,6 @@
       </div>
     </div>
 
-
     <div class="container">
       <div class="row">
         <div class="span9">
@@ -113,9 +106,8 @@
 
           <div class="tab-content" >
             <div class="tab-pane" id="source" style="height: 300px;">
-              <div class="top source">
-                <div style="position: relative; " class="CodeMirror-wrapping">
-                   <textarea id="asm" style="position: absolute; left: -10000px; width: 10px; ">
+              <div class="source">
+                <textarea id="asm">
 ; This project is aim to became a full NES ide 
 ; in the browser. It features a c6502 javascript 
 ; compiler and a CHR sprite editor. Both builded 
@@ -126,8 +118,7 @@
 ; on the box one of the listed demos.
 
 ; -- Guto Maia
-                  </textarea>
-                </div>
+                </textarea>
               </div>
             </div>
             <div class="tab-pane" id="sprites">
@@ -150,8 +141,7 @@
       </div>
 
       <div class="row">
-        <div class="span9">
-        </div>
+        <div id="status" class="span12"></div>
       </div>
       <hr>
       <footer>
@@ -168,7 +158,6 @@
     <script type="text/javascript" src="path.min.js"></script>
     <script type="text/javascript" src="bootstrap-dropdown.js"></script>
     <script type="text/javascript" src="bootstrap-tab.js"></script>
-
     <script type="text/javascript" src="browser_require.js"></script>
 
     <!-- nodeNES Script -->
@@ -179,6 +168,7 @@
     <script type="text/javascript" src="compiler.js"></script>
     <script type="text/javascript" src="sprite.js"></script>
     <script type="text/javascript" src="ui.js"></script>
-    <script src="init.js"></script>
+    <script type="text/javascript" src="init.js"></script>
+
     <a href="https://github.com/gutomaia/nodeNES"><img style="position: absolute; top: 40px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 </body></html>
