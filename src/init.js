@@ -66,9 +66,11 @@ var ide = {
                 console.log(fileEntry.toURL());
                 fileEntry.createWriter(function(fileWriter) {
                     fileWriter.onwriteend = function(e) {
-                        console.log('Write completed.');
+                        add_status_msg('Build success', '<a href="' + fileEntry.toURL() + '">' + filename + '</a> file is now available', 'success');
                     };
                     fileWriter.onerror = function(e) {
+                        add_status_msg('File', '<a href="' + fileEntry.toURL() + '">Download</a>', 'warning');
+
                         console.log('Write failed: ' + e.toString());
                     };
                     var bb = new BlobBuilder();
@@ -78,6 +80,7 @@ var ide = {
             }, ide.errorHandler);
         }
     },
+    filename: null,
     load_file: function(file){
         $.get(file, function(data) {
             var regex = /([a-z\/]+\/)([a-z\d]+\.asm)/;
@@ -85,8 +88,9 @@ var ide = {
             if (m) {
                 ide.files_opened = []; //
                 compiler.path = m[1];
+                ide.filename = m[2];
                 ide.codemirror.setValue(data);
-                update();
+                build();
                 for (var f in ide.files_opened){
                     if (ide.files_opened[f].match(/\.chr$/)){
                         loader.load(ide.files_opened[f]);
@@ -116,15 +120,21 @@ function add_status_msg(name, msg, type){
     $('#status').append(div);
 }
 
-function update(){
+function build(){
     clearTimeout(_idleTimer);
     var data;
     $('#status').empty();
     try {
         data = compiler.nes_compiler(ide.codemirror.getValue());
-        ide.write_nesfile('file.nes', data);
-        //_nes.loadRom(data);
-        //_nes.start();
+        var regex = /([a-z\d]+)(\.asm)$/;
+        var m = regex.exec(ide.filename);
+        if (m){
+            ide.write_nesfile(m[1]+'.nes', data);
+        } else {
+            console.log('regex error');
+        }
+        _nes.loadRom(data);
+        _nes.start();
         add_status_msg('Succefully compiled','OK', 'success');
     } catch (e){
         for (var err in e){
@@ -139,7 +149,7 @@ function scheduleUpdate(){
     if (_idleTimer !== null){
         clearTimeout(_idleTimer);
     }
-    _idleTimer = setTimeout(update, 3000);
+    _idleTimer = setTimeout(build, 3000);
 }
 
 var _nes;
@@ -254,7 +264,7 @@ pixel_editor.addRedrawListener(selector);
 loader.addRedrawListener(selector);
 loader.addRedrawListener(preview);
 loader.addRedrawListener(pixel_editor);
-loader.updater = update;
+loader.updater = build;
 loader.addUpdateCompileButton("check.png", 510, 315);
 
 
