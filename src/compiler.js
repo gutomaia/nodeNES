@@ -6,9 +6,9 @@
     var directives = require('./directives.js');
 
     var asm65_tokens = [
-        {type:"T_INSTRUCTION", regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
-        {type:"T_ADDRESS", regex:/^\$([\dA-F]{2,4})/, store:true},
-        {type:"T_HEX_NUMBER", regex:/^\#\$?([\dA-F]{2})/, store:true},
+        {type:'T_INSTRUCTION', regex:/^(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)/, store:true},
+        {type:'T_ADDRESS', regex:/^\$([\dA-F]{2,4})/, store:true},
+        {type:'T_HEX_NUMBER', regex:/^\#\$?([\dA-F]{2})/, store:true},
         {type:'T_BINARY_NUMBER', regex:/^\#%([01]{8})/, store:true}, 
         {type:'T_LABEL', regex:/^([a-zA-Z]{2}[a-zA-Z\d]*)\:/, store:true},
         {type:'T_MARKER', regex:/^[a-zA-Z]{2}[a-zA-Z\d]*/, store:true},
@@ -24,7 +24,7 @@
         {type:'T_DIRECTIVE', regex:/^\.[a-z]+/, store:true},
         {type:'T_DECIMAL_ARGUMENT', regex:/^[\d]+/, store:true}, //TODO change to DECIMAL ARGUMENT
         {type:'T_ENDLINE', regex:/^\n/, store:true},
-        {type:"T_WHITESPACE", regex:/^[ \t\r]+/, store:false},
+        {type:'T_WHITESPACE', regex:/^[ \t\r]+/, store:false},
         {type:'T_COMMENT', regex:/^;[^\n]*/, store:false}
     ];
 
@@ -190,21 +190,21 @@
     }
 
     var asm65_bnf = [
-        {type:"S_RS", bnf:[t_marker, t_directive, t_directive_argument]},
-        {type:"S_DIRECTIVE", bnf:[t_directive, t_directive_argument]},
-        {type:"S_RELATIVE", bnf:[t_relative, t_address_or_t_marker]},
-        {type:"S_IMMEDIATE", bnf:[t_instruction, t_number]},
-        {type:"S_IMMEDIATE_WITH_MODIFIER", bnf:[t_instruction, t_modifier, t_open, t_address_or_t_marker, t_close]}, //nesasm hack
-        {type:"S_ACCUMULATOR", bnf:[t_instruction, t_accumulator]},
-        {type:"S_ZEROPAGE_X", bnf:[t_instruction, t_zeropage, t_separator, t_register_x]},
-        {type:"S_ZEROPAGE_Y", bnf:[t_instruction, t_zeropage, t_separator, t_register_y]},
-        {type:"S_ZEROPAGE", bnf:[t_instruction, t_zeropage]},
-        {type:"S_ABSOLUTE_X", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
-        {type:"S_ABSOLUTE_Y", bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
-        {type:"S_ABSOLUTE", bnf:[t_instruction, t_address_or_t_marker]},
-        {type:"S_INDIRECT_X", bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_separator, t_register_x, t_nesasm_compatible_close]},
-        {type:"S_INDIRECT_Y", bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_nesasm_compatible_close, t_separator, t_register_y]},
-        {type:"S_IMPLIED", bnf:[t_instruction]}
+        {type:'S_RS', bnf:[t_marker, t_directive, t_directive_argument]},
+        {type:'S_DIRECTIVE', bnf:[t_directive, t_directive_argument]},
+        {type:'S_RELATIVE', bnf:[t_relative, t_address_or_t_marker]},
+        {type:'S_IMMEDIATE', bnf:[t_instruction, t_number]},
+        {type:'S_IMMEDIATE_WITH_MODIFIER', bnf:[t_instruction, t_modifier, t_open, t_address_or_t_marker, t_close]}, //nesasm hack
+        {type:'S_ACCUMULATOR', bnf:[t_instruction, t_accumulator]},
+        {type:'S_ZEROPAGE_X', bnf:[t_instruction, t_zeropage, t_separator, t_register_x]},
+        {type:'S_ZEROPAGE_Y', bnf:[t_instruction, t_zeropage, t_separator, t_register_y]},
+        {type:'S_ZEROPAGE', bnf:[t_instruction, t_zeropage]},
+        {type:'S_ABSOLUTE_X', bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_x]},
+        {type:'S_ABSOLUTE_Y', bnf:[t_instruction, t_address_or_t_marker, t_separator, t_register_y]},
+        {type:'S_ABSOLUTE', bnf:[t_instruction, t_address_or_t_marker]},
+        {type:'S_INDIRECT_X', bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_separator, t_register_x, t_nesasm_compatible_close]},
+        {type:'S_INDIRECT_Y', bnf:[t_instruction, t_nesasm_compatible_open, t_address_or_t_marker, t_nesasm_compatible_close, t_separator, t_register_y]},
+        {type:'S_IMPLIED', bnf:[t_instruction]}
     ];
 
     exports.syntax = function(tokens){
@@ -214,6 +214,7 @@
         var labels = [];
         var code = [];
         var erros = [];
+        var move = false;
         while (x < tokens.length){
             if (t_label(tokens,x)){
                 labels.push(get_value(tokens[x]));
@@ -255,7 +256,7 @@
                     while(!t_endline(tokens,x+walk) && x+walk < tokens.length){
                         walk++;
                     }
-                    erro = {};
+                    var erro = {};
                     erro.type = "Syntax Error";
                     erro.children = tokens.slice(x, x+walk);
                     erro.message = "Invalid syntax";
@@ -276,6 +277,7 @@
     };
 
     function get_value(token, labels){
+        var m;
         if (token.type == 'T_ADDRESS'){
             m = asm65_tokens[1].regex.exec(token.value);
             return parseInt(m[1], 16);
@@ -286,7 +288,7 @@
             m = asm65_tokens[3].regex.exec(token.value);
             return parseInt(m[1], 2);
         }else if (token.type == 'T_DECIMAL_ARGUMENT'){
-            return parseInt(token['value'],10);
+            return parseInt(token.value,10);
         }else if (token.type == 'T_LABEL'){
             m = asm65_tokens[4].regex.exec(token.value);
             return m[1];
@@ -297,17 +299,14 @@
         } else {
             console.log("Could not get that value");
             console.log(token);
-            throw {
-                name: "Invalid value:",
-                message:"Could not get that value"
-            };
+            throw "Could not get that value";
         }
     }
 
     exports.path = '';
 
     exports.get_labels = function(ast){
-        labels = {};
+        var labels = {};
         var address = 0;
         for (var la in ast){
             var leaf = ast[la];
@@ -318,7 +317,7 @@
                 labels[leaf.labels[0]] = address;
             }
             if (leaf.type != 'S_DIRECTIVE' && leaf.type != 'S_RS'){
-                size = c6502.address_mode_def[leaf.type].size;
+                var size = c6502.address_mode_def[leaf.type].size;
                 address += size;
             } else if (leaf.type == 'S_DIRECTIVE' && '.db' == leaf.children[0].value){
                 for (var i in leaf.children){
@@ -338,6 +337,7 @@
         var labels = exports.get_labels(ast);
         //find all labels o the symbol table
         var erros = [];
+        var erro;
         //Translate opcodes
         var address = 0;
         for (var l in ast) {
@@ -422,8 +422,8 @@
                 } else if (c6502.address_mode_def[leaf.type].size == 2){
                     cart.append_code([opcode, address]);
                 } else {
-                    arg1 = (address & 0x00ff);
-                    arg2 = (address & 0xff00) >> 8;
+                    var arg1 = (address & 0x00ff);
+                    var arg2 = (address & 0xff00) >> 8;
                     cart.append_code([opcode, arg1, arg2]);
                 }
             }
@@ -451,6 +451,7 @@
             tokens = e.tokens;
             erros = erros.concat(e.erros);
         }
+        var ast;
         try {
             ast = compiler.syntax(tokens);
         } catch (e){
@@ -472,6 +473,7 @@
 
 exports.default_open_file = function(file){
     var path = exports.path;
+    var data;
     if (typeof jQuery !== 'undefined'){
         jQuery.ajax({
             url: path + file,
@@ -506,4 +508,4 @@ exports.open_file = function(file){
     return _file_handle(file);
 };
 
-})(typeof exports === 'undefined'? this['compiler']={}: exports);
+})(typeof exports === 'undefined'? this.compiler={}: exports);

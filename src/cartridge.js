@@ -19,7 +19,7 @@ Cartridge.prototype.nes_id = function (){
 Cartridge.prototype.nes_get_header = function (){
     var id = this.nes_id();
     var unused = [0,0,0,0,0,0,0,0];
-    header = [];
+    var header = [];
     header = header.concat(id);
     header.push(this.inesprg);
     header.push(this.ineschr);
@@ -108,4 +108,4 @@ Cartridge.prototype.get_ines_code = function(){
 
 exports.Cartridge = Cartridge;
 
-})(typeof exports === 'undefined'? this['cartridge']={}: exports);
+})(typeof exports === 'undefined'? this.cartridge={}: exports);

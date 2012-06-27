@@ -13,7 +13,7 @@
                     found = true;
                     var m = tokenTypes[t].regex.exec(code);
                     if (tokenTypes[t].store){
-                        token = {
+                        var token = {
                             "type":tokenTypes[t].type,
                             "value":m[0],
                             "line":line,
@@ -34,7 +34,7 @@
             if (!found){
                 var invalid = code.match(/^\S+/);
                 var erro = {
-                    type:"Invalid Token",
+                    name:"Invalid Token",
                     line: line,
                     column: column,
                     //position: position,
