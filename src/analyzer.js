@@ -34,7 +34,7 @@
             if (!found){
                 var invalid = code.match(/^\S+/);
                 var erro = {
-                    name:"Invalid Token",
+                    type:"Invalid Token",
                     line: line,
                     column: column,
                     //position: position,

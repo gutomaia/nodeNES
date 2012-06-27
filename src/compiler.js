@@ -256,8 +256,9 @@
                         walk++;
                     }
                     erro = {};
-                    erro.type = "SYNTAX ERROR";
+                    erro.type = "Syntax Error";
                     erro.children = tokens.slice(x, x+walk);
+                    erro.message = "Invalid syntax";
                     erros.push(erro);
                     x += walk;
                 }
@@ -296,7 +297,10 @@
         } else {
             console.log("Could not get that value");
             console.log(token);
-            throw "Could not get that value";
+            throw {
+                name: "Invalid value:",
+                message:"Could not get that value"
+            };
         }
     }
 

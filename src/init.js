@@ -123,12 +123,12 @@ function update(){
     try {
         data = compiler.nes_compiler(ide.codemirror.getValue());
         ide.write_nesfile('file.nes', data);
-        _nes.loadRom(data);
-        _nes.start();
+        //_nes.loadRom(data);
+        //_nes.start();
         add_status_msg('Succefully compiled','OK', 'success');
     } catch (e){
         for (var err in e){
-            add_status_msg(e[err].name,e[err].message, 'error');
+            add_status_msg(e[err].type,e[err].message, 'error');
         }
     }
 }
