@@ -1,5 +1,7 @@
 (function(exports){
 
+var sprite = require('./sprite.js');
+
 function fillCanvas(sprt, imageData, palette, size, padding){
     if (padding === undefined){
         padding = 0;
