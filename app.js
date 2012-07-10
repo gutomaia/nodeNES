@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 
-var nopt = require('nopt'),
-    os = require('os'),
-    querystring = require('querystring'),
-    connect = require('connect'),
-    async = require('async'),
-    fs = require('fs');
+var os = require('os'),
+    connect = require('connect');
 
 var port = 8888;
 var webServer = connect();
