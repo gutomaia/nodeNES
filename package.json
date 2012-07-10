@@ -7,12 +7,13 @@
   "keywords" : ["util", "functional", "client", "browser"],
   "contributors" : [],
   "dependencies" : {
-      "connect": "2.3.x",
+      "connect": "2.3.6",
       "async": "0.1.x",
       "nopt": "1.0.x",
       "temp": "0.4.x"
     },
   "devDependencies" : {
+    "amdefine":"0.0.2",
     "nodeunit":"0.7.x",
     "jshint": "0.6.x",
     "recess": "1.0.3",
