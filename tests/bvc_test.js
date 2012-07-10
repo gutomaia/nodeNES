@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('../src/compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_beq_rel = function(test){
     var tokens = compiler.lexical('BVC $10');

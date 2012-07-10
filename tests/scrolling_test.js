@@ -4,7 +4,7 @@ var Buffer = require('buffer').Buffer;
 
 var sys = require('util');
 
-var compiler = require('../src/compiler.js');
+var compiler = require('../lib/compiler.js');
 
 
 exports.test_get_labels = function(test){

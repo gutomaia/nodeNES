@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('../src/compiler.js');
+var compiler = require('../lib/compiler.js');
 
 var zeropage = {type:'T_ADDRESS', value:'$00'};
 var address10 = {type:'T_ADDRESS', value:'$1234'};

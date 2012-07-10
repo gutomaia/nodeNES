@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('../src/compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_sbc_imm = function(test){
     var tokens = compiler.lexical('SBC #10');

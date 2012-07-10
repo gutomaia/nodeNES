@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var cartridge = require('../src/cartridge.js');
+var cartridge = require('../lib/cartridge.js');
 
 exports.setUp = function(callback){
     this.cart = new cartridge.Cartridge();

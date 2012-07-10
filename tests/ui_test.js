@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var ui = require('../src/ui.js');
+var ui = require('../lib/ui.js');
 
 exports.setUp = function(callback){
     this.mockCanvas = {

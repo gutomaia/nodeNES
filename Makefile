@@ -114,7 +114,7 @@ download_deps: external/jsnes.src.js \
 	external/bootstrap-tab.js
 
 build: node_modules
-	@./node_modules/jshint/bin/hint src/*.js --config jshint.config
+	@./node_modules/jshint/bin/hint lib/*.js --config jshint.config
 	@./node_modules/jshint/bin/hint tests/*.js --config jshint.config
 
 test: build

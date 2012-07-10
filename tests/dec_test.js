@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('../src/compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_dec_zp = function(test){
     var tokens = compiler.lexical('DEC $00');

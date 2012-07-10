@@ -14,7 +14,7 @@ webServer
     .use(connect.favicon('static/favicon.ico'))
     .use(connect.static('static'))
     .use(connect.static('external'))
-    .use(connect.static('src'))
+    .use(connect.static('lib'))
     .use(connect.bodyParser())
 
 console.log("=======================================");

@@ -1,6 +1,6 @@
 var assert = require('assert');
 var fs = require('fs');
-var sprite = require('../src/sprite.js');
+var sprite = require('../lib/sprite.js');
 
 exports.test_load_sprites = function(test){
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
