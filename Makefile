@@ -121,7 +121,7 @@ test: build
 	@node runner.js
 
 deploy:
-	@cat src/browser_require.js src/analyzer.js src/cartridge.js src/compiler.js > /tmp/nodeNES.js
+	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
 report:
 	@node junit.js
@@ -140,7 +140,7 @@ ghpages: deploy download_deps
 	mkdir -p /tmp/ghpages
 	cp -Rv static/* /tmp/ghpages
 	cp -Rv external/* /tmp/ghpages
-	cp -Rv src/*.js /tmp/ghpages
+	cp -Rv lib/*.js /tmp/ghpages
 
 	cd /tmp/ghpages && \
 		git init && \
