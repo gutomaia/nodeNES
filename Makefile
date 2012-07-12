@@ -108,6 +108,17 @@ deps/require.js:
 external/require.js: external deps/require.js
 	cp deps/require.js external/ && touch $@
 
+deps/ace-builds:
+	mkdir -p deps
+	cd deps && \
+		git clone https://github.com/ajaxorg/ace-builds.git
+	touch $@
+
+external/ace/ace.js: external deps/ace-builds
+	mkdir -p external/ace
+	cp deps/ace-builds/src/* external/ace
+	touch $@
+
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
 	external/dynamicaudio.swf \
@@ -121,7 +132,8 @@ download_deps: external/jsnes.src.js \
 	external/bootstrap.css \
 	external/bootstrap-dropdown.js \
 	external/bootstrap-tab.js \
-	external/require.js
+	external/require.js \
+	external/ace/ace.js
 
 build: node_modules
 	@./node_modules/jshint/bin/hint lib/*.js --config jshint.config
