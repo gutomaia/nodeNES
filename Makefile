@@ -99,6 +99,15 @@ deps/jquery-1.7.2.min.js:
 external/jquery-1.7.2.min.js: external deps/jquery-1.7.2.min.js
 	cp deps/jquery-1.7.2.min.js external/ && touch $@
 
+deps/require.js:
+	mkdir -p deps
+	cd deps && \
+		wget http://requirejs.org/docs/release/2.0.4/minified/require.js
+	touch $@
+
+external/require.js: external deps/require.js
+	cp deps/require.js external/ && touch $@
+
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
 	external/dynamicaudio.swf \
@@ -111,7 +120,8 @@ download_deps: external/jsnes.src.js \
 	external/check.png \
 	external/bootstrap.css \
 	external/bootstrap-dropdown.js \
-	external/bootstrap-tab.js
+	external/bootstrap-tab.js \
+	external/require.js
 
 build: node_modules
 	@./node_modules/jshint/bin/hint lib/*.js --config jshint.config
