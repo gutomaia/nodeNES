@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+// -*- js -*-
+
+global.sys = require(/^v0\.[012]/.test(process.version) ? "sys" : "util");
+
+//var nodenes = require("../nodenes");
+
+var options = {
+    output:null,
+    nesasm:true,
+    verbose:false
+}
+
+var args = process.argv;
+var filename
+
+while(args.length > 0){
+    var value = args.shift();
+    switch(value){
+        case "--nesasm":
+        case "-na":
+            options.nesasm = true;
+            break;
+        case "--output":
+        case "-o":
+            options.output = args.shift();
+            break;
+        case "--verbose":
+        case "-v":
+            options.verbose = true;
+            break;
+        default:
+            filename = value;
+            break;
+    }
+}
+
+if (options.verbose) {
+    console.log('opa')
+}
+

@@ -21,6 +21,10 @@
     "supervisor": "0.3.1"
     },
   "repository" : {"type": "git", "url": "https://github.com/gutomaia/nodeNES.git"},
+  "bin": {
+    "nodenes":"./bin/nodenes"
+
+    },
   "main": "./app.js",
   "scripts": {
     "test": "nodeunit tests"
