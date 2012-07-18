@@ -3,16 +3,23 @@
 
 global.sys = require(/^v0\.[012]/.test(process.version) ? "sys" : "util");
 
+var compiler = require("../lib/compiler.js");
+
 //var nodenes = require("../nodenes");
 
 var options = {
+    copyright:true,
     output:null,
     nesasm:true,
     verbose:false
 }
 
-var args = process.argv;
+var args = process.argv.slice(2);
 var filename
+
+if (args.length == 0){
+    console.log('Usage')
+};
 
 while(args.length > 0){
     var value = args.shift();
@@ -35,7 +42,27 @@ while(args.length > 0){
     }
 }
 
-if (options.verbose) {
-    console.log('opa')
+
+if (options.copyright){
+    console.log('nodeNES by Guto Maia');
 }
+
+if (options.verbose) {
+
+}
+
+if (options.output === null){
+    options.output = filename + '.nes';
+}
+
+if (filename !== null){
+    var code = compiler.open_file(filename);
+    try {
+        var bin = compiler.nes_compiler(code);
+        compiler.write_file(options.output, bin)
+    } catch (e){
+        console.log(e);
+    };
+}
+
 
