@@ -1,0 +1,16 @@
+*.markdown
+*.md
+.git*
+.travis.yml
+Makefile
+deps/
+external/
+fixtures/
+tests/
+static/
+.DS_Store
+LICENSE
+app.js
+jshint.config
+junit.js
+runner.js
