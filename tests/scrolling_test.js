@@ -1,7 +1,5 @@
 var assert = require('assert');
 var fs = require('fs');
-var Buffer = require('buffer').Buffer;
-
 var sys = require('util');
 
 var compiler = require('../lib/compiler.js');
