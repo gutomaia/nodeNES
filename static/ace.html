@@ -127,6 +127,10 @@ body {
                 </ul>
               </li>
               <li><a href="#workspace">Workspace</a></li>
+              <li><a href="#faq">FAQ</a></li>
+
+              <li><a href="#about">About</a></li>
+
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -138,6 +142,7 @@ body {
   <a href="http://gutomaia.net/nodeNES/" >
     <img id="logo" src="kitchen-sink/logo.png">
   </a> 
+
   <table id="controls">
     <tr>
       <td>
@@ -147,17 +152,8 @@ body {
         </select>
       </td>
     </tr>
-    <tr>
-      <td>
-        <label for="split">Split</label>
-      </td><td>
-        <select id="split" size="1">
-          <option value="none">None</option>
-          <option value="below">Below</option>
-          <option value="beside">Beside</option>
-        </select>
-      </td>
-    </tr>
+  </table>
+  <!--
     <tr>
       <td >
         <label for="theme">Theme</label>
@@ -217,32 +213,10 @@ body {
         </select>
       </td>
     </tr>
-    <tr>
-      <td >
-        <label for="keybinding">Key Binding</label>
-      </td><td>
-        <select id="keybinding" size="1">
-          <option value="ace">Ace</option>
-          <option value="vim">Vim</option>
-          <option value="emacs">Emacs</option>
-          <option value="custom">Custom</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td >
-        <label for="soft_wrap">Soft Wrap</label>
-      </td><td>
-        <select id="soft_wrap" size="1">
-          <option value="off">Off</option>
-          <option value="40">40 Chars</option>
-          <option value="80">80 Chars</option>
-          <option value="free">Free</option>
-        </select>
-      </td>
-    </tr>
+  </tr>
   
 	<tr><td colspan="2">
+
 	<table id="more-controls">
     <tr>
       <td>
@@ -327,6 +301,7 @@ body {
   </table>
   </td></tr>
   </table>
+-->
 </div>
 
     <ul class="nav nav-tabs" id="tabs">
@@ -338,6 +313,10 @@ body {
     <!--
     <div id="sprite">oidsfio</div>
     -->
+
+  <script src="jquery-1.7.2.min.js"></script>
+  <script src="bootstrap-dropdown.js"></script>
+  <script src="path.min.js"></script>
 
   <script src="require.js" data-ace-base="ace" data-main="main.js" type="text/javascript" charset="utf-8"></script>    
 </body>
