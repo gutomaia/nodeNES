@@ -46,14 +46,14 @@ external/path.min.js: external deps/pathjs
 deps/CodeMirror2:
 	mkdir -p deps
 	cd deps && \
-			git clone https://github.com/marijnh/CodeMirror2.git
+			git clone https://github.com/marijnh/CodeMirror.git
 	touch $@
 
 external/codemirror.js: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.js external/ && touch $@
+	cp deps/CodeMirror/lib/codemirror.js external/ && touch $@
 
 external/codemirror.css: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.css external/ && touch $@
+	cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
 
 deps/glyphicons_free:
 	mkdir -p deps
@@ -69,7 +69,7 @@ external/fast_forward.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 
 external/check.png: external deps/glyphicons_free
-	cp deps/glyphicons_free/glyphicons/png/glyphicons_150_check.png external/check.png
+	cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 
 deps/bootstrap:
 	mkdir -p deps
