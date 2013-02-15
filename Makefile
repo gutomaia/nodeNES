@@ -1,8 +1,10 @@
 JQUERY_VERSION = 1.8.3
 REQUIREJS_VERSION = 2.0.4
+BOOTSTRAP_VERSION = v2.2.2
 
-BOOTSTRAP_LESS = deps/bootstrap/less/bootstrap.less
-BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap/less/responsive.less
+
+BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
+BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/responsive.less
 
 ifeq "" "$(shell which npm)"
 default:
@@ -74,23 +76,25 @@ external/fast_forward.png: external deps/glyphicons_free
 external/check.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 
-deps/bootstrap: deps/.done
+deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
 	cd deps && \
-		git clone https://github.com/twitter/bootstrap.git
+		git clone https://github.com/twitter/bootstrap.git bootstrap-${BOOTSTRAP_VERSION}
+	cd $@ && \
+		git checkout ${BOOTSTRAP_VERSION}
 	touch $@
 
-external/bootstrap.css: deps/bootstrap
+external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
 
-external/bootstrap-responsive.css: deps/bootstrap
+external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
 
-external/bootstrap-tab.js: deps/bootstrap
-	cp deps/bootstrap/js/bootstrap-tab.js external/ && touch $@
+external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-tab.js external/ && touch $@
 
-external/bootstrap-dropdown.js: deps/bootstrap
-	cp deps/bootstrap/js/bootstrap-dropdown.js external/ && touch $@
+external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-dropdown.js external/ && touch $@
 
 deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 	cd deps && \
