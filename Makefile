@@ -1,3 +1,5 @@
+JQUERY_VERSION = 1.8.3
+
 BOOTSTRAP_LESS = deps/bootstrap/less/bootstrap.less
 BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap/less/responsive.less
 
@@ -17,10 +19,11 @@ node_modules: package.json
 external:
 	mkdir -p external
 
-deps:
+deps/.done:
 	@mkdir -p deps
+	touch $@
 
-deps/jsnes: deps
+deps/jsnes: deps/.done
 	cd deps && \
 		git clone https://github.com/bfirsh/jsnes.git
 	touch $@
@@ -36,7 +39,7 @@ external/dynamicaudio-min.js: external deps/jsnes
 external/dynamicaudio.swf: external deps/jsnes
 	cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
 
-deps/pathjs: deps
+deps/pathjs: deps/.done
 	cd deps && \
 		git clone https://github.com/mtrpcic/pathjs.git
 	touch $@
@@ -44,7 +47,7 @@ deps/pathjs: deps
 external/path.min.js: external deps/pathjs
 	cp deps/pathjs/path.min.js external/ && touch $@
 
-deps/CodeMirror: deps
+deps/CodeMirror: deps/.done
 	cd deps && \
 			git clone https://github.com/marijnh/CodeMirror.git
 	touch $@
@@ -55,7 +58,7 @@ external/codemirror.js: external deps/CodeMirror
 external/codemirror.css: external deps/CodeMirror
 	cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
 
-deps/glyphicons_free: deps
+deps/glyphicons_free: deps/.done
 	cd deps && \
 		wget http://glyphicons.com/files/glyphicons_free.zip && \
 		unzip glyphicons_free.zip
@@ -70,7 +73,7 @@ external/fast_forward.png: external deps/glyphicons_free
 external/check.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 
-deps/bootstrap: deps
+deps/bootstrap: deps/.done
 	cd deps && \
 		git clone https://github.com/twitter/bootstrap.git
 	touch $@
@@ -88,15 +91,15 @@ external/bootstrap-tab.js: deps/bootstrap
 external/bootstrap-dropdown.js: deps/bootstrap
 	cp deps/bootstrap/js/bootstrap-dropdown.js external/ && touch $@
 
-deps/jquery-1.7.2.min.js: deps
+deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 	cd deps && \
-		wget http://code.jquery.com/jquery-1.7.2.min.js
+		wget http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
 	touch $@
 
-external/jquery-1.7.2.min.js: external deps/jquery-1.7.2.min.js
-	cp deps/jquery-1.7.2.min.js external/ && touch $@
+external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}.min.js
+	cp deps/jquery-${JQUERY_VERSION}.min.js external/ && touch $@
 
-deps/require.js: deps
+deps/require.js: deps/.done
 	cd deps && \
 		wget http://requirejs.org/docs/release/2.0.4/minified/require.js
 	touch $@
@@ -110,7 +113,7 @@ download_deps: external/jsnes.src.js \
 	external/path.min.js \
 	external/codemirror.js \
 	external/codemirror.css \
-	external/jquery-1.7.2.min.js \
+	external/jquery-${JQUERY_VERSION}.min.js \
 	external/fast_backward.png \
 	external/fast_forward.png \
 	external/check.png \
