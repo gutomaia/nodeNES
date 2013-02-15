@@ -69,7 +69,7 @@ external/fast_forward.png: external deps/glyphicons_free
 	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 
 external/check.png: external deps/glyphicons_free
-	cp deps/glyphicons_free/glyphicons/png/glyphicons_150_check.png external/check.png
+	cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 
 deps/bootstrap:
 	mkdir -p deps
