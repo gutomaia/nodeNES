@@ -1,4 +1,5 @@
 JQUERY_VERSION = 1.8.3
+REQUIREJS_VERSION = 2.0.4
 
 BOOTSTRAP_LESS = deps/bootstrap/less/bootstrap.less
 BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap/less/responsive.less
@@ -101,7 +102,7 @@ external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}
 
 deps/require.js: deps/.done
 	cd deps && \
-		wget http://requirejs.org/docs/release/2.0.4/minified/require.js
+		wget http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js
 	touch $@
 
 external/require.js: external deps/require.js
