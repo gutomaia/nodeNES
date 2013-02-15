@@ -43,17 +43,17 @@ deps/pathjs:
 external/path.min.js: external deps/pathjs
 	cp deps/pathjs/path.min.js external/ && touch $@
 
-deps/CodeMirror2:
+deps/CodeMirror:
 	mkdir -p deps
 	cd deps && \
-			git clone https://github.com/marijnh/CodeMirror2.git
+			git clone https://github.com/marijnh/CodeMirror.git
 	touch $@
 
-external/codemirror.js: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.js external/ && touch $@
+external/codemirror.js: external deps/CodeMirror
+	cp deps/CodeMirror/lib/codemirror.js external/ && touch $@
 
-external/codemirror.css: external deps/CodeMirror2
-	cp deps/CodeMirror2/lib/codemirror.css external/ && touch $@
+external/codemirror.css: external deps/CodeMirror
+	cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
 
 deps/glyphicons_free:
 	mkdir -p deps
