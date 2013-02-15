@@ -4,5 +4,6 @@
 .buildpath
 .project
 .sublime-build
+deps/
 external/
 node_modules/
