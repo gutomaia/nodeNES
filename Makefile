@@ -196,7 +196,7 @@ deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
 report:
-	@node junit.js
+	@./node_modules/.bin/nodeunit --reporter junit --output reports tests/*
 
 clean:
 	@rm -rf node_modules
