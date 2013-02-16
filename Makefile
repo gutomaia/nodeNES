@@ -185,6 +185,10 @@ jshint:
 	@./node_modules/jshint/bin/hint lib/*.js --config jshint.config
 	@./node_modules/jshint/bin/hint tests/*.js --config jshint.config
 
+jslint:
+	@./node_modules/.bin/jslint --indent 2 --undef lib/*
+	@./node_modules/.bin/jslint --indent 2 --undef tests/*
+
 build: node_modules jshint
 
 nodeunit:
