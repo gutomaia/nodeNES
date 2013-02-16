@@ -6,6 +6,13 @@ BOOTSTRAP_VERSION = v2.2.2
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
 BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/responsive.less
 
+OK=\033[32m[OK]\033[39m
+FAIL=\033[31m[FAIL]\033[39m
+CHECK=@if [ $$? -eq 0 ]; then echo "${OK}"; else echo "${FAIL}"; cat ${DEBUG} ; fi
+
+DEBUG=/tmp/nodeNES_debug
+ERROR=/tmp/nodeNES_error
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -16,65 +23,100 @@ default: test
 endif
 
 node_modules: package.json
-	npm install
+	@echo "NPM installing packages: \c"
+	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@
+	${CHECK}
 
 external:
-	mkdir -p external
+	@echo "Creating external dir: \c"
+	@mkdir -p external
+	${CHECK}
 
 deps/.done:
+	@echo "Creating dependencies dir: \c"
 	@mkdir -p deps
-	touch $@
+	@touch $@
+	${CHECK}
 
 deps/jsnes: deps/.done
-	cd deps && \
-		git clone https://github.com/bfirsh/jsnes.git
-	touch $@
+	@echo "Cloning jsNES project: \c"
+	@cd deps && \
+		git clone https://github.com/bfirsh/jsnes.git > /dev/null 2>&1
+	@touch $@
+	${CHECK}
 
 external/jsnes.src.js: external deps/jsnes
-	cd deps/jsnes/source && \
+	@echo "Packing jsnes.src.js: \c"
+	@cd deps/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
-	touch $@
+	@touch $@
+	${CHECK}
 
 external/dynamicaudio-min.js: external deps/jsnes
-	cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
+	@echo "Copping dynamicaudio-min.js: \c"
+	@cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
+	${CHECK}
 
 external/dynamicaudio.swf: external deps/jsnes
-	cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
+	@echo "Copping dynamicaudio-swf.js: \c"
+	@cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
+	${CHECK}
 
 deps/pathjs: deps/.done
-	cd deps && \
-		git clone https://github.com/mtrpcic/pathjs.git
-	touch $@
+	@echo "Cloning PathJS: \c"
+	@cd deps && \
+		git clone https://github.com/mtrpcic/pathjs.git > /dev/null 2>&1
+	@touch $@
+	${CHECK}
 
 external/path.min.js: external deps/pathjs
-	cp deps/pathjs/path.min.js external/ && touch $@
+	@echo "Copping path.min.js: \c"
+	@cp deps/pathjs/path.min.js external/ && touch $@
+	${CHECK}
 
 deps/CodeMirror: deps/.done
-	cd deps && \
-			git clone https://github.com/marijnh/CodeMirror.git
-	touch $@
+	@echo "Cloning CodeMirror: \c"
+	@cd deps && \
+		git clone https://github.com/marijnh/CodeMirror.git > /dev/null 2>&1
+	@touch $@
+	${CHECK}
 
 external/codemirror.js: external deps/CodeMirror
-	cp deps/CodeMirror/lib/codemirror.js external/ && touch $@
+	@echo "Copping codemirror.js: \c"
+	@cp deps/CodeMirror/lib/codemirror.js external/ && touch $@
+	${CHECK}
 
 external/codemirror.css: external deps/CodeMirror
-	cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
+	@echo "Copping codemirror.css: \c"
+	@cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
+	${CHECK}
 
 deps/glyphicons_free: deps/.done
-	cd deps && \
+	@echo "Downloading glyphicons_free.zip: \c"
+	@cd deps && \
 		wget http://glyphicons.com/files/glyphicons_free.zip && \
-		unzip glyphicons_free.zip
+	${CHECK}
 	touch $@
+	@echo "Unpacking glyphicons_free.zip: \c"
+	@cd deps && \
+		unzip -q glyphicons_free.zip
+	${CHECK}
 
 external/fast_backward.png: external deps/glyphicons_free
-	cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
+	@echo "Copping $@: \c"
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
+	${CHECK}
 
 external/fast_forward.png: external deps/glyphicons_free
-	cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
+	@echo "Copping $@: \c"
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
+	${CHECK}
 
 external/check.png: external deps/glyphicons_free
-	cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
+	@echo "Copping $@: \c"
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
+	${CHECK}
 
 deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
 	cd deps && \
@@ -85,16 +127,24 @@ deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
 
 external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
-	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	@echo "Compiling $@: \c"
+	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	${CHECK}
 
 external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
-	./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	@echo "Compiling $@: \c"
+	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	${CHECK}
 
 external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
-	cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-tab.js external/ && touch $@
+	@echo "Copping $@: \c"
+	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-tab.js external/ && touch $@
+	${CHECK}
 
 external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
-	cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-dropdown.js external/ && touch $@
+	@echo "Copping $@: \c"
+	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-dropdown.js external/ && touch $@
+	${CHECK}
 
 deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 	cd deps && \
@@ -102,7 +152,9 @@ deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 	touch $@
 
 external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}.min.js
-	cp deps/jquery-${JQUERY_VERSION}.min.js external/ && touch $@
+	@echo "Copping $@: \c"
+	@cp deps/jquery-${JQUERY_VERSION}.min.js external/ && touch $@
+	${CHECK}
 
 deps/require.js: deps/.done
 	cd deps && \
@@ -110,7 +162,9 @@ deps/require.js: deps/.done
 	touch $@
 
 external/require.js: external deps/require.js
-	cp deps/require.js external/ && touch $@
+	@echo "Copping $@: \c"
+	@cp deps/require.js external/ && touch $@
+	${CHECK}
 
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
