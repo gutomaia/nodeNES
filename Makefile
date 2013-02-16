@@ -187,8 +187,10 @@ jshint:
 
 build: node_modules jshint
 
-test: build
-	@node runner.js
+nodeunit:
+	@./node_modules/.bin/nodeunit --reporter minimal tests/*
+
+test: build nodeunit
 
 deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
