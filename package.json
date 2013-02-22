@@ -17,7 +17,7 @@
     "nodeunit":"0.7.x",
     "jshint": "0.6.x",
     "jslint": "0.1.x",
-    "recess": "1.0.3",
+    "recess": "1.1.6",
     "uglify-js": "1.2.6",
     "supervisor": "0.3.1"
     },
