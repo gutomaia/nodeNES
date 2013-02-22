@@ -13,6 +13,8 @@ CHECK=@if [ $$? -eq 0 ]; then echo "${OK}"; else echo "${FAIL}"; cat ${DEBUG} ; 
 DEBUG=/tmp/nodeNES_debug
 ERROR=/tmp/nodeNES_error
 
+WGET = wget -q
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -95,7 +97,7 @@ external/codemirror.css: external deps/CodeMirror
 deps/glyphicons_free.zip: deps/.done
 	@echo "Downloading glyphicons_free.zip: \c"
 	@cd deps && \
-		wget http://glyphicons.com/files/glyphicons_free.zip
+		${WGET} http://glyphicons.com/files/glyphicons_free.zip
 	@touch $@
 	${CHECK}
 
@@ -155,7 +157,7 @@ external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
 
 deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 	@cd deps && \
-		wget http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
+		${WGET} http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
 	@touch $@
 
 external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}.min.js
@@ -165,7 +167,7 @@ external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}
 
 deps/require.js: deps/.done
 	@cd deps && \
-		wget http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js
+		${WGET} http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js
 	@touch $@
 
 external/require.js: external deps/require.js
