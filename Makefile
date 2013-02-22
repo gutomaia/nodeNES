@@ -92,28 +92,31 @@ external/codemirror.css: external deps/CodeMirror
 	@cp deps/CodeMirror/lib/codemirror.css external/ && touch $@
 	${CHECK}
 
-deps/glyphicons_free: deps/.done
+deps/glyphicons_free.zip: deps/.done
 	@echo "Downloading glyphicons_free.zip: \c"
 	@cd deps && \
-		wget http://glyphicons.com/files/glyphicons_free.zip && \
-	${CHECK}
+		wget http://glyphicons.com/files/glyphicons_free.zip
 	touch $@
+	${CHECK}
+
+deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 	@echo "Unpacking glyphicons_free.zip: \c"
 	@cd deps && \
 		unzip -q glyphicons_free.zip
+	touch $@
 	${CHECK}
 
-external/fast_backward.png: external deps/glyphicons_free
+external/fast_backward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
 	${CHECK}
 
-external/fast_forward.png: external deps/glyphicons_free
+external/fast_forward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 	${CHECK}
 
-external/check.png: external deps/glyphicons_free
+external/check.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
