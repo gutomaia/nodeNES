@@ -96,14 +96,14 @@ deps/glyphicons_free.zip: deps/.done
 	@echo "Downloading glyphicons_free.zip: \c"
 	@cd deps && \
 		wget http://glyphicons.com/files/glyphicons_free.zip
-	touch $@
+	@touch $@
 	${CHECK}
 
 deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 	@echo "Unpacking glyphicons_free.zip: \c"
 	@cd deps && \
 		unzip -q glyphicons_free.zip
-	touch $@
+	@touch $@
 	${CHECK}
 
 external/fast_backward.png: external deps/glyphicons_free/.done
@@ -122,11 +122,15 @@ external/check.png: external deps/glyphicons_free/.done
 	${CHECK}
 
 deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
-	cd deps && \
-		git clone https://github.com/twitter/bootstrap.git bootstrap-${BOOTSTRAP_VERSION}
-	cd $@ && \
-		git checkout ${BOOTSTRAP_VERSION}
-	touch $@
+	@echo "Cloning Bootstrap: \c"
+	@cd deps && \
+		git clone https://github.com/twitter/bootstrap.git bootstrap-${BOOTSTRAP_VERSION} > /dev/null 2>&1
+	${CHECK}
+	@echo "Switching Bootstrap Version to ${BOOTSTRAP_VERSION}: \c"
+	@cd $@ && \
+		git checkout ${BOOTSTRAP_VERSION} > /dev/null 2>&1
+	@touch $@
+	${CHECK}
 
 external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
@@ -150,9 +154,9 @@ external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
 	${CHECK}
 
 deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
-	cd deps && \
+	@cd deps && \
 		wget http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
-	touch $@
+	@touch $@
 
 external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}.min.js
 	@echo "Copping $@: \c"
@@ -160,9 +164,9 @@ external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}
 	${CHECK}
 
 deps/require.js: deps/.done
-	cd deps && \
+	@cd deps && \
 		wget http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js
-	touch $@
+	@touch $@
 
 external/require.js: external deps/require.js
 	@echo "Copping $@: \c"
@@ -212,7 +216,7 @@ clean:
 	@rm -rf reports
 
 run: node_modules download_deps
-	./node_modules/.bin/supervisor ./app.js
+	@./node_modules/.bin/supervisor ./app.js
 
 ghpages: deploy download_deps
 	rm -rf /tmp/ghpages
