@@ -78,10 +78,11 @@ external/path.min.js: external deps/pathjs
 	${CHECK}
 
 deps/codemirror-${CODEMIRROR_VERSION}.zip: deps/.done
-	echo "Downloading CodeMirror ${CODEMIRROR_VERSION}: \c"
+	@echo "Downloading CodeMirror ${CODEMIRROR_VERSION}: \c"
 	@cd deps && \
 		${WGET} http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
 	${CHECK}
+	@touch $@
 
 deps/codemirror-${CODEMIRROR_VERSION}/.done: deps/.done deps/codemirror-${CODEMIRROR_VERSION}.zip
 	@echo "Unpacking codemirror-${CODEMIRROR_VERSION}.zip: \c"
