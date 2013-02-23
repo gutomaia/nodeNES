@@ -1,8 +1,7 @@
-JQUERY_VERSION = 1.8.3
+JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependencies.jquery);"}
 REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = v2.2.2
 CODEMIRROR_VERSION = 3.1
-
 
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
 BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/responsive.less
