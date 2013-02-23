@@ -106,15 +106,15 @@ deps/glyphicons_free.zip: deps/.done
 	@echo "Downloading glyphicons_free.zip: \c"
 	@cd deps && \
 		${WGET} http://glyphicons.com/files/glyphicons_free.zip
-	@touch $@
 	${CHECK}
+	@touch $@
 
 deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 	@echo "Unpacking glyphicons_free.zip: \c"
 	@cd deps && \
 		unzip -q glyphicons_free.zip
-	@touch $@
 	${CHECK}
+	@touch $@
 
 external/fast_backward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
@@ -139,8 +139,8 @@ deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
 	@echo "Switching Bootstrap Version to ${BOOTSTRAP_VERSION}: \c"
 	@cd $@ && \
 		git checkout ${BOOTSTRAP_VERSION} > /dev/null 2>&1
-	@touch $@
 	${CHECK}
+	@touch $@
 
 external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
