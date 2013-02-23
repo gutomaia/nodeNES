@@ -1,7 +1,7 @@
 JQUERY_VERSION = 1.8.3
 REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = v2.2.2
-CODEMIRROR_VERSION = v3.1
+CODEMIRROR_VERSION = 3.1
 
 
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
@@ -78,23 +78,26 @@ external/path.min.js: external deps/pathjs
 	@cp deps/pathjs/path.min.js external/ && touch $@
 	${CHECK}
 
-deps/codemirror-${CODEMIRROR_VERSION}: deps/.done
-	@echo "Cloning CodeMirror: \c"
+deps/codemirror-${CODEMIRROR_VERSION}.zip: deps/.done
+	echo "Downloading CodeMirror ${CODEMIRROR_VERSION}: \c"
 	@cd deps && \
-		git clone https://github.com/marijnh/CodeMirror.git codemirror-${CODEMIRROR_VERSION} > /dev/null 2>&1
-	@echo "Switching CodeMirror Version to ${CODEMIRROR_VERSION}: \c"
-	@cd $@ && \
-		git checkout ${CODEMIRROR_VERSION} > /dev/null 2>&1
+		${WGET} http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
+	${CHECK}
+
+deps/codemirror-${CODEMIRROR_VERSION}/.done: deps/.done deps/codemirror-${CODEMIRROR_VERSION}.zip
+	@echo "Unpacking codemirror-${CODEMIRROR_VERSION}.zip: \c"
+	@cd deps && \
+		unzip -q codemirror-${CODEMIRROR_VERSION}.zip
 	@touch $@
 	${CHECK}
 
 
-external/codemirror.js: external deps/codemirror-${CODEMIRROR_VERSION}
+external/codemirror.js: external deps/codemirror-${CODEMIRROR_VERSION}/.done
 	@echo "Copping codemirror.js: \c"
 	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.js external/ && touch $@
 	${CHECK}
 
-external/codemirror.css: external deps/codemirror-${CODEMIRROR_VERSION}
+external/codemirror.css: external deps/codemirror-${CODEMIRROR_VERSION}/.done
 	@echo "Copping codemirror.css: \c"
 	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.css external/ && touch $@
 	${CHECK}
