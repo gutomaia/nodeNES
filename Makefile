@@ -1,4 +1,6 @@
 JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependencies.jquery);"}
+UNDERSCORE_VERSION = 1.4.4
+BACKBONE_VERSION = 0.9.10
 REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = v2.2.2
 CODEMIRROR_VERSION = 3.1
@@ -65,17 +67,31 @@ external/dynamicaudio.swf: external deps/jsnes/.done
 	@cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
 	${CHECK}
 
-deps/pathjs: deps/.done
-	@echo "Cloning PathJS: \c"
+deps/underscore.js: deps/.done
+	@echo "Downloading underscore.js: \c"
 	@cd deps && \
-		git clone https://github.com/mtrpcic/pathjs.git > /dev/null 2>&1
+		${WGET} http://raw.github.com/documentcloud/underscore/${UNDERSCORE_VERSION}/underscore.js
+	${CHECK}
 	@touch $@
-	${CHECK}
 
-external/path.min.js: external deps/pathjs
-	@echo "Copping path.min.js: \c"
-	@cp deps/pathjs/path.min.js external/ && touch $@
+external/underscore.js: external deps/underscore.js
+	@echo "Copping underscore.js: \c"
+	@cp deps/underscore.js external/ && touch $@
 	${CHECK}
+	@touch $@
+
+deps/backbone.js: deps/.done
+	@echo "Downloading backbone.js: \c"
+	@cd deps && \
+		${WGET} http://raw.github.com/documentcloud/backbone/${BACKBONE_VERSION}/backbone.js
+	${CHECK}
+	@touch $@
+
+external/backbone.js: external deps/backbone.js
+	@echo "Copping backbone.js: \c"
+	@cp deps/backbone.js external/ && touch $@
+	${CHECK}
+	@touch $@
 
 deps/codemirror-${CODEMIRROR_VERSION}.zip: deps/.done
 	@echo "Downloading CodeMirror ${CODEMIRROR_VERSION}: \c"
@@ -186,7 +202,8 @@ external/require.js: external deps/require.js
 download_deps: external/jsnes.src.js \
 	external/dynamicaudio-min.js \
 	external/dynamicaudio.swf \
-	external/path.min.js \
+	external/underscore.js \
+	external/backbone.js \
 	external/codemirror.js \
 	external/codemirror.css \
 	external/jquery-${JQUERY_VERSION}.min.js \
