@@ -217,7 +217,10 @@ deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
 report:
-	@./node_modules/.bin/nodeunit --reporter junit --output reports tests/*
+	mkdir -p reports
+	@./node_modules/.bin/nodeunit --reporter junit --output reports tests/*.js
+	@./node_modules/.bin/jshint lib/*.js tests/*.js --jslint-reporter > reports/jslint.xml || exit 0
+	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
 
 clean:
 	@rm -rf node_modules
