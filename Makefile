@@ -41,26 +41,26 @@ deps/.done:
 	@touch $@
 	${CHECK}
 
-deps/jsnes: deps/.done
+deps/jsnes/.done: deps/.done
 	@echo "Cloning jsNES project: \c"
 	@cd deps && \
 		git clone https://github.com/bfirsh/jsnes.git > /dev/null 2>&1
-	@touch $@
 	${CHECK}
+	@touch $@
 
-external/jsnes.src.js: external deps/jsnes
+external/jsnes.src.js: external deps/jsnes/.done
 	@echo "Packing jsnes.src.js: \c"
 	@cd deps/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
-	@touch $@
 	${CHECK}
+	@touch $@
 
-external/dynamicaudio-min.js: external deps/jsnes
+external/dynamicaudio-min.js: external deps/jsnes/.done
 	@echo "Copping dynamicaudio-min.js: \c"
 	@cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
 	${CHECK}
 
-external/dynamicaudio.swf: external deps/jsnes
+external/dynamicaudio.swf: external deps/jsnes/.done
 	@echo "Copping dynamicaudio-swf.js: \c"
 	@cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
 	${CHECK}
