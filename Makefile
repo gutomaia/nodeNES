@@ -223,10 +223,12 @@ report:
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
 
 clean:
-	@rm -rf node_modules
-	@rm -rf deps
 	@rm -rf external
 	@rm -rf reports
+
+purge: clean
+	@rm -rf node_modules
+	@rm -rf deps
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
