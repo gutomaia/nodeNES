@@ -10,15 +10,11 @@
     <style type="text/css">
       body {
         padding-top: 60px;
-        padding-bottom: 30px;
+        padding-bottom: 0px;
       }
 
       .nav {
         margin-bottom: 0px;
-      }
-
-      .tab-content {
-        border: 2px solid #ddd;
       }
 
       .alert {
@@ -34,6 +30,16 @@
 
       #content textarea {
         display: block;
+      }
+
+      .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+      }
+
+      .CodeMirror-scroll {
+        overflow-y: hidden;
+        overflow-x: auto;
       }
 
     </style>
@@ -101,6 +107,18 @@
 
     <div class="container">
       <div class="row">
+        <div class="span4" style="width:256px;">
+          <ul class="nav nav-tabs">
+            <li><a href="#emulator">Emulator</a></li>
+            <li><a href="#sprites">Auto-Play</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+
+          <div class="sidebar-nav-fixed">
+            <canvas id="nes-screen" width="256" height="240"></canvas>
+            <div id="status"></div>
+          </div>
+        </div>
         <div class="span8">
           <ul class="nav nav-tabs" id="tabs">
             <li><a href="#source">Source</a></li>
@@ -134,24 +152,15 @@
             </div>
           </div>
         </div>
-
-
-        <div class="span4">
-          <div class="sidebar-nav-fixed">
-            <h2>Emulator</h2>
-            <canvas id="nes-screen" width="256" height="240"></canvas>
-            <p>I'm using the awesome <a href="http://fir.sh/projects/jsnes/">JSNES</a> from Ben Firshman. A NES emulator in Javascript to run the compiled code from nodeNES.</p>
-          </div>
-          <div id="status"></div>
       </div>
-
+<!--
       <div class="row">
       </div>
       <hr>
       <footer>
         <p>© gUTO.nET 2012</p>
       </footer>
-
+-->
     </div> <!-- /container -->
 
     <script src="jquery-1.8.3.min.js"></script> <!-- TODO use sed to check or put version on MakeFile here -->
