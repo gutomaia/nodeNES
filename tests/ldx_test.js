@@ -29,7 +29,7 @@ exports.test_ldx_zp = function(test){
 exports.test_ldx_zpy = function(test){
     var tokens = compiler.lexical('LDX $10,Y');
     test.equal(4 , tokens.length);
-    token = tokens[0];
+    var token = tokens[0];
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('T_SEPARATOR', tokens[2].type);

@@ -49,10 +49,10 @@ exports.test_cmp_abs = function(test){
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('$1234', tokens[1]['value']);
-    ast = compiler.syntax(tokens);
+    var ast = compiler.syntax(tokens);
     test.equal(1, ast.length);
     test.equal('S_ABSOLUTE', ast[0].type);
-    code = compiler.semantic(ast);
+    var code = compiler.semantic(ast);
     test.deepEqual(code, [0xcd, 0x34, 0x12]);
     test.done();
 };

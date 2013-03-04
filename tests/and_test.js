@@ -103,7 +103,7 @@ exports.test_and_indx = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1 , ast.length);
     test.equal('S_INDIRECT_X', ast[0].type);
-    code = compiler.semantic(ast);
+    var code = compiler.semantic(ast);
     test.deepEqual(code, [0x21, 0x20]);
     test.done();
 };

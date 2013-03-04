@@ -141,7 +141,7 @@ exports.test_db_2 = function(test){
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    expected = [ 0x0f,0x30, 0x31, 0x32, 0x33, 0x35, 0x36,0x37, 0x38, 0x39, 0x3A, 0x3B,0x3C, 0x3D, 0x3E, 0x0F];
+    var expected = [ 0x0f,0x30, 0x31, 0x32, 0x33, 0x35, 0x36,0x37, 0x38, 0x39, 0x3A, 0x3B,0x3C, 0x3D, 0x3E, 0x0F];
     test.deepEqual(expected, code);
     test.done();
 };
@@ -155,7 +155,7 @@ exports.test_db_3 = function(test){
     test.equal(1 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    expected = [ 0x80,0x0, 0x03, 0x80];
+    var expected = [ 0x80,0x0, 0x03, 0x80];
     test.deepEqual(expected, code);
     test.done();
 };
@@ -169,7 +169,7 @@ exports.test_db_4 = function(test){
     test.equal(2 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    expected = [ 0x80,0x0, 0x03, 0x80, 1,2,3,4];
+    var expected = [ 0x80,0x0, 0x03, 0x80, 1,2,3,4];
     test.deepEqual(expected, code);
     test.done();
 };
@@ -184,7 +184,7 @@ exports.test_db_5 = function(test){
     test.equal(2 , ast.length);
     test.equal('S_DIRECTIVE', ast[0].type);
     var code = compiler.semantic(ast);
-    expected = [ 0x80,0x0, 0x03, 0x80, 1,2,3,4];
+    var expected = [ 0x80,0x0, 0x03, 0x80, 1,2,3,4];
     test.deepEqual(expected, code);
     test.done();
 };

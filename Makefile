@@ -216,8 +216,8 @@ download_deps: external/jsnes.src.js \
 	external/require.js
 
 jshint:
-	@./node_modules/jshint/bin/hint lib/*.js --config jshint.config
-	@./node_modules/jshint/bin/hint tests/*.js --config jshint.config
+	@./node_modules/.bin/jshint lib/*.js --config jshint.config
+	@./node_modules/.bin/jshint tests/*.js --config jshint.config
 
 jslint:
 	@./node_modules/.bin/jslint --indent 2 --undef lib/*

@@ -18,7 +18,7 @@ exports.test_stx_zp = function(test){
 exports.test_stx_zpy = function(test){
     var tokens = compiler.lexical('STX $10,Y');
     test.equal(4 , tokens.length);
-    token = tokens[0];
+    var token = tokens[0];
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('T_SEPARATOR', tokens[2].type);

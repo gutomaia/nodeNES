@@ -18,7 +18,7 @@ exports.test_sta_zp = function(test){
 exports.test_sta_zpx = function(test){
     var tokens = compiler.lexical('STA $10,X');
     test.equal(4 , tokens.length);
-    token = tokens[0];
+    var token = tokens[0];
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('T_SEPARATOR', tokens[2].type);
@@ -48,7 +48,7 @@ exports.test_sta_abs = function(test){
 exports.test_sta_absx = function(test){
     var tokens = compiler.lexical('STA $1234,X');
     test.equal(4 , tokens.length);
-    token = tokens[0];
+    var token = tokens[0];
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('$1234', tokens[1].value);
