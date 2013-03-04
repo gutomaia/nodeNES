@@ -5,7 +5,12 @@
   "description" : "A JavaScript NES C6502 compiler",
   "homepage" : "http://gutomaia.net/nodeNES",
   "keywords" : ["util", "functional", "client", "browser"],
-  "contributors" : [],
+  "contributors" : [
+    {
+      "name": "Gabriel Ozeas",
+      "web": "https://github.com/gabriel-ozeas"
+    }
+  ],
   "dependencies" : {
       "jquery": "1.8.3",
       "connect": "2.3.6",

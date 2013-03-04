@@ -20,11 +20,11 @@ make run
 
 ## How to contribute
 
-I will try to put a list of current issues on the Github Issues. If you don't know where to start, ask-me. I will sure find something easy to 
+I will try to put a list of current issues on the Github Issues. If you don't know where to start, ask-me. I will sure find something easy to start.
 
 ## Authors and contributors
 * [Gustavo Maia Neto (Guto Maia)](http://gutomaia.net)(Creator)
-* No one else made a commit yet
+* [Gabriel Ozeas]
 
 ## License
 [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
