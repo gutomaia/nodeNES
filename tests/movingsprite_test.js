@@ -1,6 +1,6 @@
 var assert = require('assert');
 var fs = require('fs');
-var Buffer = require('buffer').Buffer;
+//var Buffer = require('buffer').Buffer;
 
 var sys = require('util');
 
@@ -92,7 +92,7 @@ exports.test_asm_compiler = function(test){
     test.equal(17, ast[8].children[0].line);
     test.equal(3, ast[8].children[0].column);
 
-    opcodes = compiler.semantic(ast, true);
+    var opcodes = compiler.semantic(ast, true);
 
     var data = String.fromCharCode.apply(undefined, opcodes);
 

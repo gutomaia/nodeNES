@@ -9,7 +9,7 @@ exports.test_clv_sngl = function(test){
     var ast = compiler.syntax(tokens);
     test.equal(1, ast.length);
     test.equal('S_IMPLIED', ast[0].type);
-    code = compiler.semantic(ast);
+    var code = compiler.semantic(ast);
     test.deepEqual(code, [0xb8]);
     test.done();
 };
