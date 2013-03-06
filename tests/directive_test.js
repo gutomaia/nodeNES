@@ -188,3 +188,46 @@ exports.test_db_5 = function(test){
     test.deepEqual(expected, code);
     test.done();
 };
+
+exports.test_db_12_binary_number = function(test) {
+    var source = ".db %00000001, %10101010";
+    var tokens = compiler.lexical(source);
+
+    test.equal(4, tokens.length);
+    test.equal('T_DIRECTIVE', tokens[0].type);
+    test.equal('T_BINARY_NUMBER', tokens[1].type);
+
+    var ast = compiler.syntax(tokens);
+
+    test.equal(1, ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+
+    var code = compiler.semantic(ast);
+
+
+    expected = [0x1, 0xAA];
+    test.deepEqual(expected, code);
+
+    test.done();
+};
+
+exports.test_db_list_binary_number = function(test) {
+    var source = ".db %00000001, %00000010\n.db %00000011, %00000100";
+    var tokens = compiler.lexical(source);
+
+    test.equal(9, tokens.length);
+    test.equal('T_DIRECTIVE', tokens[0].type);
+    test.equal('T_BINARY_NUMBER', tokens[1].type);
+
+    var ast = compiler.syntax(tokens);
+
+    test.equal(2, ast.length);
+    test.equal('S_DIRECTIVE', ast[1].type);
+
+    var code = compiler.semantic(ast);
+
+    expected = [0x1, 0x2, 0x3, 0x4];
+    test.deepEqual(expected, code);
+
+    test.done();
+};
