@@ -205,7 +205,7 @@ exports.test_db_12_binary_number = function(test) {
     var code = compiler.semantic(ast);
 
 
-    expected = [0x1, 0xAA];
+    var expected = [0x1, 0xAA];
     test.deepEqual(expected, code);
 
     test.done();
@@ -226,7 +226,7 @@ exports.test_db_list_binary_number = function(test) {
 
     var code = compiler.semantic(ast);
 
-    expected = [0x1, 0x2, 0x3, 0x4];
+    var expected = [0x1, 0x2, 0x3, 0x4];
     test.deepEqual(expected, code);
 
     test.done();
