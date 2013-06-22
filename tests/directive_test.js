@@ -231,3 +231,79 @@ exports.test_db_list_binary_number = function(test) {
 
     test.done();
 };
+
+exports.test_db_background_attribute = function (test) {
+    var source = ".db %00000000, %00010000, %01010000, %00010000, %00000000, %00000000, %00000000, %00110000";
+
+    var tokens = compiler.lexical(source);
+    var ast = compiler.syntax(tokens);
+    var code = compiler.semantic(ast);
+
+    var expected = [ 0x00, 0x10, 0x50, 0x10, 0, 0, 0, 0x30];
+    test.deepEqual(expected, code);
+
+    test.done();
+
+};
+
+exports.test_db_background_row_1 = function(test) {
+    var source = ".db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 1\n";
+    source += ".db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky";
+    var tokens = compiler.lexical(source);
+
+    var ast = compiler.syntax(tokens);
+
+    test.equal(2, ast.length);
+    test.equal('S_DIRECTIVE', ast[1].type);
+
+    var code = compiler.semantic(ast);
+
+    var expected = [
+        0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24,
+        0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24,
+        0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24,
+        0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24
+    ];
+    test.deepEqual(expected, code);
+
+    test.done();
+};
+
+exports.test_db_background_row_3 = function(test) {
+    var source = ".db $24,$24,$24,$24, $45,$45,$24,$24, $45,$45,$45,$45, $45,$45,$24,$24  ;;row 3\n";
+    source += ".db $24,$24,$24,$24, $24,$24,$24,$24, $24,$24,$24,$24, $53,$54,$24,$24  ;;some brick tops";
+
+    var tokens = compiler.lexical(source);
+
+    var ast = compiler.syntax(tokens);
+
+    test.equal(2, ast.length);
+    test.equal('S_DIRECTIVE', ast[1].type);
+
+    var code = compiler.semantic(ast);
+
+    var expected = [
+        0x24, 0x24, 0x24, 0x24, 0x45, 0x45, 0x24, 0x24,
+        0x45, 0x45, 0x45, 0x45, 0x45, 0x45, 0x24, 0x24,
+        0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24,
+        0x24, 0x24, 0x24, 0x24, 0x53, 0x54, 0x24, 0x24
+    ];
+    test.deepEqual(expected, code);
+
+    test.done();
+};
+
+/*
+background:
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 1
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky
+
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 2
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky
+
+  .db $24,$24,$24,$24,$45,$45,$24,$24,$45,$45,$45,$45,$45,$45,$24,$24  ;;row 3
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$53,$54,$24,$24  ;;some brick tops
+
+  .db $24,$24,$24,$24,$47,$47,$24,$24,$47,$47,$47,$47,$47,$47,$24,$24  ;;row 4
+  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$55,$56,$24,$24  ;;brick bottoms
+  */
