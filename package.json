@@ -8,6 +8,7 @@
   "contributors" : [],
   "dependencies" : {
       "jquery": "1.8.3",
+      "canvas": "1.0.x",
       "connect": "2.3.6",
       "async": "0.1.x",
       "nopt": "1.0.x",

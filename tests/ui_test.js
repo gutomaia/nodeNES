@@ -2,14 +2,6 @@ var assert = require('assert');
 
 var ui = require('../lib/ui.js');
 
-exports.setUp = function(callback){
-    this.mockCanvas = {
-
-    };
-    callback();
-};
-
-
 exports.test_new_widget = function(test){
     var widget = new ui.Widget();
     test.equal(0, widget.colorListeners.length);
@@ -125,3 +117,4 @@ exports.test_color_picker_extends_widget = function(test){
     test.equal(ui.ColorPicker.was_clicked, ui.Preview.was_clicked);
     test.done();
 };
+
