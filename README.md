@@ -1,4 +1,6 @@
 # nodeNES
+
+[![NPM version](https://badge.fury.io/js/nodeNES.png)](http://badge.fury.io/js/nodeNES)
 [![Build Status](https://secure.travis-ci.org/gutomaia/nodeNES.png)](http://travis-ci.org/gutomaia/nodeNES)
 [![Coverage Status](https://coveralls.io/repos/gutomaia/nodeNES/badge.png?branch=master)](https://coveralls.io/r/gutomaia/nodeNES?branch=master)
 [![Dependency Status](https://gemnasium.com/gutomaia/nodeNES.png)](https://gemnasium.com/gutomaia/nodeNES)
