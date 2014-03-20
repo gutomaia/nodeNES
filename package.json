@@ -14,19 +14,19 @@
   "dependencies" : {
       "jquery": "1.8.3",
       "canvas": "1.0.x",
-      "connect": "2.3.6",
-      "async": "0.1.x",
-      "nopt": "1.0.x",
-      "temp": "0.4.x"
+      "connect": "2.14.2",
+      "async": "0.2.10",
+      "nopt": "2.2.0",
+      "temp": "0.7.0"
     },
   "devDependencies" : {
-    "amdefine":"0.0.2",
-    "nodeunit":"0.7.x",
-    "jshint": "1.0.x",
-    "jslint": "0.1.x",
-    "recess": "1.0.x",
-    "uglify-js": "1.2.6",
-    "supervisor": "0.3.1"
+    "amdefine":"0.1.0",
+    "nodeunit":"0.8.6",
+    "jshint": "2.4.4",
+    "jslint": "0.3.0",
+    "recess": "1.1.9",
+    "uglify-js": "2.4.13",
+    "supervisor": "0.5.7"
     },
   "repository" : {"type": "git", "url": "https://github.com/gutomaia/nodeNES.git"},
   "bin": {
