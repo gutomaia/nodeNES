@@ -15,7 +15,7 @@ CHECK=@if [ $$? -eq 0 ]; then echo "${OK}"; else echo "${FAIL}"; cat ${DEBUG} ; 
 DEBUG=/tmp/nodeNES_debug
 ERROR=/tmp/nodeNES_error
 
-WGET = wget -q
+WGET = wget -q --user-agent="Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 
 ifeq "" "$(shell which npm)"
 default:
