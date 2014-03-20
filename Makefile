@@ -2,7 +2,7 @@ JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependen
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
 REQUIREJS_VERSION = 2.0.4
-BOOTSTRAP_VERSION = v2.2.2
+BOOTSTRAP_VERSION = 2.3.2
 CODEMIRROR_VERSION = 3.1
 
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
@@ -147,26 +147,31 @@ external/check.png: external deps/glyphicons_free/.done
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
-deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
-	@echo "Cloning Bootstrap: \c"
+deps/v${BOOTSTRAP_VERSION}.zip: deps/.done
+	@echo "Downloading Bootstrap: \c"
 	@cd deps && \
-		git clone https://github.com/twitter/bootstrap.git bootstrap-${BOOTSTRAP_VERSION} > /dev/null 2>&1
+		${WGET} https://github.com/twbs/bootstrap/archive/v${BOOTSTRAP_VERSION}.zip
 	${CHECK}
-	@echo "Switching Bootstrap Version to ${BOOTSTRAP_VERSION}: \c"
-	@cd $@ && \
-		git checkout ${BOOTSTRAP_VERSION} > /dev/null 2>&1
+	@touch $@
+
+deps/bootstrap-${BOOTSTRAP_VERSION}: deps/v${BOOTSTRAP_VERSION}.zip
+	@echo "Unpacking Bootstrap \c"
+	@cd deps && \
+		unzip -q v${BOOTSTRAP_VERSION}.zip
 	${CHECK}
 	@touch $@
 
 external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	@echo "Compiling $@: \c"
-	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap.css $@
 	${CHECK}
 
 external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	@echo "Compiling $@: \c"
-	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap-responsive.css $@
 	${CHECK}
 
 external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
