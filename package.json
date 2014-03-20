@@ -22,7 +22,7 @@
   "devDependencies" : {
     "amdefine":"0.1.0",
     "nodeunit":"0.8.6",
-    "coverall":"2.10.0",
+    "coveralls":"2.10.0",
     "jscoverage": "0.3.8",
     "jshint": "2.4.4",
     "jslint": "0.3.0",
