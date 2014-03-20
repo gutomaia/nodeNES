@@ -7,5 +7,6 @@
 .sublime-build
 deps/
 external/
+lib-cov/
 node_modules/
 reports/

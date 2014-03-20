@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('../lib/compiler.js');
+var compiler = require('./compiler.js');
 
 exports.test_cpy_imm = function(test){
     var tokens = compiler.lexical('CPY #10');

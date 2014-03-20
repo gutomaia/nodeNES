@@ -231,7 +231,7 @@ jslint:
 build: node_modules jshint
 
 nodeunit:
-	@./node_modules/.bin/nodeunit --reporter minimal tests/*
+	@./node_modules/.bin/nodeunit --reporter minimal tests/*_test.js
 
 test: build nodeunit
 
