@@ -1,5 +1,10 @@
 # nodeNES
 [![Build Status](https://secure.travis-ci.org/gutomaia/nodeNES.png)](http://travis-ci.org/gutomaia/nodeNES)
+[![Dependency Status](https://gemnasium.com/gutomaia/nodeNES.png)](https://gemnasium.com/gutomaia/nodeNES)
+
+[![NPM](https://nodei.co/npm/nodeNES.png?downloads=true)](https://nodei.co/npm/gutomaia/) 
+
+
 
 A c6502 compiler for Nintendo 8 bits written in javascript.
 
@@ -28,3 +33,4 @@ I will try to put a list of current issues on the Github Issues. If you don't kn
 
 ## License
 [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
+
