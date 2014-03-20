@@ -1,5 +1,6 @@
 *.py
 *.pyc
+*~
 .DS_Store
 .buildpath
 .project
