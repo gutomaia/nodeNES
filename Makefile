@@ -244,7 +244,27 @@ report:
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --jslint-reporter > reports/jslint.xml || exit 0
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
 
+daemon:
+	@nohup node app.js </dev/null &
+
+pre-ci: build
+	@(make daemon)
+NODENES_APP = $(shell node -e "console.log(require('./package.json').dependencies.jquery);")
+
+selenium:
+	wget http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+
+ci: pre-ci
+	@echo $@
+
+post-ci: ci
+	@echo $@
+	kill ${NODENES_APP}
+
+verify: post-ci
+
 clean:
+	@find . -iname \*~ -delete
 	@rm -rf external
 	@rm -rf reports
 
