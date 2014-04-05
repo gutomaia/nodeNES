@@ -53,7 +53,8 @@ exports.test_sprite_selector = function (test) {
 };
 
 exports.test_palette = function (test) {
-	//var p = new ui.Palette(this.canvas, 0, 0, this.opts);
+	var p = new ui.Palette(this.canvas, 0, 0, this.opts);
+	snapshot(this.canvas, 'palette.png');
     test.done();
  };
 
