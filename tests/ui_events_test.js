@@ -108,3 +108,35 @@ exports.test_pixel_editor_on_color_changed = function (test){
 	test.equal(0, this.pixel_editor.palette_id);
 	test.done();
 };
+
+function click_on_preview(preview, y, x){
+	var line = preview.position_y + ((preview.spriteSize + preview.pixelPadding) * y) + (preview.spriteSize / 2);
+	var col = preview.position_x + ((preview.spriteSize + preview.pixelPadding) * x) + (preview.spriteSize / 2);
+	assert.ok(preview.was_clicked(col, line));
+	preview.click(col, line);
+
+}
+
+exports.test_preview_clicks = function (test) {
+	var sprite_id = 0;
+	for (var line = 0; line < 4; line++){
+		for (var col=0; col < 2; col++, sprite_id++) {
+			click_on_preview(this.preview, line, col);
+			test.equal(sprite_id, this.preview.sprite_id);
+		}
+	}
+	test.done();
+};
+
+exports.test_pixel_editor_on_sprite_changed = function (test){
+	this.preview.addSpriteChangedListener(this.pixel_editor);
+	test.equal(0, this.pixel_editor.sprite_id);
+	var sprite_id = 0;
+	for (var line = 0; line < 4; line++){
+		for (var col=0; col < 2; col++, sprite_id++) {
+			click_on_preview(this.preview, line, col);
+			test.equal(sprite_id, this.pixel_editor.sprite_id);
+		}
+	}
+	test.done();
+};
