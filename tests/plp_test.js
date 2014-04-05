@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('./compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_plp_sngl = function(test){
     var tokens = compiler.lexical('PLP');

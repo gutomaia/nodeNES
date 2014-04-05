@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('./compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_jmp_abs = function(test){
     var tokens = compiler.lexical('JMP $1234');

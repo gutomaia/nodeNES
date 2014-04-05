@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var sys = require('util');
 
-var compiler = require('./compiler.js');
+var compiler = require('../lib/compiler.js');
 
 var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/movingsprite.asm', 'utf8');
 

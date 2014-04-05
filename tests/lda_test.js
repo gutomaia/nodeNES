@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('./compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_lda_imm = function(test){
     var tokens = compiler.lexical('LDA #10');

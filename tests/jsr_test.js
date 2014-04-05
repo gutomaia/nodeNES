@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var compiler = require('./compiler.js');
+var compiler = require('../lib/compiler.js');
 
 exports.test_jsr_abs = function(test){
     var tokens = compiler.lexical('JSR $1234');
