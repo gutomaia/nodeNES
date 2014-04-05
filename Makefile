@@ -238,11 +238,23 @@ test: build nodeunit
 deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
+jscoverage:
+	mkdir -p reports
+	./node_modules/.bin/jscoverage lib 
+	mv lib lib-src
+	ln -s lib-cov lib
+	./node_modules/.bin/nodeunit --reporter lcov tests/*_test.js > reports/lconv.txt
+	rm -rf lib lib-cov
+	mv lib-src lib
+
 report:
 	mkdir -p reports
 	@./node_modules/.bin/nodeunit --reporter junit --output reports tests/*.js
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --jslint-reporter > reports/jslint.xml || exit 0
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
+	
+coveralls: jscoverage
+	cat reports/lconv.txt | ./node_modules/.bin/coveralls
 
 daemon:
 	@nohup node app.js </dev/null &
