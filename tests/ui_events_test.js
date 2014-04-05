@@ -60,3 +60,26 @@ exports.test_palette_clicks = function (test){
 	test.equal(0, this.palette.palette_id);
 	test.done();
 };
+
+function click_on_pixel_editor(pixel_editor, x, y){
+	var line = pixel_editor.position_y + ((pixel_editor.pixelSize + pixel_editor.pixelPadding) * y) + (pixel_editor.pixelSize / 2);
+	var col = pixel_editor.position_x + ((pixel_editor.pixelSize + pixel_editor.pixelPadding) * x) + (pixel_editor.pixelSize / 2);
+	assert.ok(pixel_editor.was_clicked(col, line));
+	pixel_editor.click(col, line);
+}
+
+exports.test_pixel_editor_clicks = function (test){
+	test.equal(0, this.pixel_editor.sprite_id);
+	test.equal(0, this.pixel_editor.palette_id);
+	var spr = sprite.get_sprite(0, this.opts.sprites);
+	click_on_pixel_editor(this.pixel_editor, 0, 0);
+	this.pixel_editor.palette_id = 4; //Cheating
+	for (var line = 0; line < 8; line++){
+		for (var col=0; col < 8; col++) {
+			test.equal(spr[line][col], this.pixel_editor.sprite[line][col]);
+			click_on_pixel_editor(this.pixel_editor, col, line);
+			test.equal(4, this.pixel_editor.sprite[line][col]);
+		}
+	}
+	test.done();
+};
