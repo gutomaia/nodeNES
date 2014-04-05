@@ -41,6 +41,14 @@ exports.tearDown = function (callback) {
 	callback();
 };
 
+exports.test_widget_click_outside = function (test){
+	assert.equal(false, this.palette.was_clicked(this.palette.position_x -1,this.palette.position_y));
+	assert.equal(false, this.palette.was_clicked(this.palette.position_x, this.palette.position_y -1));
+	assert.equal(false, this.palette.was_clicked(this.palette.width + 1, this.palette.position_y));
+	assert.equal(false, this.palette.was_clicked(this.palette.position_x, this.palette.height + 1));
+	test.done();
+};
+
 function click_on_palette(palette, color_id){
 	var x = palette.position_x + (palette.picker_size * color_id) + (palette.picker_size / 2);
 	var y = palette.position_y + (palette.height / 2);
@@ -60,6 +68,7 @@ exports.test_palette_clicks = function (test){
 	test.equal(0, this.palette.palette_id);
 	test.done();
 };
+
 
 function click_on_pixel_editor(pixel_editor, x, y){
 	var line = pixel_editor.position_y + ((pixel_editor.pixelSize + pixel_editor.pixelPadding) * y) + (pixel_editor.pixelSize / 2);
@@ -81,5 +90,21 @@ exports.test_pixel_editor_clicks = function (test){
 			test.equal(4, this.pixel_editor.sprite[line][col]);
 		}
 	}
+	test.done();
+};
+
+exports.test_pixel_editor_on_color_changed = function (test){
+	test.equal(0, this.palette.palette_id);
+	test.equal(0, this.pixel_editor.sprite_id);
+	test.equal(0, this.pixel_editor.palette_id);
+	this.palette.addColorChangeListener(this.pixel_editor);
+	click_on_palette(this.palette, 1);
+	test.equal(1, this.pixel_editor.palette_id);
+	click_on_palette(this.palette, 2);
+	test.equal(2, this.pixel_editor.palette_id);
+	click_on_palette(this.palette, 3);
+	test.equal(3, this.pixel_editor.palette_id);
+	click_on_palette(this.palette, 0);
+	test.equal(0, this.pixel_editor.palette_id);
 	test.done();
 };
