@@ -44,6 +44,7 @@ exports.tearDown = function (callback) {
 function click_on_palette(palette, color_id){
 	var x = palette.position_x + (palette.picker_size * color_id) + (palette.picker_size / 2);
 	var y = palette.position_y + (palette.height / 2);
+	assert.ok(palette.was_clicked(x, y));
 	palette.click(x, y);
 }
 
@@ -55,7 +56,7 @@ exports.test_palette_clicks = function (test){
 	test.equal(2, this.palette.palette_id);
 	click_on_palette(this.palette, 3);
 	test.equal(3, this.palette.palette_id);
-	click_on_palette(this.palette, 4);
-	test.equal(4, this.palette.palette_id);
+	click_on_palette(this.palette, 0);
+	test.equal(0, this.palette.palette_id);
 	test.done();
 };
