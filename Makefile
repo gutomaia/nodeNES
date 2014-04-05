@@ -235,6 +235,9 @@ nodeunit:
 
 test: build nodeunit
 
+tdd:
+	@./node_modules/.bin/supervisor -i reports -w lib -n error -n exit tdd.js
+
 deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
