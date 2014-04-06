@@ -18,7 +18,7 @@ exports.setUp = function (callback) {
 	this.pixel_editor = new ui.PixelEditor(this.canvas, 165, 0, this.opts);
 	this.selector = new ui.SpriteSelector(this.canvas, 440, 0, this.opts);
 	this.palette = new ui.Palette(this.canvas, 0 , 325, this.opts);
-	this.color_picker = new ui.ColorPicker(this.canvas, 165,270,20, this.opts);
+	this.color_picker = new ui.ColorPicker(this.canvas, 165,270);
 	this.preview = new ui.Preview(this.canvas, 0, 0, this.opts);
 
 	//this.pixel_editor.addColorChangeListener(this.palette);
@@ -66,6 +66,25 @@ exports.test_palette_clicks = function (test){
 	test.equal(3, this.palette.palette_id);
 	click_on_palette(this.palette, 0);
 	test.equal(0, this.palette.palette_id);
+	test.done();
+};
+
+function click_on_color_picker(color_picker, color_id){
+	var x = color_picker.position_x + (color_picker.picker_size * (color_id % 16)) + (color_picker.picker_size / 2);
+	var y = color_picker.position_y + (color_picker.picker_size * Math.floor(color_id / 16)) + (color_picker.picker_size / 2);
+	assert.ok(color_picker.was_clicked(x, y));
+	color_picker.click(x, y);
+
+}
+
+exports.test_color_picker = function (test){
+	test.equal(0, this.color_picker.color_id);
+	for (var i = 1; i < 64; i++){
+		click_on_color_picker(this.color_picker, i);
+		test.equal(i, this.color_picker.color_id);
+	}
+	click_on_color_picker(this.color_picker, 0);
+	test.equal(0, this.color_picker.color_id);
 	test.done();
 };
 
@@ -125,6 +144,24 @@ exports.test_preview_clicks = function (test) {
 			test.equal(sprite_id, this.preview.sprite_id);
 		}
 	}
+	test.done();
+};
+
+exports.test_preview_on_color_changed = function (test){
+	this.color_picker.addColorChangeListener(this.palette);
+	this.palette.addColorChangeListener(this.preview);
+	test.deepEqual([0x22,0x16,0x27,0x18], this.palette.palette);
+	test.deepEqual([0x22,0x16,0x27,0x18], this.preview.palette);
+
+	click_on_color_picker(this.color_picker, 51);
+
+	test.deepEqual([51,0x16,0x27,0x18], this.preview.palette);
+
+	click_on_palette(this.palette, 1);
+	click_on_color_picker(this.color_picker, 51);
+
+	test.deepEqual([51,51,0x27,0x18], this.preview.palette);
+
 	test.done();
 };
 
