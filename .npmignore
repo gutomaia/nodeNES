@@ -2,6 +2,7 @@
 *.md
 .DS_Store
 .git*
+.npmignore
 .travis.yml
 LICENSE
 Makefile
@@ -11,6 +12,7 @@ external/
 fixtures/
 jshint.config
 junit.js
+nodeNES*.tgz
 reports/
 runner.js
 static/
