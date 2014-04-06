@@ -299,7 +299,7 @@ minor:
 		xargs -I [] sed 's/"version" : "${NODENES_VERSION}",/"version" : "[]",/' package.json > tmp; mv tmp package.json
 	@git add package.json
 	@node -e "console.log(require('./package.json').version);" | xargs -I [] git commit -m "New nodeNES minor version []"
-	@node -e "console.log(require('./package.json').version);" | xargs -I [] git tag -a [] -m 'nodeNES version []'
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git tag -a v[] -m 'nodeNES version []'
 	@git push --tags
 
 ghpages: deploy download_deps
