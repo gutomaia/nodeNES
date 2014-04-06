@@ -1,3 +1,4 @@
+NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
 JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependencies.jquery);"}
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
@@ -289,6 +290,17 @@ purge: clean
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
+
+minor:
+	@echo "Minor Version"
+	@git branch | grep -P '\* \d+\.\d+\.x' || (echo "You must be in a version branch" && exit 1)
+	@git status | grep -P 'nothing to commit, working directory clean' || (echo "You have stuff to commit" && exit 1)
+	@node -e "console.log(require('./package.json').version.replace(/(\d+\.\d+\.)(\d+)/, function(s,p,m) {var v = parseInt(m) + 1; return p + v;}));" | \
+		xargs -I [] sed 's/"version" : "${NODENES_VERSION}",/"version" : "[]",/' package.json > tmp; mv tmp package.json
+	@git add package.json
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git commit -m "New nodeNES minor version []"
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git tag -a [] -m 'nodeNES version []'
+	@git push --tags
 
 ghpages: deploy download_deps
 	rm -rf /tmp/ghpages
