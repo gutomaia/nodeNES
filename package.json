@@ -1,7 +1,7 @@
 {
   "author" : "Gustavo Maia Neto (Guto Maia) <guto@guto.net>",
   "name" : "nodeNES",
-  "version" : "0.0.2",
+  "version" : "0.0.3",
   "description" : "A JavaScript NES C6502 compiler",
   "homepage" : "http://gutomaia.net/nodeNES",
   "keywords" : ["util", "functional", "client", "browser"],
