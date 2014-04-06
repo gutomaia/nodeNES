@@ -19,6 +19,13 @@ exports.test_get_labels = function(test){
     test.done();
 };
 
+exports.test_nes_compiler = function(test){
+    compiler.path = 'static/example/movingsprite/';
+    var rom = compiler.nes_compiler(code);
+    test.deepEqual(bin, rom);
+    test.done();
+};
+
 exports.test_asm_compiler = function(test){
     compiler.path = 'static/example/movingsprite/';
 
