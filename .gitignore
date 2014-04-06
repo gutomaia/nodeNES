@@ -8,5 +8,6 @@
 deps/
 external/
 lib-cov/
+nodeNES*.tgz
 node_modules/
 reports/
