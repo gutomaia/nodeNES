@@ -12,14 +12,19 @@ exports.setUp = function (callback) {
 	if (!fs.existsSync(reports_path))
 		fs.mkdirSync(reports_path);
 	this.canvas = new Canvas(800,600);
+	global.Image = Canvas.Image;
 	this.opts ={};
 	this.opts.sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
 	this.opts.palette = [0x22,0x16,0x27,0x18];
+	this.opts.sprite_x = 8;
+	this.opts.sprite_y = 16;
 	this.pixel_editor = new ui.PixelEditor(this.canvas, 165, 0, this.opts);
 	this.selector = new ui.SpriteSelector(this.canvas, 440, 0, this.opts);
+
 	this.palette = new ui.Palette(this.canvas, 0 , 325, this.opts);
 	this.color_picker = new ui.ColorPicker(this.canvas, 165,270);
 	this.preview = new ui.Preview(this.canvas, 0, 0, this.opts);
+	this.loader = new ui.SpriteLoader(this.canvas);
 
 	//this.pixel_editor.addColorChangeListener(this.palette);
 	//this.palette.addColorChangeListener(this.selector);
@@ -37,6 +42,7 @@ exports.setUp = function (callback) {
 
 exports.tearDown = function (callback) {
 	this.canvas = null;
+	global.Image = undefined;
 	this.opt = null;
 	callback();
 };
@@ -185,6 +191,21 @@ function click_on_sprite_selector(sprite_selector, sprite_id){
 	sprite_selector.click(x, y);
 }
 
+function click_on_sprite_selector_next_page(sprite_selector){
+	var x = sprite_selector.nextPageButton.position_x + sprite_selector.nextPageButton.width / 2;
+	var y = sprite_selector.nextPageButton.position_y + sprite_selector.nextPageButton.height / 2;
+	assert.ok(sprite_selector.was_clicked(x, y));
+	sprite_selector.click(x, y);
+}
+
+function click_on_sprite_selector_previous_page(sprite_selector){
+	var x = sprite_selector.previousPageButton.position_x + sprite_selector.previousPageButton.width / 2;
+	var y = sprite_selector.previousPageButton.position_y + sprite_selector.previousPageButton.height / 2;
+	assert.ok(sprite_selector.was_clicked(x, y));
+	sprite_selector.click(x, y);
+}
+
+
 exports.test_sprite_selector_clicks = function (test){
 	test.equal(0, this.selector.sprite_id);
 	click_on_sprite_selector(this.selector, 1);
@@ -228,3 +249,42 @@ exports.test_sprite_selector_on_color_change = function (test){
 
 	test.done();
 };
+
+exports.test_add_next_page_button = function (test){
+	test.equal(undefined, this.selector.nextPageButton);
+	this.selector.addNextPageButton("fast_forward.png", 475, 315);
+	test.notEqual(undefined, this.selector.nextPageButton);
+	test.equal(475, this.selector.nextPageButton.position_x);
+	test.equal(315, this.selector.nextPageButton.position_y);
+	test.done();
+};
+
+exports.test_add_previous_page_button = function (test){
+	test.equal(undefined, this.selector.previousPageButton);
+	this.selector.addPreviousPageButton("fast_backward.png", 440, 315);
+	test.notEqual(undefined, this.selector.previousPageButton);
+	test.equal(440, this.selector.previousPageButton.position_x);
+	test.equal(315, this.selector.previousPageButton.position_y);
+	test.done();
+};
+
+exports.test_selector_next_page = function (test){
+	test.equal(0, this.selector.page);
+	this.selector.addNextPageButton("fast_forward.png", 475, 315);
+	click_on_sprite_selector_next_page(this.selector);
+	test.equal(1, this.selector.page);
+	click_on_sprite_selector_next_page(this.selector);
+	test.equal(2, this.selector.page);
+	test.done();
+};
+
+exports.test_selector_previous_page = function (test){
+	this.selector.page = 2;
+	this.selector.addPreviousPageButton("fast_backward.png", 440, 315);
+	click_on_sprite_selector_previous_page(this.selector);
+	test.equal(1, this.selector.page);
+	click_on_sprite_selector_previous_page(this.selector);
+	test.equal(0, this.selector.page);
+	test.done();
+};
+
