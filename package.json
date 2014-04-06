@@ -38,7 +38,6 @@
     },
   "main": "./app.js",
   "scripts": {
-    "test": "nodeunit test",
-    "coveralls": "jscoverage lib && NODENES_COVERAGE=1 nodeunit --reporter lcov tests/*_test.js | coveralls"
+    "test": "nodeunit test"
   }
 }
