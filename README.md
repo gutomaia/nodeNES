@@ -4,6 +4,8 @@
 [![Build Status](https://secure.travis-ci.org/gutomaia/nodeNES.png)](http://travis-ci.org/gutomaia/nodeNES)
 [![Coverage Status](https://coveralls.io/repos/gutomaia/nodeNES/badge.png?branch=master)](https://coveralls.io/r/gutomaia/nodeNES?branch=master)
 [![Dependency Status](https://gemnasium.com/gutomaia/nodeNES.png)](https://gemnasium.com/gutomaia/nodeNES)
+[![Code Climate](https://codeclimate.com/github/gutomaia/nodeNES.png)](https://codeclimate.com/github/gutomaia/nodeNES)
+
 
 [![NPM](https://nodei.co/npm/nodeNES.png?downloads=true)](https://nodei.co/npm/gutomaia/) 
 
