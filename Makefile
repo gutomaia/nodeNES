@@ -242,7 +242,7 @@ tdd:
 deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
 
-jscoverage:
+reports/lconv.txt:
 	mkdir -p reports
 	./node_modules/.bin/jscoverage lib 
 	mv lib lib-src
@@ -257,8 +257,13 @@ report:
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --jslint-reporter > reports/jslint.xml || exit 0
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
 	
-coveralls: jscoverage
+coveralls: reports/lconv.txt
 	cat reports/lconv.txt | ./node_modules/.bin/coveralls
+
+codeclimate: reports/lconv.txt
+	CODECLIMATE_REPO_TOKEN=5342fec96956804f50009413 ./node_modules/.bin | codeclimate-test-reporter
+
+coverage: coveralls codeclimate
 
 daemon:
 	@nohup node app.js </dev/null &
