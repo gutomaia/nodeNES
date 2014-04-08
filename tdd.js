@@ -9,6 +9,7 @@ var nodeunit = require('./node_modules/nodeunit/lib/nodeunit'),
     utils = require('./node_modules/nodeunit/lib/utils'),
     fs = require('fs'),
     path = require('path'),
+    growl = require('growl'),
     AssertionError = require('assert').AssertionError;
 
 /**
@@ -74,19 +75,14 @@ exports.run = function (files, options, callback) {
         done: function (assertions) {
             var end = new Date().getTime();
             var duration = end - start;
+            var msg;
             if (assertions.failures()) {
-                console.log(
-                    '\nFAILURES: ' + assertions.failures() +
-                    '/' + assertions.length + ' assertions failed (' +
-                    assertions.duration + 'ms)'
-                );
+                msg = '\nFAILURES: ' + assertions.failures() + '/' + assertions.length + ' assertions failed (' + assertions.duration + 'ms)';
+            } else {
+                msg = '\nOK: ' + assertions.length + ' assertions (' + assertions.duration + 'ms)';
             }
-            else {
-                console.log(
-                    '\nOK: ' + assertions.length +
-                    ' assertions (' + assertions.duration + 'ms)'
-                );
-            }
+            console.log(msg);
+            growl(msg, {title:"nodeNES"});
 
             if (callback) callback(assertions.failures() ? new Error('We have got test failures.') : undefined);
         }
