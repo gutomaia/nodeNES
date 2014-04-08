@@ -261,7 +261,7 @@ coveralls: reports/lconv.txt
 	cat reports/lconv.txt | ./node_modules/.bin/coveralls
 
 codeclimate: reports/lconv.txt
-	CODECLIMATE_REPO_TOKEN=5342fec96956804f50009413 ./node_modules/.bin | codeclimate-test-reporter
+	CODECLIMATE_REPO_TOKEN=5342fec96956804f50009413 cat reports/lconv.tx | ./node_modules/.bin/codeclimate-test-reporter
 
 coverage: coveralls codeclimate
 
