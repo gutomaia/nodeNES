@@ -250,6 +250,7 @@ reports/lconv.txt:
 	./node_modules/.bin/nodeunit --reporter lcov tests/*_test.js > reports/lconv.txt
 	rm -rf lib lib-cov
 	mv lib-src lib
+	@touch $@
 
 report:
 	mkdir -p reports
@@ -261,7 +262,7 @@ coveralls: reports/lconv.txt
 	cat reports/lconv.txt | ./node_modules/.bin/coveralls
 
 codeclimate: reports/lconv.txt
-	CODECLIMATE_REPO_TOKEN=5342fec96956804f50009413 cat reports/lconv.tx | ./node_modules/.bin/codeclimate-test-reporter
+	CODECLIMATE_REPO_TOKEN=5342fec96956804f50009413 cat reports/lconv.txt | ./node_modules/.bin/codeclimate
 
 coverage: coveralls codeclimate
 
