@@ -37,21 +37,18 @@ exports.run = function (files, options, callback) {
 
     var start = new Date().getTime();
 
-	var opts = {
-	    testspec: options.testspec,
-	    testFullSpec: options.testFullSpec,
+    var opts = {
+        testspec: options.testspec,
+        testFullSpec: options.testFullSpec,
         moduleDone: function (name, assertions) {
             if (assertions.failures()) {
-	            console.log('');
-				process.stdout.write(name + ': ');
+                console.log('');
+                process.stdout.write(name + ': ');
                 assertions.forEach(function (a) {
                     if (a.failed()) {
                         a = utils.betterErrors(a);
                         if (a.error instanceof AssertionError && a.message) {
-                            console.log(
-                                'Assertion in test ' + a.testname + ': ' +
-								a.message
-                            );
+                            console.log('Assertion in test ' + a.testname + ': ' + a.message);
                         }
                         console.log(a.error.stack + '\n');
                     }
@@ -88,18 +85,18 @@ exports.run = function (files, options, callback) {
         }
     };
 
-	if (files && files.length) {
-	    var paths = files.map(function (p) {
-	        return path.join(process.cwd(), p);
-	    });
-	    nodeunit.runFiles(paths, opts);
-	} else {
-		nodeunit.runModules(files,opts);
-	}
+    if (files && files.length) {
+        var paths = files.map(function (p) {
+            return path.join(process.cwd(), p);
+        });
+        nodeunit.runFiles(paths, opts);
+    } else {
+        nodeunit.runModules(files,opts);
+    }
 };
 
 try {
-	nodeunit.reporters.tdd = exports;
+    nodeunit.reporters.tdd = exports;
     var reporter = nodeunit.reporters.tdd;
 }
 catch(e) {
