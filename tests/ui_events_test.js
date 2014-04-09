@@ -4,17 +4,13 @@ var Canvas = require('canvas');
 var sprite = require('../lib/sprite.js');
 var ui = require('../lib/ui.js');
 
-
-
-var reports_path = __dirname + '/../reports/';
+var mario_chr = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
 
 exports.setUp = function (callback) {
-	if (!fs.existsSync(reports_path))
-		fs.mkdirSync(reports_path);
 	this.canvas = new Canvas(800,600);
 	global.Image = Canvas.Image;
 	this.opts ={};
-	this.opts.sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
+	this.opts.sprites = mario_chr;
 	this.opts.palette = [0x22,0x16,0x27,0x18];
 	this.opts.sprite_x = 8;
 	this.opts.sprite_y = 16;
