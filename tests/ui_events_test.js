@@ -321,7 +321,7 @@ exports.test_loader_calls_update_function_on_click = function (test){
 	var build = false;
 	this.loader.updater = function (){
 		build = true;
-	}
+	};
 	this.loader.addUpdateCompileButton("check.png", 510, 315);
 	click_on_loader_check(this.loader);
 	test.ok(build);
