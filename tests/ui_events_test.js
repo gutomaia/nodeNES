@@ -254,6 +254,7 @@ exports.test_add_next_page_button = function (test){
 	test.equal(undefined, this.selector.nextPageButton);
 	this.selector.addNextPageButton("fast_forward.png", 475, 315);
 	test.notEqual(undefined, this.selector.nextPageButton);
+	test.equal("fast_forward.png", this.selector.nextPageButton.src);
 	test.equal(475, this.selector.nextPageButton.position_x);
 	test.equal(315, this.selector.nextPageButton.position_y);
 	test.done();
@@ -263,6 +264,7 @@ exports.test_add_previous_page_button = function (test){
 	test.equal(undefined, this.selector.previousPageButton);
 	this.selector.addPreviousPageButton("fast_backward.png", 440, 315);
 	test.notEqual(undefined, this.selector.previousPageButton);
+	test.equal("fast_backward.png", this.selector.previousPageButton.src);
 	test.equal(440, this.selector.previousPageButton.position_x);
 	test.equal(315, this.selector.previousPageButton.position_y);
 	test.done();
@@ -288,3 +290,22 @@ exports.test_selector_previous_page = function (test){
 	test.done();
 };
 
+exports.test_loader_load_sprite = function (test) {
+	this.pixel_editor.sprites = undefined;
+	this.pixel_editor.sprite = undefined;
+	this.loader.addRedrawListener(this.pixel_editor);
+	this.loader.load('mario.chr');
+	test.notEqual(undefined, this.pixel_editor.sprites);
+	test.notEqual(undefined, this.pixel_editor.sprite);
+	test.done();
+};
+
+exports.test_loader_add_update_compile_button = function (test){
+	test.equal(undefined, this.loader.updateCompileButton);
+	this.loader.addUpdateCompileButton("check.png", 510, 315);
+	test.notEqual(undefined, this.loader.updateCompileButton);
+	test.equal("check.png", this.loader.updateCompileButton.src);
+	test.equal(510, this.loader.updateCompileButton.position_x);
+	test.equal(315, this.loader.updateCompileButton.position_y);
+	test.done();
+};
