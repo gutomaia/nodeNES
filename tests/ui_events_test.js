@@ -309,3 +309,24 @@ exports.test_loader_add_update_compile_button = function (test){
 	test.equal(315, this.loader.updateCompileButton.position_y);
 	test.done();
 };
+
+function click_on_loader_check(loader){
+	var x = loader.updateCompileButton.position_x + loader.updateCompileButton.width / 2;
+	var y = loader.updateCompileButton.position_y + loader.updateCompileButton.height / 2;
+	assert.ok(loader.was_clicked(x, y));
+	loader.click(x, y);
+}
+
+exports.test_loader_calls_update_function_on_click = function (test){
+	var build = false;
+	this.loader.updater = function (){
+		build = true;
+	}
+	this.loader.addUpdateCompileButton("check.png", 510, 315);
+	click_on_loader_check(this.loader);
+	test.ok(build);
+	test.done();
+};
+
+
+
