@@ -14,7 +14,7 @@ exports.test_open_file_with_jquery = function(test){
 
 /*
 TODO: Fix this
-exports.test_load_sprites_with_mocked_jquery = function(test){
+exports.test_open_file_with_mocked_jquery = function(test){
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     global.jQuery = {};
     sinon.stub(utils, 'open_file_with_jquery');
@@ -27,7 +27,7 @@ exports.test_load_sprites_with_mocked_jquery = function(test){
 */
 
 
-exports.test_load_sprites_with_fake_jquery = function(test){
+exports.test_open_file_with_fake_jquery = function(test){
 
     var XMLHttpResponse = function (){
         this.mimeType = 'text/pain';
