@@ -76,3 +76,11 @@ exports.test_load_sprites_with_fake_jquery = function(test){
     test.deepEqual(bin, sprites);
     test.done();
 };
+
+exports.test_write_file = function(test){
+    var filename = '/tmp/hello.tmp';
+    utils.write_file(filename, 'world');
+    var text = fs.readFileSync('/tmp/hello.tmp', 'binary');
+    test.equal('world', text);
+    test.done();
+};
