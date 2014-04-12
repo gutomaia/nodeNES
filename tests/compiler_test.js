@@ -149,3 +149,17 @@ exports.test_invalid_token = function(test){
     }
     test.done();
 };
+
+exports.test_invalid_syntax = function (test){
+    try {
+        var tokens = compiler.lexical('php php');
+        var ast = compiler.syntax(tokens);
+        test.fail();
+    }catch(e){
+        test.equal('Syntax Error' , e.name);
+        test.equal('There were found 1 erros:\n' , e.message);
+        test.equal(1 , e.erros.length);
+        test.equal('Syntax Error' , e.erros[0].type);
+    }
+    test.done();
+};
