@@ -163,3 +163,18 @@ exports.test_invalid_syntax = function (test){
     }
     test.done();
 };
+
+exports.test_nes_invalid_token = function(test){
+    try {
+        compiler.nes_compiler('#INVALIDTOKEN');
+        test.fail();
+    }catch(e){
+        test.equal(1 , e.length);
+        test.equal("Invalid Token" , e[0].name);
+        test.equal(1 , e[0].line);
+        test.equal(1 , e[0].column);
+        test.equal("#INVALIDTOKEN" , e[0].value);
+        test.equal("Token #INVALIDTOKEN at line 1 column 1 is invalid" , e[0].message);
+    }
+    test.done();
+};
