@@ -18,6 +18,9 @@ ERROR=/tmp/nodeNES_error
 
 WGET = wget -q --user-agent="Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 
+SRC_JS = $(wildcard lib/*.js) \
+         $(wildcard tests/*.js)
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -222,12 +225,10 @@ download_deps: external/jsnes.src.js \
 	external/require.js
 
 jshint:
-	@./node_modules/.bin/jshint lib/*.js --config jshint.config
-	@./node_modules/.bin/jshint tests/*.js --config jshint.config
+	@./node_modules/.bin/jshint ${SRC_JS} --config jshint.config
 
 jslint:
-	@./node_modules/.bin/jslint --indent 2 --undef lib/*
-	@./node_modules/.bin/jslint --indent 2 --undef tests/*
+	@./node_modules/.bin/jslint --indent 2 --undef ${SRC_JS}
 
 build: node_modules jshint
 
