@@ -132,3 +132,20 @@ exports.test_lda_indy = function(test){
     test.deepEqual(code, [0xb1, 0x20]);
     test.done();
 };
+
+exports.test_invalid_token = function(test){
+    try {
+        var tokens = compiler.lexical('.invalid #TOKEN');
+        test.fail();
+    }catch(e){
+        test.equal("Lexical Error" , e.name);
+        test.equal("Lexical Error Message" , e.message);
+        test.equal(1 , e.erros.length);
+        test.equal("Invalid Token" , e.erros[0].name);
+        test.equal(1 , e.erros[0].line);
+        test.equal(10 , e.erros[0].column);
+        test.equal("#TOKEN" , e.erros[0].value);
+        test.equal("Token #TOKEN at line 1 column 10 is invalid" , e.erros[0].message);
+    }
+    test.done();
+};
