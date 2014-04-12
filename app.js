@@ -11,7 +11,7 @@ webServer
     .use(connect.static('static'))
     .use(connect.static('external'))
     .use(connect.static('lib'))
-    .use(connect.bodyParser())
+    .use(connect.bodyParser());
 
 console.log("=======================================");
 console.log("Listening on http://" + os.hostname() + ":" + port + "/");
