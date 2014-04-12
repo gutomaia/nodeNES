@@ -291,8 +291,21 @@ exports.test_loader_load_sprite = function (test) {
 	this.pixel_editor.sprite = undefined;
 	this.loader.addRedrawListener(this.pixel_editor);
 	this.loader.load('mario.chr');
-	test.notEqual(undefined, this.pixel_editor.sprites);
-	test.notEqual(undefined, this.pixel_editor.sprite);
+	test.equal(8192, this.pixel_editor.sprites.length);
+
+	var mario =
+    [
+        [0,0,0,0,0,0,1,1],
+        [0,0,0,0,1,1,1,1],
+        [0,0,0,1,1,1,1,1],
+        [0,0,0,1,1,1,1,1],
+        [0,0,0,3,3,3,2,2],
+        [0,0,3,2,2,3,2,2],
+        [0,0,3,2,2,3,3,2],
+        [0,3,3,2,2,3,3,2]
+    ];
+
+	test.deepEqual(mario, this.pixel_editor.sprite);
 	test.done();
 };
 
