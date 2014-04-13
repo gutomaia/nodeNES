@@ -33,7 +33,11 @@ else
 default: test
 endif
 
-node_modules: package.json
+.git/hooks/pre-commit:
+	@cp hooks/pre-commit .git/hooks/pre-commit
+	@touch $@
+
+node_modules: .git/hooks/pre-commit package.json
 	@echo "NPM installing packages: \c"
 	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@
