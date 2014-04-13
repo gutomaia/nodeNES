@@ -27,6 +27,10 @@ if (args.length === 0){
 while(args.length > 0){
     var value = args.shift();
     switch(value){
+        case "-p":
+        case "--path":
+            options.path = args.shift();
+            break;
         case "--nesasm":
         case "-na":
             options.nesasm = true;
