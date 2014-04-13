@@ -27,6 +27,10 @@ FileNode.prototype.getFile = function (filename, options, callback, errorCallbac
     }
 };
 
+FileNode.prototype.toURL = function(){
+    return 'filesystem:http://localhost:8888/temporary/' + this.filename;
+};
+
 function Writer (filename){
     this.filename = filename;
 }
@@ -36,7 +40,12 @@ Writer.prototype.onwriteend = function(){};
 Writer.prototype.onerror = function(){};
 
 Writer.prototype.write = function (blob, options){
-    fs.writeFileSync(this.filename, blob.toString(), 'binary');
+    try {
+        fs.writeFileSync(this.filename, blob.toString(), 'binary');
+        this.onwriteend();
+    } catch (e){
+        this.onerror(e);
+    }
 };
 
 FileNode.prototype.createWriter = function (callback){
@@ -76,9 +85,21 @@ exports.tearDown = function(callback){
 };
 
 exports.test_open_file_with_request_file_system = function(test){
-    utils.write_nesfile(this.filename, 'world');
-    test.ok(fs.existsSync(this.filename));
-    var hl = fs.readFileSync(this.filename, 'binary');
+    var is_written = false;
+    var filename = this.filename;
+    var url = "filesystem:http://localhost:8888/temporary//tmp/hello.tmp";
+
+    utils.on_write_end = function(f, u){
+        is_written = true;
+        test.equal(filename, f);
+        test.equal(url, u);
+    };
+
+    utils.write_file(filename, 'world');
+
+    test.ok(is_written);
+    test.ok(fs.existsSync(filename));
+    var hl = fs.readFileSync(filename, 'binary');
     test.equal('world', hl);
     test.done();
 };
