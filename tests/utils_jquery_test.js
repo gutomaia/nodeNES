@@ -7,7 +7,7 @@ var utils = require('../lib/utils.js');
 exports.test_open_file_with_jquery = function(test){
     var jQuery = {};
     jQuery.ajax = sinon.spy();
-    var sprites = utils.open_file_with_jquery('mario.chr', jQuery);
+    var sprites = utils.open_file_with_browser('mario.chr', jQuery);
     test.ok(jQuery.ajax.calledOnce);
     test.done();
 };
