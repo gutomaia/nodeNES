@@ -62,6 +62,44 @@ exports.test_lowercase_instructions = function(test){
     test.done();
 };
 
+exports.test_lowercase_relative_instructions = function(test){
+    var source = 'vblankwait1: bit $2002\n';
+    source += '\tbpl vblankwait1';
+    var tokens = compiler.lexical(source);
+    test.equal(6, tokens.length);
+    test.equal('T_LABEL', tokens[0].type);
+    test.equal('T_INSTRUCTION', tokens[1].type);
+    test.equal('T_ADDRESS', tokens[2].type);
+    test.equal('T_ENDLINE', tokens[3].type);
+    test.equal('T_INSTRUCTION', tokens[4].type);
+    test.equal('T_MARKER', tokens[5].type);
+    var ast = compiler.syntax(tokens);
+    test.equal(2 , ast.length);
+    test.equal('S_ABSOLUTE', ast[0].type);
+    test.equal('S_RELATIVE', ast[1].type);
+    var code = compiler.semantic(ast);
+    test.deepEqual(code, [0x2c, 0x02, 0x20, 0x10, 0xfb]); //TODO: check later
+    test.done();
+};
+
+
+exports.test_address_with_one_digit = function (test){
+    var code = 'sprites: .db $80, 112, $0, $80';
+    var tokens = compiler.lexical(code);
+    test.equal(9, tokens.length);
+    test.equal('T_LABEL', tokens[0].type);
+    test.equal('T_DIRECTIVE', tokens[1].type);
+    test.equal('T_ADDRESS', tokens[2].type);
+    test.equal('T_SEPARATOR', tokens[3].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[4].type);
+    test.equal('T_SEPARATOR', tokens[5].type);
+    test.equal('T_ADDRESS', tokens[6].type);
+    test.equal('T_SEPARATOR', tokens[7].type);
+    test.equal('T_ADDRESS', tokens[8].type);
+
+    test.done();
+};
+
 exports.test_compile_more_than_on_instruction = function(test){
     var code = "SEC     ;clear the carry;\n";
     code += "LDA $20     ;get the low byte of the first number;\n";
