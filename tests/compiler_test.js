@@ -61,6 +61,15 @@ exports.test_string = function(test){
     test.done();
 };
 
+exports.test_double_instruction_as_marker = function(test){
+    var code = 'RTIRTI: RTI';
+    var tokens = compiler.lexical(code);
+    test.equal(2, tokens.length);
+    test.equal('T_LABEL', tokens[0].type);
+    test.equal('T_INSTRUCTION', tokens[1].type);
+    test.done();
+};
+
 exports.test_compile_more_than_on_instruction = function(test){
     var code = "SEC     ;clear the carry;\n";
     code += "LDA $20     ;get the low byte of the first number;\n";
