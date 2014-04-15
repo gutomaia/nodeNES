@@ -1,5 +1,5 @@
 NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
-JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependencies.jquery);"}
+JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
 REQUIREJS_VERSION = 2.0.4

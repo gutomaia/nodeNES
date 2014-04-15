@@ -232,6 +232,27 @@ exports.test_db_list_binary_number = function(test) {
     test.done();
 };
 
+exports.test_db_list_with_decimal_argument = function (test) {
+    var source = '.db 36,36,36,36';
+    var tokens = compiler.lexical(source);
+
+    test.equal(8, tokens.length);
+    test.equal('T_DIRECTIVE', tokens[0].type);
+    test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
+
+    var ast = compiler.syntax(tokens);
+
+    test.equal(1, ast.length);
+    test.equal('S_DIRECTIVE', ast[0].type);
+
+    var code = compiler.semantic(ast);
+
+    var expected = [0x24, 0x24, 0x24, 0x24];
+    test.deepEqual(expected, code);
+
+    test.done();
+};
+
 exports.test_db_background_attribute = function (test) {
     var source = ".db %00000000, %00010000, %01010000, %00010000, %00000000, %00000000, %00000000, %00110000";
 
