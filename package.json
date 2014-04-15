@@ -11,15 +11,13 @@
       "web": "https://github.com/gabriel-ozeas"
     }
   ],
-  "dependencies" : {
-      "jquery": "2.1.0",
-      "canvas": "1.1.3",
-      "connect": "2.14.3",
-      "async": "0.6.2",
-      "nopt": "2.2.0",
-      "temp": "0.7.0"
-    },
   "devDependencies" : {
+    "jquery": "2.1.0",
+    "canvas": "1.1.3",
+    "connect": "2.14.3",
+    "async": "0.6.2",
+    "nopt": "2.2.0",
+    "temp": "0.7.0",
     "amdefine":"0.1.0",
     "nodeunit":"0.8.6",
     "coveralls":"2.10.0",
