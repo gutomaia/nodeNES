@@ -7,6 +7,7 @@ var ui = require('../lib/ui.js');
 var mario_chr = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
 
 exports.setUp = function (callback) {
+
 	this.canvas = new Canvas(800,600);
 	global.Image = Canvas.Image;
 	this.opts ={};
@@ -287,6 +288,8 @@ exports.test_selector_previous_page = function (test){
 };
 
 exports.test_loader_load_sprite = function (test) {
+	var compiler = require('../lib/compiler.js');
+	compiler.path = 'static/example/scrolling/';
 	this.pixel_editor.sprites = undefined;
 	this.pixel_editor.sprite = undefined;
 	this.loader.addRedrawListener(this.pixel_editor);
