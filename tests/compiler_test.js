@@ -2,25 +2,6 @@ var assert = require('assert');
 
 var compiler = require('../lib/compiler.js');
 
-var zeropage = {type:'T_ADDRESS', value:'$00'};
-var address10 = {type:'T_ADDRESS', value:'$1234'};
-var separator = {type:'T_SEPARATOR', value:','};
-
-exports.setUp = function(callback){
-    callback();
-};
-
-/*
-exports.test_t_zeropage = function(test){
-    test.assertTrue(t_zeropage([test.zeropage],0));
-;
-    def test_t_address(test):;
-    test.assertTrue(t_address([test.address10],0));
-;
-    def test_t_separator(test):;
-    test.assertTrue(t_separator([test.separator],0));
-;
-*/
 
 exports.test_comment = function(test){
     var code = ";this is a comment;\n";
