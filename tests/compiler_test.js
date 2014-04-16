@@ -189,6 +189,26 @@ exports.test_invalid_token = function(test){
     test.done();
 };
 
+exports.test_invalid_directive = function (test){
+    try {
+        var tokens = compiler.lexical('.invalid 171');
+        test.equal(2 , tokens.length);
+        test.equal('T_DIRECTIVE', tokens[0].type);
+        test.equal('T_DECIMAL_ARGUMENT', tokens[1].type);
+        var ast = compiler.syntax(tokens);
+        test.equal(1 , ast.length);
+        test.equal('S_DIRECTIVE', ast[0].type);
+        var code = compiler.semantic(ast);
+        test.fail();
+    } catch (e){
+        test.equal("Semantic Error" , e.name);
+        test.equal("Semantic Error Message" , e.message);
+        test.equal(1 , e.erros.length);
+        test.equal("Unknow Directive" , e.erros[0].type);
+    }
+    test.done();
+}
+
 /*
 TODO: fix later syntax test
 exports.test_invalid_syntax = function (test){
