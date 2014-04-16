@@ -312,6 +312,21 @@ exports.test_loader_load_sprite = function (test) {
 	test.done();
 };
 
+exports.test_loader_on_notify_redraw = function (test) {
+    var compiler = require('../lib/compiler.js');
+    compiler.path = 'static/example/scrolling/';
+    var rendered = false;
+    var widget = new ui.Widget();
+    widget.render = function(){
+        rendered = true;
+    };
+    this.loader.addRedrawListener(widget);
+	this.loader.load('mario.chr');
+    test.equal(8192, widget.sprites.length);
+    test.ok(rendered);
+    test.done();
+};
+
 exports.test_loader_add_update_compile_button = function (test){
 	test.equal(undefined, this.loader.updateCompileButton);
 	this.loader.addUpdateCompileButton("check.png", 510, 315);
@@ -339,6 +354,3 @@ exports.test_loader_calls_update_function_on_click = function (test){
 	test.ok(build);
 	test.done();
 };
-
-
-
