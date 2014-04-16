@@ -207,7 +207,7 @@ exports.test_invalid_directive = function (test){
         test.equal("Unknow Directive" , e.erros[0].type);
     }
     test.done();
-}
+};
 
 /*
 TODO: fix later syntax test
