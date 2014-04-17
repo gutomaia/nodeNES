@@ -106,11 +106,11 @@ exports.test_open_file_with_request_file_system = function(test){
 };
 
 exports.test_write_file_with_write_error = function(test){
-    have_erros = false;
+    var have_erros = false;
 
     utils.on_error = function (e){
         have_erros = true;
-    }
+    };
 
     var st = sinon.stub(fs, 'writeFileSync');
     st.onFirstCall().throws("Error");
