@@ -120,3 +120,19 @@ exports.test_write_file_with_write_error = function(test){
     test.ok(have_erros);
     test.done();
 };
+
+exports.test_on_get_file_call_error_callback = function(test){
+    var have_erros = false;
+
+    utils.on_error = function (e){
+        have_erros = true;
+    };
+
+    var before = FileNode.prototype.createWriter;
+    FileNode.prototype.createWriter = function (){throw "error";};
+    utils.write_file(this.filename, 'error');
+    FileNode.prototype.createWriter = before;
+
+    test.ok(have_erros);
+    test.done();
+};

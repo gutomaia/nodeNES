@@ -34,8 +34,10 @@ default: test
 endif
 
 .git/hooks/pre-commit:
+	@echo "Instaling pre-commit hook: \c"
 	@cp hooks/pre-commit .git/hooks/pre-commit
 	@touch $@
+	${CHECK}
 
 node_modules: .git/hooks/pre-commit package.json
 	@echo "NPM installing packages: \c"
@@ -301,6 +303,7 @@ clean:
 purge: clean
 	@rm -rf node_modules
 	@rm -rf deps
+	@rm .git/hooks/pre-commit
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js

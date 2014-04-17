@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 // -*- js -*-
 
-global.sys = require(/^v0\.[012]/.test(process.version) ? "sys" : "util");
-
 var compiler = require("../lib/compiler.js");
 
 var sys = require('util');
 
-//var nodenes = require("../nodenes");
 
 var options = {
     copyright:true,
@@ -21,7 +18,7 @@ var filename = null;
 
 if (args.length === 0){
     console.log('Usage');
-    //process.exit(1);
+    process.exit(1);
 }
 
 while(args.length > 0){
@@ -51,7 +48,7 @@ while(args.length > 0){
 
 
 if (options.copyright){
-    sys.print('nodeNES by Guto Maia');
+    sys.print('nodeNES by Guto Maia\n');
 }
 
 if (options.verbose) {
