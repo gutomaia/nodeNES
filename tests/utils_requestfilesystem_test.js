@@ -3,6 +3,7 @@ var fs = require('fs');
 var sinon = require('sinon');
 var utils = require('../lib/utils.js');
 
+
 var BlobImpl = function (byteArray, options){
     this.byteArray = byteArray;
 };
@@ -101,5 +102,37 @@ exports.test_open_file_with_request_file_system = function(test){
     test.ok(fs.existsSync(filename));
     var hl = fs.readFileSync(filename, 'binary');
     test.equal('world', hl);
+    test.done();
+};
+
+exports.test_write_file_with_write_error = function(test){
+    var have_erros = false;
+
+    utils.on_error = function (e){
+        have_erros = true;
+    };
+
+    var st = sinon.stub(fs, 'writeFileSync');
+    st.onFirstCall().throws("Error");
+
+    utils.write_file(this.filename, 'error');
+
+    test.ok(have_erros);
+    test.done();
+};
+
+exports.test_on_get_file_call_error_callback = function(test){
+    var have_erros = false;
+
+    utils.on_error = function (e){
+        have_erros = true;
+    };
+
+    var before = FileNode.prototype.createWriter;
+    FileNode.prototype.createWriter = function (){throw "error";};
+    utils.write_file(this.filename, 'error');
+    FileNode.prototype.createWriter = before;
+
+    test.ok(have_erros);
     test.done();
 };
