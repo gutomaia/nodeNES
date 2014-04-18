@@ -1,10 +1,13 @@
 *.py
 *.pyc
+*~
 .DS_Store
 .buildpath
 .project
 .sublime-build
 deps/
 external/
+lib-cov/
+nodeNES*.tgz
 node_modules/
 reports/

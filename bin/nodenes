@@ -1,32 +1,33 @@
 #!/usr/bin/env node
 // -*- js -*-
 
-global.sys = require(/^v0\.[012]/.test(process.version) ? "sys" : "util");
-
 var compiler = require("../lib/compiler.js");
 
 var sys = require('util');
 
-//var nodenes = require("../nodenes");
 
 var options = {
     copyright:true,
     output:null,
     nesasm:true,
     verbose:false
-}
+};
 
 var args = process.argv.slice(2);
 var filename = null;
 
-if (args.length == 0){
-    console.log('Usage')
-    //process.exit(1);
-};
+if (args.length === 0){
+    console.log('Usage');
+    process.exit(1);
+}
 
 while(args.length > 0){
     var value = args.shift();
     switch(value){
+        case "-p":
+        case "--path":
+            options.path = args.shift();
+            break;
         case "--nesasm":
         case "-na":
             options.nesasm = true;
@@ -47,7 +48,7 @@ while(args.length > 0){
 
 
 if (options.copyright){
-    sys.print('nodeNES by Guto Maia');
+    sys.print('nodeNES by Guto Maia\n');
 }
 
 if (options.verbose) {
@@ -59,12 +60,12 @@ if (options.output === null){
 }
 
 if (filename !== null){
-    var code = compiler.open_file(eufilename);
+    var code = compiler.open_file(filename);
     try {
         var bin = compiler.nes_compiler(code);
-        compiler.write_file(options.output, bin)
+        compiler.write_file(options.output, bin);
     } catch (e){
         console.log(e);
         process.exit(1);
-    };
+    }
 }

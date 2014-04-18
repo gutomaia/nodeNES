@@ -1,8 +1,9 @@
-JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').dependencies.jquery);"}
+NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
+JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
 REQUIREJS_VERSION = 2.0.4
-BOOTSTRAP_VERSION = v2.2.2
+BOOTSTRAP_VERSION = 2.3.2
 CODEMIRROR_VERSION = 3.1
 
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
@@ -17,6 +18,12 @@ ERROR=/tmp/nodeNES_error
 
 WGET = wget -q --user-agent="Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 
+SRC_JS = bin/nodenes \
+         $(wildcard lib/*.js) \
+         $(wildcard tests/*.js) \
+         app.js \
+         tdd.js
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -26,7 +33,13 @@ else
 default: test
 endif
 
-node_modules: package.json
+.git/hooks/pre-commit:
+	@echo "Instaling pre-commit hook: \c"
+	@cp hooks/pre-commit .git/hooks/pre-commit
+	@touch $@
+	${CHECK}
+
+node_modules: .git/hooks/pre-commit package.json
 	@echo "NPM installing packages: \c"
 	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@
@@ -147,26 +160,31 @@ external/check.png: external deps/glyphicons_free/.done
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
-deps/bootstrap-${BOOTSTRAP_VERSION}: deps/.done
-	@echo "Cloning Bootstrap: \c"
+deps/v${BOOTSTRAP_VERSION}.zip: deps/.done
+	@echo "Downloading Bootstrap: \c"
 	@cd deps && \
-		git clone https://github.com/twitter/bootstrap.git bootstrap-${BOOTSTRAP_VERSION} > /dev/null 2>&1
+		${WGET} https://github.com/twbs/bootstrap/archive/v${BOOTSTRAP_VERSION}.zip
 	${CHECK}
-	@echo "Switching Bootstrap Version to ${BOOTSTRAP_VERSION}: \c"
-	@cd $@ && \
-		git checkout ${BOOTSTRAP_VERSION} > /dev/null 2>&1
+	@touch $@
+
+deps/bootstrap-${BOOTSTRAP_VERSION}: deps/v${BOOTSTRAP_VERSION}.zip
+	@echo "Unpacking Bootstrap \c"
+	@cd deps && \
+		unzip -q v${BOOTSTRAP_VERSION}.zip
 	${CHECK}
 	@touch $@
 
 external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	@echo "Compiling $@: \c"
-	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap.css $@
 	${CHECK}
 
 external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	@echo "Compiling $@: \c"
-	@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
+	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap-responsive.css $@
 	${CHECK}
 
 external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
@@ -216,39 +234,90 @@ download_deps: external/jsnes.src.js \
 	external/require.js
 
 jshint:
-	@./node_modules/.bin/jshint lib/*.js --config jshint.config
-	@./node_modules/.bin/jshint tests/*.js --config jshint.config
+	@./node_modules/.bin/jshint ${SRC_JS} --config jshint.config
 
 jslint:
-	@./node_modules/.bin/jslint --indent 2 --undef lib/*
-	@./node_modules/.bin/jslint --indent 2 --undef tests/*
+	@./node_modules/.bin/jslint --indent 2 --undef ${SRC_JS}
 
 build: node_modules jshint
 
 nodeunit:
-	@./node_modules/.bin/nodeunit --reporter minimal tests/*
+	@./node_modules/.bin/nodeunit --reporter minimal tests/*_test.js
 
 test: build nodeunit
 
+tdd:
+	@./node_modules/.bin/supervisor -q -i reports -w lib,tests -n error -n exit tdd.js
+
 deploy:
 	@cat lib/analyzer.js lib/cartridge.js lib/compiler.js > /tmp/nodeNES.js
+
+reports/lconv.txt:
+	mkdir -p reports
+	./node_modules/.bin/jscoverage lib 
+	mv lib lib-src
+	ln -s lib-cov lib
+	./node_modules/.bin/nodeunit --reporter lcov tests/*_test.js > reports/lconv.txt
+	rm -rf lib lib-cov
+	mv lib-src lib
+	@touch $@
 
 report:
 	mkdir -p reports
 	@./node_modules/.bin/nodeunit --reporter junit --output reports tests/*.js
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --jslint-reporter > reports/jslint.xml || exit 0
 	@./node_modules/.bin/jshint lib/*.js tests/*.js --checkstyle-reporter > reports/checkstyle-jshint.xml || exit 0
+	
+coveralls: reports/lconv.txt
+	(cat reports/lconv.txt | ./node_modules/.bin/coveralls) || echo "coverwalls have a problem"
+
+codeclimate: reports/lconv.txt
+	(CODECLIMATE_REPO_TOKEN=c4b0a7f6df854cda8d856ea8c574dda113dcd4dd52e0951de73d5ecdf58c6663 cat reports/lconv.txt | ./node_modules/.bin/codeclimate) || echo "codeclimate have a problem"
+
+coverage: coveralls codeclimate
+
+daemon:
+	@nohup node app.js </dev/null &
+
+pre-ci: build
+	@(make daemon)
+NODENES_APP = $(shell node -e "console.log(require('./package.json').dependencies.jquery);")
+
+selenium:
+	wget http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+
+ci: pre-ci
+	@echo $@
+
+post-ci: ci
+	@echo $@
+	kill ${NODENES_APP}
+
+verify: post-ci
 
 clean:
+	@find . -iname \*~ -delete
 	@rm -rf external
 	@rm -rf reports
 
 purge: clean
 	@rm -rf node_modules
 	@rm -rf deps
+	@rm .git/hooks/pre-commit
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
+
+minor:
+	@echo "Minor Version"
+	@git branch | grep -P '\* \d+\.\d+\.x' || (echo "You must be in a version branch" && exit 1)
+	@git status | grep -P 'nothing to commit, working directory clean' || (echo "You have stuff to commit" && exit 1)
+	@node -e "console.log(require('./package.json').version.replace(/(\d+\.\d+\.)(\d+)/, function(s,p,m) {var v = parseInt(m) + 1; return p + v;}));" | \
+		xargs -I [] sed 's/"version" : "${NODENES_VERSION}",/"version" : "[]",/' package.json > tmp; mv tmp package.json
+	@git add package.json
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git commit -m "New nodeNES minor version []"
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git tag -a nodeNES-[] -m 'nodeNES version []'
+	@git push --tags
 
 ghpages: deploy download_deps
 	rm -rf /tmp/ghpages
