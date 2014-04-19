@@ -272,7 +272,7 @@ coveralls: reports/lconv.txt
 	(cat reports/lconv.txt | ./node_modules/.bin/coveralls) || echo "coverwalls have a problem"
 
 codeclimate: reports/lconv.txt
-	(CODECLIMATE_REPO_TOKEN=c4b0a7f6df854cda8d856ea8c574dda113dcd4dd52e0951de73d5ecdf58c6663 cat reports/lconv.txt | ./node_modules/.bin/codeclimate) || echo "codeclimate have a problem"
+	(cat reports/lconv.txt | CODECLIMATE_REPO_TOKEN=c4b0a7f6df854cda8d856ea8c574dda113dcd4dd52e0951de73d5ecdf58c6663 ./node_modules/.bin/codeclimate) || echo "codeclimate have a problem"
 
 coverage: coveralls codeclimate
 
