@@ -57,6 +57,7 @@ exports.test_open_file_with_fake_jquery = function(test){
     global.jQuery = jq;
     global.$ = global.jQuery;
 
+    utils.path = '';
     var sprites = sprite.load_sprites('mario.chr');
 
     global.jQuery = undefined;

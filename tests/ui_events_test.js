@@ -1,10 +1,13 @@
 var assert = require('assert');
 var fs = require('fs');
 var Canvas = require('canvas');
+
 var sprite = require('../lib/sprite.js');
 var ui = require('../lib/ui.js');
+var utils = require('../lib/utils.js');
 
-var mario_chr = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
+utils.path = __dirname + '/../static/example/scrolling/';
+var mario_chr = sprite.load_sprites('mario.chr');
 
 exports.setUp = function (callback) {
 
@@ -288,8 +291,7 @@ exports.test_selector_previous_page = function (test){
 };
 
 exports.test_loader_load_sprite = function (test) {
-	var compiler = require('../lib/compiler.js');
-	compiler.path = 'static/example/scrolling/';
+	utils.path = __dirname + '/../static/example/scrolling/';
 	this.pixel_editor.sprites = undefined;
 	this.pixel_editor.sprite = undefined;
 	this.loader.addRedrawListener(this.pixel_editor);
@@ -313,8 +315,7 @@ exports.test_loader_load_sprite = function (test) {
 };
 
 exports.test_loader_on_notify_redraw = function (test) {
-    var compiler = require('../lib/compiler.js');
-    compiler.path = 'static/example/scrolling/';
+	utils.path = __dirname + '/../static/example/scrolling/';
     var rendered = false;
     var widget = new ui.Widget();
     widget.render = function(){
