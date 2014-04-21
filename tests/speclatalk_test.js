@@ -4,6 +4,7 @@ var fs = require('fs');
 var sys = require('util');
 
 var compiler = require('../lib/compiler.js');
+var utils = require('../lib/utils.js');
 
 function get_code(file){
     return fs.readFileSync(__dirname + '/../static/example/spec-la-talk/' + file, 'utf8');    
@@ -14,7 +15,7 @@ function get_bin(file){
 }
 
 exports.test_nes_compiler1 = function(test){
-    compiler.path = 'static/example/spec-la-talk/';
+    utils.path = 'static/example/spec-la-talk/';
     var code = get_code('spec-la.s');
     var bin = get_bin('spec-la.nes');
     try {
@@ -29,7 +30,7 @@ exports.test_nes_compiler1 = function(test){
 };
 
 exports.test_nes_compiler1 = function(test){
-    compiler.path = 'static/example/spec-la-talk/';
+    utils.path = 'static/example/spec-la-talk/';
     var code = get_code('spec-la-2.s');
     var bin = get_bin('spec-la-2.nes');
     try {

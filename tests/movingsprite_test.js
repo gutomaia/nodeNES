@@ -1,10 +1,11 @@
 var assert = require('assert');
 var fs = require('fs');
-//var Buffer = require('buffer').Buffer;
 
 var sys = require('util');
 
 var compiler = require('../lib/compiler.js');
+
+var utils = require('../lib/utils.js');
 
 var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/movingsprite.asm', 'utf8');
 
@@ -20,14 +21,14 @@ exports.test_get_labels = function(test){
 };
 
 exports.test_nes_compiler = function(test){
-    compiler.path = 'static/example/movingsprite/';
+    utils.path = 'static/example/movingsprite/';
     var rom = compiler.nes_compiler(code);
     test.deepEqual(bin, rom);
     test.done();
 };
 
 exports.test_asm_compiler = function(test){
-    compiler.path = 'static/example/movingsprite/';
+    utils.path = 'static/example/movingsprite/';
 
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);

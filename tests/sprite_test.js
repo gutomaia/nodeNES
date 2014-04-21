@@ -1,8 +1,10 @@
 var assert = require('assert');
 var fs = require('fs');
 var sprite = require('../lib/sprite.js');
+var utils = require('../lib/utils');
 
 exports.test_load_sprites = function(test){
+    utils.path = '';
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -14,6 +16,7 @@ exports.test_load_sprites = function(test){
 };
 
 exports.test_decode_first_sprite = function(test){
+    utils.path = '';
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -41,6 +44,7 @@ exports.test_decode_first_sprite = function(test){
 };
 
 exports.test_decode_second_sprite = function(test){
+    utils.path = '';
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -69,6 +73,7 @@ exports.test_decode_second_sprite = function(test){
 
 
 exports.test_get_first_sprite = function(test){
+    utils.path = '';
     var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var s1 = sprite.get_sprite(0, sprites);
 
@@ -89,6 +94,7 @@ exports.test_get_first_sprite = function(test){
 };
 
 exports.test_get_second_sprite = function(test){
+    utils.path = '';
     var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var s2 = sprite.get_sprite(1, sprites);
 
@@ -109,6 +115,7 @@ exports.test_get_second_sprite = function(test){
 };
 
 exports.test_encode_first_sprite = function(test){
+    utils.path = '';
     var mario =
     [
         [0,0,0,0,0,0,1,1],
@@ -137,6 +144,7 @@ exports.test_encode_first_sprite = function(test){
 };
 
 exports.test_put_first_sprite = function(test){
+    utils.path = '';
     var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var expected =
     [
@@ -157,6 +165,7 @@ exports.test_put_first_sprite = function(test){
 };
 
 exports.test_put_second_sprite = function(test){
+    utils.path = '';
     var sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var expected =
     [
