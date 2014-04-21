@@ -3,6 +3,7 @@ var fs = require('fs');
 var Canvas = require('canvas');
 var sprite = require('../lib/sprite.js');
 var ui = require('../lib/ui.js');
+var utils = require('../lib/utils.js');
 
 var reports_path = __dirname + '/../reports/';
 
@@ -22,8 +23,9 @@ exports.setUp = function (callback) {
 	if (!fs.existsSync(reports_path))
 		fs.mkdirSync(reports_path);
 	this.canvas = new Canvas(800,600);
+	utils.path = __dirname + '/../static/example/scrolling/';
 	this.opts ={};
-	this.opts.sprites = sprite.load_sprites(__dirname + '/../static/example/scrolling/mario.chr');
+	this.opts.sprites = sprite.load_sprites('mario.chr');
 	this.opts.palette = [0x22,0x16,0x27,0x18];
 	callback();
 };
