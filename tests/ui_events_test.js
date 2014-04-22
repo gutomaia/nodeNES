@@ -1,5 +1,7 @@
 var assert = require('assert');
 var fs = require('fs');
+var sinon = require('sinon');
+
 var Canvas = require('canvas');
 
 var sprite = require('../lib/sprite.js');
@@ -251,20 +253,56 @@ exports.test_sprite_selector_on_color_change = function (test){
 };
 
 exports.test_add_next_page_button = function (test){
+	var drawed = false;
+	this.selector.canvas = {
+		getContext: function (type){
+			test.equal('2d', type);
+			return {
+				drawImage: function(img, x, y){
+					test.equal(475, x);
+					test.equal(315, y);
+					drawed = true;
+				}
+			};
+		}
+	};
+
 	test.equal(undefined, this.selector.nextPageButton);
 	this.selector.addNextPageButton("fast_forward.png", 475, 315);
 	test.notEqual(undefined, this.selector.nextPageButton);
 	test.equal("fast_forward.png", this.selector.nextPageButton.src);
+
+	this.selector.nextPageButton.onload();
+	test.ok(drawed);
+
 	test.equal(475, this.selector.nextPageButton.position_x);
 	test.equal(315, this.selector.nextPageButton.position_y);
 	test.done();
 };
 
 exports.test_add_previous_page_button = function (test){
+	var drawed = false;
+	this.selector.canvas = {
+		getContext: function (type){
+			test.equal('2d', type);
+			return {
+				drawImage: function(img, x, y){
+					test.equal(440, x);
+					test.equal(315, y);
+					drawed = true;
+				}
+			};
+		}
+	};
+
 	test.equal(undefined, this.selector.previousPageButton);
 	this.selector.addPreviousPageButton("fast_backward.png", 440, 315);
 	test.notEqual(undefined, this.selector.previousPageButton);
 	test.equal("fast_backward.png", this.selector.previousPageButton.src);
+
+	this.selector.previousPageButton.onload();
+	test.ok(drawed);
+
 	test.equal(440, this.selector.previousPageButton.position_x);
 	test.equal(315, this.selector.previousPageButton.position_y);
 	test.done();
@@ -329,10 +367,28 @@ exports.test_loader_on_notify_redraw = function (test) {
 };
 
 exports.test_loader_add_update_compile_button = function (test){
+	var drawed = false;
+	this.loader.canvas = {
+		getContext: function (type){
+			test.equal('2d', type);
+			return {
+				drawImage: function(img, x, y){
+					test.equal(510, x);
+					test.equal(315, y);
+					drawed = true;
+				}
+			};
+		}
+	};
+
 	test.equal(undefined, this.loader.updateCompileButton);
 	this.loader.addUpdateCompileButton("check.png", 510, 315);
 	test.notEqual(undefined, this.loader.updateCompileButton);
 	test.equal("check.png", this.loader.updateCompileButton.src);
+
+	this.loader.updateCompileButton.onload();
+	test.ok(drawed);
+
 	test.equal(510, this.loader.updateCompileButton.position_x);
 	test.equal(315, this.loader.updateCompileButton.position_y);
 	test.done();
