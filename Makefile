@@ -276,27 +276,39 @@ codeclimate: reports/lconv.txt
 
 coverage: coveralls codeclimate
 
-daemon:
-	@nohup node app.js </dev/null &
+deps/selenium-server-standalone-2.40.0.jar: deps/.done
+	@cd deps && \
+		${WGET} http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+	@touch $@
 
-config-ci:
+chromedriver:
+	cd deps && ${WGET} http://chromedriver.storage.googleapis.com/2.9/chromedriver_linux64.zip
+	unzip deps/chromedriver_linux64.zip
+	touch chromedriver
+
+config-acceptance: deps/selenium-server-standalone-2.40.0.jar chromedriver
 	$(eval export CI=1)
+	$(eval export SELENIUM_SERVER_JAR=deps/selenium-server-standalone-2.40.0.jar)
+	$(eval export SELENIUM_BROWSER=firefox npm test selenium-webdriver)
 
-pre-test-ci: build
+daemon:
+	@nohup node app.js & echo "$$!" > nodeNES.pid </dev/null &
+
+pre-test-acceptance: build
 	@(make daemon)
-NODENES_APP = $(shell node -e "console.log(require('./package.json').dependencies.jquery);")
 
-selenium:
-	wget http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+test-acceptance:
+	@./node_modules/.bin/nodeunit --reporter minimal tests/acceptance/*_test.js
 
-test-ci: pre-test-ci
-	@echo $@
+post-test-acceptance:
+	@cat nodeNES.pid | xargs kill && rm nodeNES.pid
 
-post-test-ci: test-ci
-	@echo $@
-	kill ${NODENES_APP}
+acceptance: config-acceptance
+	@make pre-test-acceptance
+	@make test-acceptance || echo "Error upon testing"
+	@make post-test-acceptance
 
-ci: config-ci test
+ci: test acceptance
 
 clean:
 	@find . -iname \*~ -delete

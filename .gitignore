@@ -5,6 +5,7 @@
 .buildpath
 .project
 .sublime-build
+chromedriver
 deps/
 external/
 lib-cov/
