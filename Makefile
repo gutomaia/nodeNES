@@ -311,14 +311,30 @@ purge: clean
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
 
-minor:
-	@echo "Minor Version"
+
+before-tag:
+	rm /tmp/.nodeNES_commitMSG | echo "OK"
 	@git branch | grep -P '\* \d+\.\d+\.x' || (echo "You must be in a version branch" && exit 1)
-	@git status | grep -P 'nothing to commit, working directory clean' || (echo "You have stuff to commit" && exit 1)
-	@node -e "console.log(require('./package.json').version.replace(/(\d+\.\d+\.)(\d+)/, function(s,p,m) {var v = parseInt(m) + 1; return p + v;}));" | \
+	@#TODO: you must be on a branch that matches the version
+	@#TODO: you must be synced with the remote branch
+
+patch: before-tag
+	@node -e "console.log(require('./package.json').version.replace(/(\d+\.\d+\.)(\d+)/, function(s,p,m) {var v = parseInt(m) + 1; return p.concat(v);}));" | \
 		xargs -I [] sed 's/"version" : "${NODENES_VERSION}",/"version" : "[]",/' package.json > tmp; mv tmp package.json
+	@echo "patch" > /tmp/.nodeNES_commitMSG
+	make create-tag
+
+minor: before-tag
+	echo $(NODENES_VERSION)
+	@node -e "console.log(require('./package.json').version.replace(/(\d+\.)(\d+)\.\d+/, function(s,p,m) {var v = parseInt(m) + 1; return p.concat(v.toString()).concat('.0');}));" | \
+		xargs -I [] sed 's/"version" : "${NODENES_VERSION}",/"version" : "[]",/' package.json > tmp;
+	make create-tag
+
+create-tag: /tmp/.nodeNES_commitMSG
+	#never call this tag directly
 	@git add package.json
-	@node -e "console.log(require('./package.json').version);" | xargs -I [] git commit -m "New nodeNES minor version []"
+	#TODO remove patch word from version tag...
+	@node -e "console.log(require('./package.json').version);" | xargs -I [] git commit -m "New nodeNES patch version []"
 	@node -e "console.log(require('./package.json').version);" | xargs -I [] git tag -a nodeNES-[] -m 'nodeNES version []'
 	@git push --tags
 
