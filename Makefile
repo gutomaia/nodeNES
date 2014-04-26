@@ -280,7 +280,7 @@ daemon:
 	@nohup node app.js </dev/null &
 
 config-ci:
-export CI=1
+	$(eval export CI=1)
 
 pre-test-ci: build
 	@(make daemon)
