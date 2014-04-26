@@ -24,7 +24,7 @@ CodeMirror.defineMode("asm", function() {
         }
         if (stream.eatSpace()) return null;
         var ch = stream.next();
-        if (ch == '"' || ch == "'") {
+        if (ch === '"' || ch === "'") {
             return tokenString(ch)(stream);
         }
         if (/[\[\]{}\(\),;\:]/.test(ch)) return null;
@@ -32,11 +32,11 @@ CodeMirror.defineMode("asm", function() {
             stream.eatWhile(/[\w\.]/);
             return "number";
         }
-        if (ch == '%') {
+        if (ch === '%') {
             stream.eatWhile(/\w+/);
             return "variable-3";
         }
-        if (ch == '#') {
+        if (ch === '#') {
             stream.eatWhile(/.*/);
             return "comment";
         }
