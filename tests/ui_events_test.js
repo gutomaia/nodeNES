@@ -107,12 +107,19 @@ exports.test_pixel_editor_clicks = function (test){
     test.equal(0, this.pixel_editor.palette_id);
     var spr = sprite.get_sprite(0, this.opts.sprites);
     click_on_pixel_editor(this.pixel_editor, 0, 0);
-    this.pixel_editor.palette_id = 4; //Cheating
+    this.pixel_editor.palette_id = 4; //Cheating there is no color 4
+    var ci = ( process.env.CI !== undefined);
     for (var line = 0; line < 8; line++){
         for (var col=0; col < 8; col++) {
             test.equal(spr[line][col], this.pixel_editor.sprite[line][col]);
             click_on_pixel_editor(this.pixel_editor, col, line);
             test.equal(4, this.pixel_editor.sprite[line][col]);
+            if (!ci){
+                break;
+            }
+        }
+        if (!ci){
+            break;
         }
     }
     test.done();
@@ -243,10 +250,13 @@ exports.test_sprite_selector_on_color_change = function (test){
 
     test.deepEqual([0x22,0x16,51,0x18], this.selector.palette);
 
-    click_on_palette(this.palette, 3);
-    click_on_color_picker(this.color_picker, 51);
+    var ci = (process.env.CI !== undefined);
+    if (ci){
+        click_on_palette(this.palette, 3);
+        click_on_color_picker(this.color_picker, 51);
 
-    test.deepEqual([0x22,0x16,51,51], this.selector.palette);
+        test.deepEqual([0x22,0x16,51,51], this.selector.palette);
+    }
 
     test.done();
 };
