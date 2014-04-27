@@ -20,7 +20,8 @@
     "jslint": "0.1.x",
     "recess": "1.1.6",
     "uglify-js": "1.2.6",
-    "supervisor": "0.3.1"
+    "supervisor": "0.3.1",
+    "colors": "0.6.2"
     },
   "repository" : {"type": "git", "url": "https://github.com/gutomaia/nodeNES.git"},
   "bin": {
