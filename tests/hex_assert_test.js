@@ -5,6 +5,7 @@ exports.should_not_throw_excep_when_eq = function(test) {
 	test.done();
 };
 exports.should_throw_excep_when_diff = function(test) {
+	var exception = null;
 	try {
 		hexAssert.equals([0x1A], [0x1B]);
 		test.fail('Should throw HexaAssertionException');
