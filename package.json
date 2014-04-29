@@ -29,13 +29,13 @@
     "recess": "1.1.9",
     "uglify-js": "2.4.13",
     "sinon": "1.9.1",
-    "supervisor": "0.5.7"
-    },
+    "supervisor": "0.5.7",
+    "colors": "0.6.2"
+   },
   "repository" : {"type": "git", "url": "https://github.com/gutomaia/nodeNES.git"},
   "bin": {
     "nodenes":"./bin/nodenes"
-
-    },
+  },
   "main": "./app.js",
   "scripts": {
     "test": "nodeunit test"
