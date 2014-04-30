@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>nodeNES</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A NES javascript IDE with c6502 compiler and CHR editor">
+    <meta name="author" content="Gustavo Maia Neto (Guto Maia)">
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="codemirror.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 0px;
+      }
+
+      .nav {
+        margin-bottom: 0px;
+      }
+
+      .alert {
+        font-size: 11px;
+        padding: 0px 10px 0px 10px;
+        margin-bottom: 2px;
+      }
+
+      #content .source {
+        height: 100%;
+        display: block;
+      }
+
+      #content textarea {
+        display: block;
+      }
+
+      .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+      }
+
+      .CodeMirror-scroll {
+        overflow-y: hidden;
+        overflow-x: auto;
+      }
+
+    </style>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- TODO -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32666248-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://gutomaia.net/nodeNES">nodeNES</a>
+          <div class="nav-collapse">
+            <ul class="nav nav-pills">
+              <!--
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+              -->
+              <li class="dropdown" id="examples">
+                <a class="dropdown-toggle" data-toggle="examples" href="#examples">
+                  <i class="icon-user"></i>Examples
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#example/movingsprite/movingsprite.asm">movingsprite.asm</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#example/spec-la-talk/spec-la.s">spec-la.s</a></li>
+                  <li><a href="#example/spec-la-talk/spec-la-2.s">spec-la-2.s</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#example/pythonbrasil8/pythonbrasil8.asm">pythonbrasil8.asm</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#example/pyne2014/pyne2014.asm">pyne2014.asm</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#example/scrolling/scrolling1.asm">scrolling1.asm</a></li>
+                  <li><a href="#example/scrolling/scrolling2.asm">scrolling2.asm</a></li>
+                  <li><a href="#example/scrolling/scrolling3.asm">scrolling3.asm</a></li>
+                  <li><a href="#example/scrolling/scrolling4.asm">scrolling4.asm</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span4" style="width:256px;">
+          <ul class="nav nav-tabs">
+            <li><a href="#emulator">Emulator</a></li>
+            <li><a href="#sprites">Auto-Play</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+
+          <div class="sidebar-nav-fixed">
+            <canvas id="nes-screen" width="256" height="240"></canvas>
+            <div id="status"></div>
+          </div>
+        </div>
+        <div class="span8">
+          <ul class="nav nav-tabs" id="tabs">
+            <li><a href="#source">Source</a></li>
+            <li><a href="#sprites">Sprites</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+
+          <div class="tab-content" >
+            <div class="tab-pane" id="source" style="height: 300px;">
+              <div class="source">
+                <textarea id="asm">
+; This project is aim to became a full NES ide
+; in the browser. It features a c6502 javascript
+; compiler and a CHR sprite editor. Both builded
+; with TDD.
+
+; If you know ASM, just type your code here, and
+; it will be compiled and run on the fly or click
+; on the box one of the listed demos.
+
+; -- Guto Maia
+                </textarea>
+              </div>
+            </div>
+            <div class="tab-pane" id="sprites">
+              <canvas id="sprite-editor" width="600" height="400"></canvas>
+            </div>
+            <div class="tab-pane" id="about">
+              <p>This is a dream comming true. When I was ten, I was facinated by these games. With nodeNES I could really understand what was happening underneath the cartdridge. How NES works and how game programers were made. Back them they were made of blood and steel. Blood of countless game lifes wasted in the first level, witch didn't have easy mode. And Steel from cartridges forged in the fire of mount doom.</p>
+              <p>Nowadays anyone can write an "if" and praises theirselfs as programmers. They have tendencies to curse every high level programming language for their own faults.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--
+      <div class="row">
+      </div>
+      <hr>
+      <footer>
+        <p>© gUTO.nET 2012</p>
+      </footer>
+-->
+    </div> <!-- /container -->
+
+    <script src="jquery-2.1.0.min.js"></script> <!-- TODO use sed to check or put version on MakeFile here -->
+    <script src="codemirror.js"></script>
+    <script src="asm.js"></script>
+    <script type="text/javascript" src="dynamicaudio-min.js"></script>
+    <script type="text/javascript" src="jsnes.src.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
+    <script type="text/javascript" src="bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="bootstrap-tab.js"></script>
+
+    <!-- nodeNES Script -->
+    <script type="text/javascript" data-main="init.js" src="require.js"></script>
+
+    <a href="https://github.com/gutomaia/nodeNES"><img style="position: absolute; top: 40px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+</body></html>
