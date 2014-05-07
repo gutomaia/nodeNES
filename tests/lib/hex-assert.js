@@ -12,7 +12,7 @@ var HexaAssertionError = function(message) {
 	this.toString = function() {
 		return this.name + ': ' + this.message;
 	};
-}
+};
 
 HexaAssertionError.prototype = Error.prototype;
 HexaAssertionError.prototype.name = 'HexaAssertionError';
@@ -43,8 +43,8 @@ var equals = function(expected, actual) {
 		for (line in lines) {
 			exp = '\tExpected: ' + ('000' + line).slice(-5) + ': ';
 			act = '\tActual  : ' + ('000' + line).slice(-5) + ': ';
-			for (var a = 0; a < 16; a++) {
-				cursor = (line * 16) + a;
+			for (var b = 0; b < 16; b++) {
+				cursor = (line * 16) + b;
 
 				if (cursor < expected.length && cursor < actual.length) {
 					if (expected[cursor] !== actual[cursor]) {
@@ -56,9 +56,9 @@ var equals = function(expected, actual) {
 					}
 				}
 
-				if (((a+1) % 2) === 0) {
-                    exp += ' '
-                    act += ' '
+				if (((b+1) % 2) === 0) {
+                    exp += ' ';
+                    act += ' ';
                 }
 				
 			}
