@@ -1,4 +1,4 @@
-var hexAssert = require('../lib/tests/hex-assert.js');
+var hexAssert = require('./lib/hex-assert.js');
 
 exports.should_not_throw_excep_when_eq = function(test) {
 	hexAssert.equals([0x1A], [0x1A]);
