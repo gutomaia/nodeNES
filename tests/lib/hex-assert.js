@@ -1,5 +1,5 @@
 var assert = require('nodeunit').assert;
-var colors = require('colors');
+require('colors');
 
 var HexaAssertionError = function(message) {
 	var err = new Error(message);
@@ -29,7 +29,7 @@ var equals = function(expected, actual) {
 		while (cursor < expected.length || cursor < actual.length) {
 			for (var a = 0; a < 16; a++) {
 				if (cursor < expected.length && cursor < actual.length) {
-					if (expected[cursor] != actual[cursor] && lines.indexOf(line) == -1) {
+					if (expected[cursor] !== actual[cursor] && lines.indexOf(line) === -1) {
 						lines.push(line);
 					}
 				}
