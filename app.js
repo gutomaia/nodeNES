@@ -7,7 +7,6 @@ var port = 8888;
 var webServer = connect();
 webServer
     .use(connect.logger())
-    .use(connect.favicon('static/favicon.ico'))
     .use(connect.static('static'))
     .use(connect.static('external'))
     .use(connect.static('lib'))
