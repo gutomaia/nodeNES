@@ -11,3 +11,4 @@ lib-cov/
 nodeNES*.tgz
 node_modules/
 reports/
+tests_browser/
