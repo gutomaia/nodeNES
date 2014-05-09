@@ -19,8 +19,7 @@ ERROR=/tmp/nodeNES_error
 WGET = wget -q --user-agent="Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 
 SRC_JS = bin/nodenes \
-         $(wildcard lib/*.js) \
-         $(wildcard tests/*.js) \
+         $(shell find lib tests -type f -iname "*.js") \
          app.js \
          tdd.js
 
@@ -202,9 +201,9 @@ deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
 		${WGET} http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
 	@touch $@
 
-external/jquery-${JQUERY_VERSION}.min.js: external deps/jquery-${JQUERY_VERSION}.min.js
+external/jquery.js: external deps/jquery-${JQUERY_VERSION}.min.js
 	@echo "Copping $@: \c"
-	@cp deps/jquery-${JQUERY_VERSION}.min.js external/ && touch $@
+	@cp deps/jquery-${JQUERY_VERSION}.min.js $@ && touch $@
 	${CHECK}
 
 deps/require.js: deps/.done
@@ -224,7 +223,7 @@ download_deps: external/jsnes.src.js \
 	external/backbone.js \
 	external/codemirror.js \
 	external/codemirror.css \
-	external/jquery-${JQUERY_VERSION}.min.js \
+	external/jquery.js \
 	external/fast_backward.png \
 	external/fast_forward.png \
 	external/check.png \

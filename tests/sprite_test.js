@@ -1,4 +1,3 @@
-var assert = require('assert');
 var fs = require('fs');
 var sprite = require('../lib/sprite.js');
 var utils = require('../lib/utils');

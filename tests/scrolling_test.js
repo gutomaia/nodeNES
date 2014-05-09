@@ -1,4 +1,3 @@
-var assert = require('assert');
 var fs = require('fs');
 var sys = require('util');
 

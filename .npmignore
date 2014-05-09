@@ -20,3 +20,4 @@ runner.js
 static/
 tdd.js
 tests/
+lib/tests/

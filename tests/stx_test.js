@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var compiler = require('../lib/compiler.js');
 
 exports.test_stx_zp = function(test){
