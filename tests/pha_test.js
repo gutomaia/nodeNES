@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var compiler = require('../lib/compiler.js');
 
 exports.test_pha_sngl = function(test){

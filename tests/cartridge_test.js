@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var cartridge = require('../lib/cartridge.js');
 
 exports.setUp = function(callback){

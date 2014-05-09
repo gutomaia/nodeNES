@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var ui = require('../lib/ui.js');
 
 exports.test_new_widget = function(test){

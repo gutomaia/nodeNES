@@ -1,4 +1,3 @@
-var assert = require('assert');
 var fs = require('fs');
 var sinon = require('sinon');
 var utils = require('../lib/utils.js');

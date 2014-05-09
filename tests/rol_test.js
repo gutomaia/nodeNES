@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var compiler = require('../lib/compiler.js');
 /*
 INFO: according to http://www.masswerk.at/6502/6502_instruction_set.html
