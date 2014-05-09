@@ -275,6 +275,18 @@ codeclimate: reports/lconv.txt
 
 coverage: coveralls codeclimate
 
+tests_browser/.check:
+	mkdir -p tests_browser
+	./node_modules/.bin/r.js -convert tests/ tests_browser/
+	touch $@
+
+browser_deps: external/underscore.js \
+	external/jquery.js \
+	external/require.js
+
+browser: tests_browser/.check browser_deps
+	./node_modules/karma/bin/karma start
+
 deps/selenium-server-standalone-2.40.0.jar: deps/.done
 	@cd deps && \
 		${WGET} http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
@@ -307,12 +319,13 @@ acceptance: config-acceptance
 	@make test-acceptance || echo "Error upon testing"
 	@make post-test-acceptance
 
-ci: test acceptance
+ci: test browser acceptance
 
 clean:
 	@find . -iname \*~ -delete
 	@rm -rf external
 	@rm -rf reports
+	@rm -rf tests_browser
 
 purge: clean
 	@rm -rf node_modules
