@@ -324,7 +324,7 @@ daemon:
 
 pre-test-acceptance: build download_deps
 	@echo $@
-	@rm nodeNES.log
+	@rm -f nodeNES.log
 	@(make daemon)
 
 test-acceptance:
