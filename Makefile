@@ -305,7 +305,7 @@ config-acceptance: deps/selenium-server-standalone-2.40.0.jar chromedriver
 daemon:
 	@nohup node app.js & echo "$$!" > nodeNES.pid </dev/null &
 
-pre-test-acceptance: build
+pre-test-acceptance: build download_deps
 	@echo $@
 	@(make daemon)
 
