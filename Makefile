@@ -320,10 +320,11 @@ config-acceptance: deps/selenium-server-standalone-2.40.0.jar ${CHROMEDRIVER_BIN
 	$(eval export SELENIUM_BROWSER=firefox npm test selenium-webdriver)
 
 daemon:
-	@nohup node app.js & echo "$$!" > nodeNES.pid </dev/null &
+	@(nohup node app.js > nodeNES.log) & echo "$$!" > nodeNES.pid </dev/null &
 
 pre-test-acceptance: build download_deps
 	@echo $@
+	@rm nodeNES.log
 	@(make daemon)
 
 test-acceptance:
