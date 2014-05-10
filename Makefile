@@ -1,3 +1,5 @@
+PLATFORM = $(shell uname)
+
 NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
 JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
 UNDERSCORE_VERSION = 1.4.4
@@ -5,6 +7,19 @@ BACKBONE_VERSION = 0.9.10
 REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = 2.3.2
 CODEMIRROR_VERSION = 3.1
+SELENIUM_VERSION = 2.40.0
+CHROMEDRIVER_VERSION = 2.9
+
+
+ifeq "Linux" "${PLATFORM}"
+CHROMEDRIVER_ZIP = chromedriver_linux64.zip
+CHROMEDRIVER_BIN = chromedriver
+else ifeq "Darwin" "${PLATFORM}"
+CHROMEDRIVER_ZIP = chromedriver_mac32.zip
+CHROMEDRIVER_BIN = chromedriver
+endif
+
+CHROMEDRIVER_URL = http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/${CHROMEDRIVER_ZIP}
 
 BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
 BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/responsive.less
@@ -287,19 +302,19 @@ browser_deps: external/underscore.js \
 browser: tests_browser/.check browser_deps
 	./node_modules/karma/bin/karma start
 
-deps/selenium-server-standalone-2.40.0.jar: deps/.done
+deps/selenium-server-standalone-${SELENIUM_VERSION}.jar: deps/.done
 	@echo "Downloading Selenium Server: \c"
 	@cd deps && \
-		${WGET} http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+		${WGET} http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-${SELENIUM_VERSION}.jar
 	${CHECK}
 	@touch $@
 
-chromedriver:
-	cd deps && ${WGET} http://chromedriver.storage.googleapis.com/2.9/chromedriver_linux64.zip
-	unzip deps/chromedriver_linux64.zip
+${CHROMEDRIVER_BIN}:
+	cd deps && ${WGET} ${CHROMEDRIVER_URL}
+	unzip deps/${CHROMEDRIVER_ZIP}
 	touch chromedriver
 
-config-acceptance: deps/selenium-server-standalone-2.40.0.jar chromedriver
+config-acceptance: deps/selenium-server-standalone-2.40.0.jar ${CHROMEDRIVER_BIN}
 	$(eval export CI=1)
 	$(eval export SELENIUM_SERVER_JAR=deps/selenium-server-standalone-2.40.0.jar)
 	$(eval export SELENIUM_BROWSER=firefox npm test selenium-webdriver)
@@ -341,6 +356,7 @@ purge: clean
 	@rm -rf node_modules
 	@rm -rf deps
 	@rm .git/hooks/pre-commit
+	@rm ${CHROMEDRIVER_BIN}
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
