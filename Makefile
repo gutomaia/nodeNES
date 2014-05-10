@@ -288,8 +288,10 @@ browser: tests_browser/.check browser_deps
 	./node_modules/karma/bin/karma start
 
 deps/selenium-server-standalone-2.40.0.jar: deps/.done
+	@echo "Downloading Selenium Server: \c"
 	@cd deps && \
 		${WGET} http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
+	${CHECK}
 	@touch $@
 
 chromedriver:
