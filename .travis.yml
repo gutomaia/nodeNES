@@ -10,6 +10,8 @@ before_install:
 node_js:
   - "0.10"
   - "0.8"
+addons:
+  firefox: 29
 script: "make ci"
 after_script:
   - make coverage
