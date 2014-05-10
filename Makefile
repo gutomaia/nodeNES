@@ -306,18 +306,26 @@ daemon:
 	@nohup node app.js & echo "$$!" > nodeNES.pid </dev/null &
 
 pre-test-acceptance: build
+	@echo $@
 	@(make daemon)
 
 test-acceptance:
+	@echo $@
 	@./node_modules/.bin/nodeunit --reporter minimal tests/acceptance/*_test.js
 
 post-test-acceptance:
+	@echo $@
 	@cat nodeNES.pid | xargs kill && rm nodeNES.pid
 
 acceptance: config-acceptance
-	@make pre-test-acceptance
-	@make test-acceptance || echo "Error upon testing"
+	@make pre-test-acceptance || (echo "error"; $(eval export PRE_ACCEPTANCE_FAIL=1))
+ifneq "1" "${PRE_ACCEPTANCE_FAIL}"
+	@make test-acceptance || (echo "error"; $(eval export ACCEPTANCE_FAIL=1))
+endif
 	@make post-test-acceptance
+ifeq "1" "${ACCEPTANCE_FAIL}"
+	exit(1)
+endif
 
 ci: test browser acceptance
 
