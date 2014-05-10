@@ -33,6 +33,7 @@
     "recess": "1.1.9",
     "requirejs": "2.1.11",
     "uglify-js": "2.4.13",
+    "selenium-webdriver": "2.41.0",
     "sinon": "1.9.1",
     "supervisor": "0.5.7",
     "colors": "0.6.2"
