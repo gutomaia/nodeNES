@@ -12,18 +12,18 @@ var mario_chr = sprite.load_sprites('mario.chr');
 
 exports.setUp = function (callback) {
 
-    this.canvas = new Canvas(800,600);
+    this.canvas = new Canvas(800, 600);
     global.Image = Canvas.Image;
-    this.opts ={};
+    this.opts = {};
     this.opts.sprites = mario_chr;
-    this.opts.palette = [0x22,0x16,0x27,0x18];
+    this.opts.palette = [0x22, 0x16, 0x27, 0x18];
     this.opts.sprite_x = 8;
     this.opts.sprite_y = 16;
     this.pixel_editor = new ui.PixelEditor(this.canvas, 165, 0, this.opts);
     this.selector = new ui.SpriteSelector(this.canvas, 440, 0, this.opts);
 
-    this.palette = new ui.Palette(this.canvas, 0 , 325, this.opts);
-    this.color_picker = new ui.ColorPicker(this.canvas, 165,270);
+    this.palette = new ui.Palette(this.canvas, 0, 325, this.opts);
+    this.color_picker = new ui.ColorPicker(this.canvas, 165, 270);
     this.preview = new ui.Preview(this.canvas, 0, 0, this.opts);
     this.loader = new ui.SpriteLoader(this.canvas);
 
@@ -48,22 +48,22 @@ exports.tearDown = function (callback) {
     callback();
 };
 
-exports.test_widget_click_outside = function (test){
-    assert.equal(false, this.palette.was_clicked(this.palette.position_x -1,this.palette.position_y));
-    assert.equal(false, this.palette.was_clicked(this.palette.position_x, this.palette.position_y -1));
+exports.test_widget_click_outside = function (test) {
+    assert.equal(false, this.palette.was_clicked(this.palette.position_x - 1, this.palette.position_y));
+    assert.equal(false, this.palette.was_clicked(this.palette.position_x, this.palette.position_y - 1));
     assert.equal(false, this.palette.was_clicked(this.palette.width + 1, this.palette.position_y));
     assert.equal(false, this.palette.was_clicked(this.palette.position_x, this.palette.height + 1));
     test.done();
 };
 
-function click_on_palette(palette, color_id){
+function click_on_palette(palette, color_id) {
     var x = palette.position_x + (palette.picker_size * color_id) + (palette.picker_size / 2);
     var y = palette.position_y + (palette.height / 2);
     assert.ok(palette.was_clicked(x, y));
     palette.click(x, y);
 }
 
-exports.test_palette_clicks = function (test){
+exports.test_palette_clicks = function (test) {
     test.equal(0, this.palette.palette_id);
     click_on_palette(this.palette, 1);
     test.equal(1, this.palette.palette_id);
@@ -76,14 +76,14 @@ exports.test_palette_clicks = function (test){
     test.done();
 };
 
-function click_on_color_picker(color_picker, color_id){
+function click_on_color_picker(color_picker, color_id) {
     var x = color_picker.position_x + (color_picker.picker_size * (color_id % 16)) + (color_picker.picker_size / 2);
     var y = color_picker.position_y + (color_picker.picker_size * Math.floor(color_id / 16)) + (color_picker.picker_size / 2);
     assert.ok(color_picker.was_clicked(x, y));
     color_picker.click(x, y);
 }
 
-exports.test_color_picker = function (test){
+exports.test_color_picker = function (test) {
     test.equal(0, this.color_picker.color_id);
     for (var i = 1; i < 64; i++){
         click_on_color_picker(this.color_picker, i);
@@ -102,7 +102,7 @@ function click_on_pixel_editor(pixel_editor, x, y){
     pixel_editor.click(col, line);
 }
 
-exports.test_pixel_editor_clicks = function (test){
+exports.test_pixel_editor_clicks = function (test) {
     test.equal(0, this.pixel_editor.sprite_id);
     test.equal(0, this.pixel_editor.palette_id);
     var spr = sprite.get_sprite(0, this.opts.sprites);
@@ -125,7 +125,7 @@ exports.test_pixel_editor_clicks = function (test){
     test.done();
 };
 
-exports.test_pixel_editor_on_color_changed = function (test){
+exports.test_pixel_editor_on_color_changed = function (test) {
     test.equal(0, this.palette.palette_id);
     test.equal(0, this.pixel_editor.sprite_id);
     test.equal(0, this.pixel_editor.palette_id);

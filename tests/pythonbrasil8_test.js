@@ -10,7 +10,7 @@ var code = fs.readFileSync(__dirname + '/../static/example/pythonbrasil8/pythonb
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/pythonbrasil8/pythonbrasil8.nes', 'binary');
 
-exports.test_nes_compiler = function(test){
+exports.test_nes_compiler = function (test) {
     utils.path = 'static/example/pythonbrasil8/';
     var rom = compiler.nes_compiler(code);
     test.deepEqual(bin, rom);

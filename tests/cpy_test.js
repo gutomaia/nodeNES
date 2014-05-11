@@ -1,6 +1,6 @@
 var compiler = require('../lib/compiler.js');
 
-exports.test_cpy_imm = function(test){
+exports.test_cpy_imm = function (test) {
     var tokens = compiler.lexical('CPY #10');
     test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
@@ -13,9 +13,9 @@ exports.test_cpy_imm = function(test){
     test.done();
 };
 
-exports.test_cpy_zp = function(test){
+exports.test_cpy_zp = function (test) {
     var tokens = compiler.lexical('CPY $00');
-    test.equal(2 , tokens.length);
+    test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     var ast = compiler.syntax(tokens);
@@ -26,7 +26,7 @@ exports.test_cpy_zp = function(test){
     test.done();
 };
 
-exports.test_cpy_abs = function(test){
+exports.test_cpy_abs = function (test) {
     var tokens = compiler.lexical('CPY $1234');
     test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);

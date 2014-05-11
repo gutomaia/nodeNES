@@ -1,6 +1,6 @@
 var compiler = require('../lib/compiler.js');
 
-exports.test_cld_sngl = function(test){
+exports.test_cld_sngl = function (test) {
     var tokens = compiler.lexical('CLD');
     test.equal(1, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
