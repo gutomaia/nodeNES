@@ -5,7 +5,7 @@ var compiler = require('../lib/compiler.js');
 var utils = require('../lib/utils.js');
 
 
-exports.test_get_labels = function(test){
+exports.test_get_labels = function (test) {
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling5.asm', 'utf8');
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
@@ -17,7 +17,7 @@ exports.test_get_labels = function(test){
     test.done();
 };
 
-exports.test_asm_compiler_scrolling_1 = function(test){
+exports.test_asm_compiler_scrolling_1 = function (test) {
     utils.path = 'static/example/scrolling/';
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling1.asm', 'utf8');
     var tokens = compiler.lexical(code);
@@ -31,7 +31,7 @@ exports.test_asm_compiler_scrolling_1 = function(test){
     test.done();
 };
 
-exports.test_asm_compiler_scrolling_2 = function(test){
+exports.test_asm_compiler_scrolling_2 = function (test) {
     //utils.path = 'static/example/scrolling/';
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling2.asm', 'utf8');
     var tokens = compiler.lexical(code);
@@ -45,7 +45,7 @@ exports.test_asm_compiler_scrolling_2 = function(test){
     test.done();
 };
 
-exports.test_asm_compiler_scrolling_3 = function(test){
+exports.test_asm_compiler_scrolling_3 = function (test) {
     //utils.path = 'static/example/scrolling/';
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling3.asm', 'utf8');
     var tokens = compiler.lexical(code);
@@ -59,7 +59,7 @@ exports.test_asm_compiler_scrolling_3 = function(test){
     test.done();
 };
 
-exports.test_asm_compiler_scrolling_4 = function(test){
+exports.test_asm_compiler_scrolling_4 = function (test) {
     //utils.path = 'static/example/scrolling/';
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling4.asm', 'utf8');
     var tokens = compiler.lexical(code);
@@ -73,7 +73,7 @@ exports.test_asm_compiler_scrolling_4 = function(test){
     test.done();
 };
 
-exports.test_asm_compiler_scrolling_5 = function(test){
+exports.test_asm_compiler_scrolling_5 = function (test) {
     utils.path = 'static/example/scrolling/';
     var code = fs.readFileSync(__dirname + '/../static/example/scrolling/scrolling5.asm', 'utf8');
     var tokens = compiler.lexical(code);

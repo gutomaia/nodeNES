@@ -1,8 +1,8 @@
 var compiler = require('../lib/compiler.js');
 
-exports.test_cmp_imm = function(test){
+exports.test_cmp_imm = function (test) {
     var tokens = compiler.lexical('CMP #10');
-    test.equal(2 , tokens.length);
+    test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_HEX_NUMBER', tokens[1].type);
     var ast = compiler.syntax(tokens);
@@ -13,20 +13,20 @@ exports.test_cmp_imm = function(test){
     test.done();
 };
 
-exports.test_cmp_zp = function(test){
+exports.test_cmp_zp = function (test) {
     var tokens = compiler.lexical('CMP $00');
     test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     var ast = compiler.syntax(tokens);
-    test.equal(1 , ast.length);
+    test.equal(1, ast.length);
     test.equal('S_ZEROPAGE', ast[0].type);
     var code = compiler.semantic(ast);
     test.deepEqual(code, [0xc5, 0x00]);
     test.done();
 };
 
-exports.test_cmp_zpx = function(test){
+exports.test_cmp_zpx = function (test) {
     var tokens = compiler.lexical('CMP $10,X');
     test.equal(4, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
@@ -41,9 +41,9 @@ exports.test_cmp_zpx = function(test){
     test.done();
 };
 
-exports.test_cmp_abs = function(test){
+exports.test_cmp_abs = function (test) {
     var tokens = compiler.lexical('CMP $1234');
-    test.equal(2 , tokens.length);
+    test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
     test.equal('$1234', tokens[1]['value']);
@@ -55,7 +55,7 @@ exports.test_cmp_abs = function(test){
     test.done();
 };
 
-exports.test_cmp_absx = function(test){
+exports.test_cmp_absx = function (test) {
     var tokens = compiler.lexical('CMP $1234,X');
     test.equal(4, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
@@ -71,7 +71,7 @@ exports.test_cmp_absx = function(test){
     test.done();
 };
 
-exports.test_cmp_absy = function(test){
+exports.test_cmp_absy = function (test) {
     var tokens = compiler.lexical('CMP $1234,Y');
     test.equal(4, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
@@ -86,7 +86,7 @@ exports.test_cmp_absy = function(test){
     test.done();
 };
 
-exports.test_cmp_indx = function(test){
+exports.test_cmp_indx = function (test) {
     var tokens = compiler.lexical('CMP ($20,X)');
     test.equal(6, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
@@ -103,7 +103,7 @@ exports.test_cmp_indx = function(test){
     test.deepEqual(code, [0xc1, 0x20]);
     test.done();
 };
-exports.test_cmp_indy = function(test){
+exports.test_cmp_indy = function (test) {
     var tokens = compiler.lexical('CMP ($20),Y');
     test.equal(6, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);

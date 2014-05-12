@@ -2,12 +2,12 @@ var fs = require('fs');
 var sprite = require('../lib/sprite.js');
 var utils = require('../lib/utils');
 
-exports.setUp = function(callback){
+exports.setUp = function (callback) {
     utils.path = __dirname + '/../static/example/scrolling/';
     callback();
 };
 
-exports.test_load_sprites = function(test){
+exports.test_load_sprites = function (test) {
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -18,7 +18,7 @@ exports.test_load_sprites = function(test){
     test.done();
 };
 
-exports.test_decode_first_sprite = function(test){
+exports.test_decode_first_sprite = function (test) {
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -45,7 +45,7 @@ exports.test_decode_first_sprite = function(test){
     test.done();
 };
 
-exports.test_decode_second_sprite = function(test){
+exports.test_decode_second_sprite = function (test) {
     var chr = fs.readFileSync(__dirname + '/../static/example/scrolling/mario.chr', 'binary');
     var bin = [];
     for (var i = 0; i < chr.length ; i++){
@@ -73,7 +73,7 @@ exports.test_decode_second_sprite = function(test){
 };
 
 
-exports.test_get_first_sprite = function(test){
+exports.test_get_first_sprite = function (test) {
     var sprites = sprite.load_sprites('mario.chr', 'binary');
     var s1 = sprite.get_sprite(0, sprites);
 
@@ -93,7 +93,7 @@ exports.test_get_first_sprite = function(test){
     test.done();
 };
 
-exports.test_get_second_sprite = function(test){
+exports.test_get_second_sprite = function (test) {
     var sprites = sprite.load_sprites('mario.chr', 'binary');
     var s2 = sprite.get_sprite(1, sprites);
 
@@ -113,7 +113,7 @@ exports.test_get_second_sprite = function(test){
     test.done();
 };
 
-exports.test_encode_first_sprite = function(test){
+exports.test_encode_first_sprite = function (test) {
     var mario =
     [
         [0,0,0,0,0,0,1,1],

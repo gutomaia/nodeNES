@@ -1,6 +1,6 @@
 var compiler = require('../lib/compiler.js');
 
-exports.test_rts_sngl = function(test){
+exports.test_rts_sngl = function (test) {
     var tokens = compiler.lexical('RTS');
     test.equal(1, tokens.length);
     test.equal("T_INSTRUCTION", tokens[0].type);

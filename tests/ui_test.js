@@ -1,13 +1,13 @@
 var ui = require('../lib/ui.js');
 
-exports.test_new_widget = function(test){
+exports.test_new_widget = function (test) {
     var widget = new ui.Widget();
     test.equal(0, widget.colorListeners.length);
     test.equal(0, widget.spriteListeners.length);
     test.done();
 };
 
-exports.test_add_color_listener = function(test){
+exports.test_add_color_listener = function (test) {
     var widget = new ui.Widget();
     test.equal(0, widget.colorListeners.length);
     var mockColorListener = {};
@@ -16,7 +16,7 @@ exports.test_add_color_listener = function(test){
     test.done();
 };
 
-exports.test_add_sprite_listener = function(test){
+exports.test_add_sprite_listener = function (test) {
     var widget = new ui.Widget();
     test.equal(0, widget.spriteListeners.length);
     var mockSpriteListener = {};
@@ -25,11 +25,11 @@ exports.test_add_sprite_listener = function(test){
     test.done();
 };
 
-exports.test_on_color_changed = function(test){
+exports.test_on_color_changed = function (test) {
     var widget = new ui.Widget();
     var mockColorListener = {
         called: false,
-        onColorChanged: function(widget){
+        onColorChanged: function (widget) {
             this.called = true;
         }
     };
@@ -39,11 +39,11 @@ exports.test_on_color_changed = function(test){
     test.done();
 };
 
-exports.test_on_sprite_changed = function(test){
+exports.test_on_sprite_changed = function (test) {
     var widget = new ui.Widget();
     var mockSpriteListener = {
         called: false,
-        onSpriteChanged: function(widget){
+        onSpriteChanged: function (widget) {
             this.called = true;
         }
     };
@@ -53,7 +53,7 @@ exports.test_on_sprite_changed = function(test){
     test.done();
 };
 
-exports.test_pixel_editor_extends_widget = function(test){
+exports.test_pixel_editor_extends_widget = function (test) {
     test.equal(ui.Widget.addColorChangeListener, ui.PixelEditor.addColorChangeListener);
     test.equal(ui.Widget.addSpriteChangedListener, ui.PixelEditor.addSpriteChangedListener);
     test.equal(ui.Widget.notifyColorChanged, ui.PixelEditor.notifyColorChanged);
@@ -65,7 +65,7 @@ exports.test_pixel_editor_extends_widget = function(test){
 };
 
 
-exports.test_sprite_selector_extends_widget = function(test){
+exports.test_sprite_selector_extends_widget = function (test) {
     test.equal(ui.Widget.addColorChangeListener, ui.SpriteSelector.addColorChangeListener);
     test.equal(ui.Widget.addSpriteChangedListener, ui.SpriteSelector.addSpriteChangedListener);
     test.equal(ui.Widget.notifyColorChanged, ui.SpriteSelector.notifyColorChanged);
@@ -76,14 +76,14 @@ exports.test_sprite_selector_extends_widget = function(test){
     test.done();
 };
 
-exports.test_new_sprite_selector = function(test){
+exports.test_new_sprite_selector = function (test) {
     var options = {};
     //var sprite_selector = new ui.SpriteSelector(this.mockCanvas, 0, 0, options);
 
     test.done();
 };
 
-exports.test_preview_extends_widget = function(test){
+exports.test_preview_extends_widget = function (test) {
     test.equal(ui.Widget.addColorChangeListener, ui.Preview.addColorChangeListener);
     test.equal(ui.Widget.addSpriteChangedListener, ui.Preview.addSpriteChangedListener);
     test.equal(ui.Widget.notifyColorChanged, ui.Preview.notifyColorChanged);
@@ -94,7 +94,7 @@ exports.test_preview_extends_widget = function(test){
     test.done();
 };
 
-exports.test_palette_extends_widget = function(test){
+exports.test_palette_extends_widget = function (test) {
     test.equal(ui.Palette.addColorChangeListener, ui.Preview.addColorChangeListener);
     test.equal(ui.Palette.addSpriteChangedListener, ui.Preview.addSpriteChangedListener);
     test.equal(ui.Palette.notifyColorChanged, ui.Preview.notifyColorChanged);
@@ -105,7 +105,7 @@ exports.test_palette_extends_widget = function(test){
     test.done();
 };
 
-exports.test_color_picker_extends_widget = function(test){
+exports.test_color_picker_extends_widget = function (test) {
     test.equal(ui.ColorPicker.addColorChangeListener, ui.Preview.addColorChangeListener);
     test.equal(ui.ColorPicker.addSpriteChangedListener, ui.Preview.addSpriteChangedListener);
     test.equal(ui.ColorPicker.notifyColorChanged, ui.Preview.notifyColorChanged);
