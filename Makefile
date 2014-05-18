@@ -2,9 +2,9 @@ PLATFORM = $(shell uname)
 
 NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
 JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
+REQUIREJS_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.requirejs);"}
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
-REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = 2.3.2
 CODEMIRROR_VERSION = 3.1
 SELENIUM_VERSION = 2.40.0
