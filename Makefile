@@ -361,8 +361,8 @@ clean:
 purge: clean
 	@rm -rf node_modules
 	@rm -rf deps
-	@rm .git/hooks/pre-commit
-	@rm ${CHROMEDRIVER_BIN}
+	@rm -f .git/hooks/pre-commit
+	@rm -f ${CHROMEDRIVER_BIN}
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
