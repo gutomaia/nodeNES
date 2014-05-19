@@ -50,7 +50,7 @@ endif
 .git/hooks/pre-commit:
 	@echo "Instaling pre-commit hook: \c"
 	@mkdir -p .git/hooks && \
-		hooks/pre-commit .git/hooks/pre-commit && \
+		cp hooks/pre-commit .git/hooks/pre-commit && \
 		touch $@
 	${CHECK}
 
