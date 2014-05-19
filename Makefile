@@ -227,7 +227,7 @@ deps/require.js: deps/.done
 	@echo "Downloading RequireJs ${REQUIREJS_VERSION}: \c"
 	@cd deps && \
 		${WGET} http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js && \
-		touch $@
+		touch require.js
 	${CHECK}
 
 
