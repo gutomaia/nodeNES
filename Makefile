@@ -2,9 +2,9 @@ PLATFORM = $(shell uname)
 
 NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
 JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
+REQUIREJS_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.requirejs);"}
 UNDERSCORE_VERSION = 1.4.4
 BACKBONE_VERSION = 0.9.10
-REQUIREJS_VERSION = 2.0.4
 BOOTSTRAP_VERSION = 2.3.2
 CODEMIRROR_VERSION = 3.1
 SELENIUM_VERSION = 2.40.0
@@ -49,8 +49,9 @@ endif
 
 .git/hooks/pre-commit:
 	@echo "Instaling pre-commit hook: \c"
-	@cp hooks/pre-commit .git/hooks/pre-commit
-	@touch $@
+	@mkdir -p .git/hooks && \
+		cp hooks/pre-commit .git/hooks/pre-commit && \
+		touch $@
 	${CHECK}
 
 node_modules: .git/hooks/pre-commit package.json
@@ -85,12 +86,12 @@ external/jsnes.src.js: external deps/jsnes/.done
 	@touch $@
 
 external/dynamicaudio-min.js: external deps/jsnes/.done
-	@echo "Copping dynamicaudio-min.js: \c"
+	@echo "Coping dynamicaudio-min.js: \c"
 	@cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
 	${CHECK}
 
 external/dynamicaudio.swf: external deps/jsnes/.done
-	@echo "Copping dynamicaudio-swf.js: \c"
+	@echo "Coping dynamicaudio-swf.js: \c"
 	@cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
 	${CHECK}
 
@@ -102,7 +103,7 @@ deps/underscore.js: deps/.done
 	@touch $@
 
 external/underscore.js: external deps/underscore.js
-	@echo "Copping underscore.js: \c"
+	@echo "Coping underscore.js: \c"
 	@cp deps/underscore.js external/ && touch $@
 	${CHECK}
 	@touch $@
@@ -115,7 +116,7 @@ deps/backbone.js: deps/.done
 	@touch $@
 
 external/backbone.js: external deps/backbone.js
-	@echo "Copping backbone.js: \c"
+	@echo "Coping backbone.js: \c"
 	@cp deps/backbone.js external/ && touch $@
 	${CHECK}
 	@touch $@
@@ -136,12 +137,12 @@ deps/codemirror-${CODEMIRROR_VERSION}/.done: deps/.done deps/codemirror-${CODEMI
 
 
 external/codemirror.js: external deps/codemirror-${CODEMIRROR_VERSION}/.done
-	@echo "Copping codemirror.js: \c"
+	@echo "Coping codemirror.js: \c"
 	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.js external/ && touch $@
 	${CHECK}
 
 external/codemirror.css: external deps/codemirror-${CODEMIRROR_VERSION}/.done
-	@echo "Copping codemirror.css: \c"
+	@echo "Coping codemirror.css: \c"
 	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.css external/ && touch $@
 	${CHECK}
 
@@ -160,17 +161,17 @@ deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 	@touch $@
 
 external/fast_backward.png: external deps/glyphicons_free/.done
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
 	${CHECK}
 
 external/fast_forward.png: external deps/glyphicons_free/.done
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 	${CHECK}
 
 external/check.png: external deps/glyphicons_free/.done
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
@@ -202,32 +203,36 @@ external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
 	${CHECK}
 
 external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-tab.js external/ && touch $@
 	${CHECK}
 
 external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-dropdown.js external/ && touch $@
 	${CHECK}
 
 deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
+	@echo "Downloading jQuery ${JQUERY_VERSION}: \c"
 	@cd deps && \
 		${WGET} http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
 	@touch $@
 
 external/jquery.js: external deps/jquery-${JQUERY_VERSION}.min.js
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/jquery-${JQUERY_VERSION}.min.js $@ && touch $@
 	${CHECK}
 
 deps/require.js: deps/.done
+	@echo "Downloading RequireJs ${REQUIREJS_VERSION}: \c"
 	@cd deps && \
-		${WGET} http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js
-	@touch $@
+		${WGET} http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js && \
+		touch require.js
+	${CHECK}
+
 
 external/require.js: external deps/require.js
-	@echo "Copping $@: \c"
+	@echo "Coping $@: \c"
 	@cp deps/require.js external/ && touch $@
 	${CHECK}
 
@@ -356,8 +361,8 @@ clean:
 purge: clean
 	@rm -rf node_modules
 	@rm -rf deps
-	@rm .git/hooks/pre-commit
-	@rm ${CHROMEDRIVER_BIN}
+	@rm -f .git/hooks/pre-commit
+	@rm -f ${CHROMEDRIVER_BIN}
 
 run: node_modules download_deps
 	@./node_modules/.bin/supervisor ./app.js
