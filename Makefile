@@ -251,7 +251,7 @@ jshint:
 	@./node_modules/.bin/jshint ${SRC_JS} --config jshint.config
 
 jslint:
-	@./node_modules/.bin/jslint --indent 4 --predef "define" --vars --sloppy --nomem ${SRC_JS}
+	@./node_modules/.bin/jslint --indent 4 --predef "define, nodeunit" --vars --sloppy --nomen --todo --stupid ${SRC_JS}
 
 build: node_modules jshint
 
