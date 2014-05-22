@@ -79,7 +79,7 @@ exports.test_cmp_absy = function (test) {
     test.equal('T_SEPARATOR', tokens[2].type);
     test.equal('T_REGISTER', tokens[3].type);
     var ast = compiler.syntax(tokens);
-    test.equal(1 , ast.length);
+    test.equal(1, ast.length);
     test.equal('S_ABSOLUTE_Y', ast[0].type);
     var code = compiler.semantic(ast);
     test.deepEqual(code, [0xd9, 0x34, 0x12]);
@@ -113,7 +113,7 @@ exports.test_cmp_indy = function (test) {
     test.equal('T_SEPARATOR', tokens[4].type);
     test.equal('T_REGISTER', tokens[5].type);
     var ast = compiler.syntax(tokens);
-    test.equal(1 , ast.length);
+    test.equal(1, ast.length);
     test.equal('S_INDIRECT_Y', ast[0].type);
     var code = compiler.semantic(ast);
     test.deepEqual(code, [0xd1, 0x20]);

@@ -10,7 +10,7 @@ var code = fs.readFileSync(__dirname + '/../static/example/movingsprite/movingsp
 
 var bin = fs.readFileSync(__dirname + '/../fixtures/movingsprite/movingsprite.nes', 'binary');
 
-exports.test_get_labels = function(test){
+exports.test_get_labels = function (test) {
     var tokens = compiler.lexical(code);
     var ast = compiler.syntax(tokens);
     var labels = compiler.get_labels(ast);
@@ -19,14 +19,14 @@ exports.test_get_labels = function(test){
     test.done();
 };
 
-exports.test_nes_compiler = function(test){
+exports.test_nes_compiler = function (test) {
     utils.path = 'static/example/movingsprite/';
     var rom = compiler.nes_compiler(code);
     test.deepEqual(bin, rom);
     test.done();
 };
 
-exports.test_asm_compiler = function(test){
+exports.test_asm_compiler = function (test) {
     utils.path = 'static/example/movingsprite/';
 
     var tokens = compiler.lexical(code);

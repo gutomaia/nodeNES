@@ -29,9 +29,7 @@ exports.run = function (files, options, callback) {
 
     if (!options) {
         // load default options
-        var content = fs.readFileSync(
-            __dirname + '/node_modules/nodeunit/bin/nodeunit.json', 'utf8'
-        );
+        var content = fs.readFileSync(__dirname + '/node_modules/nodeunit/bin/nodeunit.json', 'utf8');
         options = JSON.parse(content);
     }
 
@@ -61,12 +59,13 @@ exports.run = function (files, options, callback) {
         testDone: function (name, assertions) {
             if (!assertions.failures()) {
                 process.stdout.write('.');
-            }
-            else {
+            } else {
                 process.stdout.write('F');
-                assertions.forEach(function (assertion) {
-                    assertion.testname = name;
-                });
+                assertions.forEach(
+                    function (assertion) {
+                        assertion.testname = name;
+                    }
+                );
             }
         },
         done: function (assertions) {
@@ -79,7 +78,7 @@ exports.run = function (files, options, callback) {
                 msg = '\nOK: ' + assertions.length + ' assertions (' + assertions.duration + 'ms)';
             }
             console.log(msg);
-            growl(msg, {title:"nodeNES"});
+            growl(msg, {title: "nodeNES"});
 
             if (callback) callback(assertions.failures() ? new Error('We have got test failures.') : undefined);
         }
