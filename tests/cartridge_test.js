@@ -40,7 +40,7 @@ exports.test_bank_1 = function (test) {
     test.done();
 };
 
-exports.test_bank_1 = function (test) {
+exports.test_bank_2 = function (test) {
     this.cart.set_bank_id(0);
     this.cart.set_bank_id(1);
     test.equal(2, this.cart.banks.length);
