@@ -3,8 +3,6 @@ BASEDIR="$(dirname $0)/../.."
 
 if git diff-index --quiet HEAD --; then
 
-echo "1"
-
 cd $BASEDIR && make test
 RESULT=$?
 
@@ -14,8 +12,6 @@ git stash -q --keep-index -u
 cd $BASEDIR && make test
 RESULT=$?
 git stash pop -q
-
-echo "2"
 
 fi
 
