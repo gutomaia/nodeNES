@@ -46,7 +46,7 @@ exports.test_cmp_abs = function (test) {
     test.equal(2, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
-    test.equal('$1234', tokens[1]['value']);
+    test.equal('$1234', tokens[1].value);
     var ast = compiler.syntax(tokens);
     test.equal(1, ast.length);
     test.equal('S_ABSOLUTE', ast[0].type);
@@ -60,7 +60,7 @@ exports.test_cmp_absx = function (test) {
     test.equal(4, tokens.length);
     test.equal('T_INSTRUCTION', tokens[0].type);
     test.equal('T_ADDRESS', tokens[1].type);
-    test.equal('$1234', tokens[1]['value']);
+    test.equal('$1234', tokens[1].value);
     test.equal('T_SEPARATOR', tokens[2].type);
     test.equal('T_REGISTER', tokens[3].type);
     var ast = compiler.syntax(tokens);

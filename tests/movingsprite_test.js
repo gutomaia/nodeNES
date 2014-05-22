@@ -77,7 +77,7 @@ exports.test_asm_compiler = function(test){
 
     // WAITVBLANK: BIT $2002;
     test.equal('S_ABSOLUTE', ast[6].type);
-    test.deepEqual(['WAITVBLANK'], ast[6]['labels']);
+    test.deepEqual(['WAITVBLANK'], ast[6].labels);
     test.equal('T_INSTRUCTION', ast[6].children[0].type);
     test.equal('BIT', ast[6].children[0].value);
     test.equal(15, ast[6].children[0].line);
