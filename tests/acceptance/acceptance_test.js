@@ -46,16 +46,16 @@ exports.test_menu_display_nice = function(test){
     });
 };
 
-exports.test_menu_working = function(test){
-    var driver = this.driver;
+// exports.test_menu_working = function(test){
+//     var driver = this.driver;
 
-    driver.wait(function() {
-        //TODO: should be for invisible
-        return driver.findElement({tagName:'a', className:'dropdown-toggle'}).isDisplayed();
-    }, 1000).then(
-        function(){
-            var examples = driver.findElement({tagName:'a', className:'dropdown-toggle'});
-            examples.click();
-            test.done();
-    });
-};
+//     driver.wait(function() {
+//         //TODO: should be for invisible
+//         return driver.findElement({tagName:'a', className:'dropdown-toggle'}).isDisplayed();
+//     }, 1000).then(
+//         function(){
+//             var examples = driver.findElement({tagName:'a', className:'dropdown-toggle'});
+//             examples.click();
+//             test.done();
+//     });
+// };
