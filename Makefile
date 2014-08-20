@@ -47,7 +47,7 @@ else
 default: test
 endif
 
-.git/hooks/pre-commit:
+.git/hooks/pre-commit: hooks/pre-commit
 	@echo "Instaling pre-commit hook: \c"
 	@mkdir -p .git/hooks && \
 		cp hooks/pre-commit .git/hooks/pre-commit && \
