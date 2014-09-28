@@ -1,8 +1,8 @@
 language: node_js
 before_install:
-  - sudo apt-get install libgif-dev
+  - sudo apt-get install libgif-dev gdebi-core
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome-stable_current_amd64.deb
+  - sudo gdebi --non-interactive google-chrome-stable_current_amd64.deb
   - sudo chmod 1777 /dev/shm
   - export CHROME_SANDBOX=/opt/google/chrome/chrome-sandbox
   - sudo rm -f $CHROME_SANDBOX
