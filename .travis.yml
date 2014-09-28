@@ -1,6 +1,6 @@
 language: node_js
 before_install:
-  - sudo apt-get install libgif-dev
+  - sudo apt-get install libgif-dev libappindicator
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome-stable_current_amd64.deb
   - sudo chmod 1777 /dev/shm
