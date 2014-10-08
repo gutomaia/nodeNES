@@ -1,0 +1,25 @@
+{
+  "name": "nodeNES",
+  "version": "0.0.3",
+  "homepage": "https://github.com/gutomaia/nodeNES",
+  "authors": [
+    "Guto Maia <guto@guto.net>"
+  ],
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "1.4.4",
+    "backbone": "0.9.10",
+    "bootstrap": "2.3.2",
+    "codemirror": "4.6.0",
+    "requirejs": "2.1.15",
+    "jsnes": "https://github.com/bfirsh/jsnes.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
