@@ -1,14 +1,11 @@
 PLATFORM = $(shell uname)
 
 NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version);"}
-JQUERY_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.jquery);"}
-REQUIREJS_VERSION = ${shell node -e "console.log(require('./package.json').devDependencies.requirejs);"}
-UNDERSCORE_VERSION = 1.4.4
-BACKBONE_VERSION = 0.9.10
-BOOTSTRAP_VERSION = 2.3.2
-CODEMIRROR_VERSION = 3.1
+
 SELENIUM_VERSION = 2.40.0
 CHROMEDRIVER_VERSION = 2.9
+
+BOWER_BIN = ./node_modules/.bin/bower
 
 
 ifeq "Linux" "${PLATFORM}"
@@ -21,8 +18,8 @@ endif
 
 CHROMEDRIVER_URL = http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/${CHROMEDRIVER_ZIP}
 
-BOOTSTRAP_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/bootstrap.less
-BOOTSTRAP_RESPONSIVE_LESS = deps/bootstrap-${BOOTSTRAP_VERSION}/less/responsive.less
+BOOTSTRAP_LESS = bower_components/bootstrap/less/bootstrap.less
+BOOTSTRAP_RESPONSIVE_LESS = bower_components/bootstrap/less/responsive.less
 
 OK=\033[32m[OK]\033[39m
 FAIL=\033[31m[FAIL]\033[39m
@@ -60,6 +57,12 @@ node_modules: .git/hooks/pre-commit package.json
 	@touch $@
 	${CHECK}
 
+${BOWER_BIN}: node_modules
+	@npm install bower && touch $@
+
+bower_components: bower.json ${BOWER_BIN}
+	${BOWER_BIN} install
+
 external:
 	@echo "Creating external dir: \c"
 	@mkdir -p external
@@ -71,79 +74,43 @@ deps/.done:
 	@touch $@
 	${CHECK}
 
-deps/jsnes/.done: deps/.done
-	@echo "Cloning jsNES project: \c"
-	@cd deps && \
-		git clone https://github.com/bfirsh/jsnes.git > /dev/null 2>&1
-	${CHECK}
-	@touch $@
-
-external/jsnes.src.js: external deps/jsnes/.done
+external/jsnes.src.js: external bower_components
 	@echo "Packing jsnes.src.js: \c"
-	@cd deps/jsnes/source && \
+	@cd bower_components/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
 	${CHECK}
 	@touch $@
 
-external/dynamicaudio-min.js: external deps/jsnes/.done
+external/dynamicaudio-min.js: external bower_components
 	@echo "Coping dynamicaudio-min.js: \c"
-	@cp deps/jsnes/lib/dynamicaudio-min.js external/ && touch $@
+	@cp bower_components/jsnes/lib/dynamicaudio-min.js $@ && touch $@
 	${CHECK}
 
-external/dynamicaudio.swf: external deps/jsnes/.done
+external/dynamicaudio.swf: external bower_components
 	@echo "Coping dynamicaudio-swf.js: \c"
-	@cp deps/jsnes/lib/dynamicaudio.swf external/ && touch $@
+	@cp bower_components/jsnes/lib/dynamicaudio.swf $@ && touch $@
 	${CHECK}
 
-deps/underscore.js: deps/.done
-	@echo "Downloading underscore.js: \c"
-	@cd deps && \
-		${WGET} http://raw.github.com/documentcloud/underscore/${UNDERSCORE_VERSION}/underscore.js
-	${CHECK}
-	@touch $@
-
-external/underscore.js: external deps/underscore.js
+external/underscore.js: external bower_components
 	@echo "Coping underscore.js: \c"
-	@cp deps/underscore.js external/ && touch $@
+	@cp bower_components/underscore/underscore.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
-deps/backbone.js: deps/.done
-	@echo "Downloading backbone.js: \c"
-	@cd deps && \
-		${WGET} http://raw.github.com/documentcloud/backbone/${BACKBONE_VERSION}/backbone.js
-	${CHECK}
-	@touch $@
-
-external/backbone.js: external deps/backbone.js
+external/backbone.js: external bower_components
 	@echo "Coping backbone.js: \c"
-	@cp deps/backbone.js external/ && touch $@
+	@cp bower_components/backbone/backbone.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
-deps/codemirror-${CODEMIRROR_VERSION}.zip: deps/.done
-	@echo "Downloading CodeMirror ${CODEMIRROR_VERSION}: \c"
-	@cd deps && \
-		${WGET} http://codemirror.net/codemirror-${CODEMIRROR_VERSION}.zip
-	${CHECK}
-	@touch $@
-
-deps/codemirror-${CODEMIRROR_VERSION}/.done: deps/.done deps/codemirror-${CODEMIRROR_VERSION}.zip
-	@echo "Unpacking codemirror-${CODEMIRROR_VERSION}.zip: \c"
-	@cd deps && \
-		unzip -q codemirror-${CODEMIRROR_VERSION}.zip
-	@touch $@
-	${CHECK}
-
-
-external/codemirror.js: external deps/codemirror-${CODEMIRROR_VERSION}/.done
+external/codemirror.js: external bower_components
 	@echo "Coping codemirror.js: \c"
-	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.js external/ && touch $@
+	@cp bower_components/codemirror/lib/codemirror.js $@ && touch $@
 	${CHECK}
 
-external/codemirror.css: external deps/codemirror-${CODEMIRROR_VERSION}/.done
+external/codemirror.css: external bower_components
 	@echo "Coping codemirror.css: \c"
-	@cp deps/codemirror-${CODEMIRROR_VERSION}/lib/codemirror.css external/ && touch $@
+	@cp bower_components/codemirror/lib/codemirror.css $@ && touch $@
 	${CHECK}
 
 deps/glyphicons_free.zip: deps/.done
@@ -175,65 +142,37 @@ external/check.png: external deps/glyphicons_free/.done
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
-deps/v${BOOTSTRAP_VERSION}.zip: deps/.done
-	@echo "Downloading Bootstrap: \c"
-	@cd deps && \
-		${WGET} https://github.com/twbs/bootstrap/archive/v${BOOTSTRAP_VERSION}.zip
-	${CHECK}
-	@touch $@
-
-deps/bootstrap-${BOOTSTRAP_VERSION}: deps/v${BOOTSTRAP_VERSION}.zip
-	@echo "Unpacking Bootstrap \c"
-	@cd deps && \
-		unzip -q v${BOOTSTRAP_VERSION}.zip
-	${CHECK}
-	@touch $@
-
-external/bootstrap.css: deps/bootstrap-${BOOTSTRAP_VERSION}
+external/bootstrap.css: bower_components
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	@echo "Compiling $@: \c"
 	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
-	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap.css $@
+	cp bower_components/bootstrap/docs/assets/css/bootstrap.css $@
 	${CHECK}
 
-external/bootstrap-responsive.css: deps/bootstrap-${BOOTSTRAP_VERSION}
+external/bootstrap-responsive.css: bower_components
 	@echo "Compiling $@: \c"
 	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
-	cp deps/bootstrap-${BOOTSTRAP_VERSION}/docs/assets/css/bootstrap-responsive.css $@
+	@cp bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css $@
 	${CHECK}
 
-external/bootstrap-tab.js: deps/bootstrap-${BOOTSTRAP_VERSION}
+external/bootstrap-tab.js: bower_components
 	@echo "Coping $@: \c"
-	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-tab.js external/ && touch $@
+	@cp bower_components/bootstrap/js/bootstrap-tab.js $@ && touch $@
 	${CHECK}
 
-external/bootstrap-dropdown.js: deps/bootstrap-${BOOTSTRAP_VERSION}
+external/bootstrap-dropdown.js: bower_components
 	@echo "Coping $@: \c"
-	@cp deps/bootstrap-${BOOTSTRAP_VERSION}/js/bootstrap-dropdown.js external/ && touch $@
+	@cp bower_components/bootstrap/js/bootstrap-dropdown.js $@ && touch $@
 	${CHECK}
 
-deps/jquery-${JQUERY_VERSION}.min.js: deps/.done
-	@echo "Downloading jQuery ${JQUERY_VERSION}: \c"
-	@cd deps && \
-		${WGET} http://code.jquery.com/jquery-${JQUERY_VERSION}.min.js
-	@touch $@
-
-external/jquery.js: external deps/jquery-${JQUERY_VERSION}.min.js
+external/jquery.js: external bower_components
 	@echo "Coping $@: \c"
-	@cp deps/jquery-${JQUERY_VERSION}.min.js $@ && touch $@
+	@cp bower_components/jquery/jquery.min.js $@ && touch $@
 	${CHECK}
 
-deps/require.js: deps/.done
-	@echo "Downloading RequireJs ${REQUIREJS_VERSION}: \c"
-	@cd deps && \
-		${WGET} http://requirejs.org/docs/release/${REQUIREJS_VERSION}/minified/require.js && \
-		touch require.js
-	${CHECK}
-
-
-external/require.js: external deps/require.js
+external/require.js: external bower_components
 	@echo "Coping $@: \c"
-	@cp deps/require.js external/ && touch $@
+	@cp bower_components/requirejs/require.js $@ && touch $@
 	${CHECK}
 
 download_deps: external/jsnes.src.js \

@@ -3,6 +3,7 @@
 .buildpath
 .project
 .sublime-build
+bower_components/
 chromedriver
 deps/
 external/
