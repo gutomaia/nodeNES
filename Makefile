@@ -35,6 +35,9 @@ SRC_JS = bin/nodenes \
          app.js \
          tdd.js
 
+NODE_CHECK=node_modules/.check
+BOWER_CHECK=bower_components/.check
+
 ifeq "" "$(shell which npm)"
 default:
 	@echo "Please install node.js"
@@ -51,17 +54,16 @@ endif
 		touch $@
 	${CHECK}
 
-node_modules: .git/hooks/pre-commit package.json
-	@echo "NPM installing packages: \c"
+${NODE_CHECK}: .git/hooks/pre-commit package.json
+	@echo "NPM installing packages:"
 	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@
 	${CHECK}
 
-${BOWER_BIN}: node_modules
-	@npm install bower && touch $@
+${BOWER_BIN}: ${NODE_CHECK}
 
-bower_components: bower.json ${BOWER_BIN}
-	${BOWER_BIN} install
+${BOWER_CHECK}: bower.json ${BOWER_BIN}
+	@${BOWER_BIN} install && touch $@
 
 external:
 	@echo "Creating external dir: \c"
@@ -74,41 +76,41 @@ deps/.done:
 	@touch $@
 	${CHECK}
 
-external/jsnes.src.js: external bower_components
+external/jsnes.src.js: external ${BOWER_CHECK}
 	@echo "Packing jsnes.src.js: \c"
 	@cd bower_components/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
 	${CHECK}
 	@touch $@
 
-external/dynamicaudio-min.js: external bower_components
+external/dynamicaudio-min.js: external ${BOWER_CHECK}
 	@echo "Copping dynamicaudio-min.js: \c"
 	@cp bower_components/jsnes/lib/dynamicaudio-min.js $@ && touch $@
 	${CHECK}
 
-external/dynamicaudio.swf: external bower_components
+external/dynamicaudio.swf: external ${BOWER_CHECK}
 	@echo "Copping dynamicaudio-swf.js: \c"
 	@cp bower_components/jsnes/lib/dynamicaudio.swf $@ && touch $@
 	${CHECK}
 
-external/underscore.js: external bower_components
+external/underscore.js: external ${BOWER_CHECK}
 	@echo "Copping underscore.js: \c"
 	@cp bower_components/underscore/underscore.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
-external/backbone.js: external bower_components
+external/backbone.js: external ${BOWER_CHECK}
 	@echo "Copping backbone.js: \c"
 	@cp bower_components/backbone/backbone.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
-external/codemirror.js: external bower_components
+external/codemirror.js: external ${BOWER_CHECK}
 	@echo "Copping codemirror.js: \c"
 	@cp bower_components/codemirror/lib/codemirror.js $@ && touch $@
 	${CHECK}
 
-external/codemirror.css: external bower_components
+external/codemirror.css: external ${BOWER_CHECK}
 	@echo "Copping codemirror.css: \c"
 	@cp bower_components/codemirror/lib/codemirror.css $@ && touch $@
 	${CHECK}
@@ -142,35 +144,35 @@ external/check.png: external deps/glyphicons_free/.done
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
-external/bootstrap.css: bower_components
+external/bootstrap.css: external ${BOWER_CHECK}
 	#TODO: cp snippets/variables.less deps/bootstrap/less
 	@echo "Compiling $@: \c"
 	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
 	cp bower_components/bootstrap/docs/assets/css/bootstrap.css $@
 	${CHECK}
 
-external/bootstrap-responsive.css: bower_components
+external/bootstrap-responsive.css: external ${BOWER_CHECK}
 	@echo "Compiling $@: \c"
 	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
 	@cp bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css $@
 	${CHECK}
 
-external/bootstrap-tab.js: bower_components
+external/bootstrap-tab.js: external ${BOWER_CHECK}
 	@echo "Copping $@: \c"
 	@cp bower_components/bootstrap/js/bootstrap-tab.js $@ && touch $@
 	${CHECK}
 
-external/bootstrap-dropdown.js: bower_components
+external/bootstrap-dropdown.js: external ${BOWER_CHECK}
 	@echo "Copping $@: \c"
 	@cp bower_components/bootstrap/js/bootstrap-dropdown.js $@ && touch $@
 	${CHECK}
 
-external/jquery.js: external bower_components
+external/jquery.js: external ${BOWER_CHECK}
 	@echo "Copping $@: \c"
 	@cp bower_components/jquery/jquery.min.js $@ && touch $@
 	${CHECK}
 
-external/require.js: external bower_components
+external/require.js: external ${BOWER_CHECK}
 	@echo "Copping $@: \c"
 	@cp bower_components/requirejs/require.js $@ && touch $@
 	${CHECK}
@@ -197,7 +199,7 @@ jshint:
 jslint:
 	@./node_modules/.bin/jslint --indent 4 --predef "define, nodeunit" --vars --sloppy --nomen --todo --stupid ${SRC_JS}
 
-build: node_modules jshint
+build: ${NODE_CHECK} jshint
 
 nodeunit:
 	@./node_modules/.bin/nodeunit --reporter minimal tests/*_test.js
@@ -299,11 +301,12 @@ clean:
 
 purge: clean
 	@rm -rf node_modules
+	@rm -rf bower_components
 	@rm -rf deps
 	@rm -f .git/hooks/pre-commit
 	@rm -f ${CHROMEDRIVER_BIN}
 
-run: node_modules download_deps
+run: download_deps
 	@./node_modules/.bin/supervisor ./app.js
 
 
