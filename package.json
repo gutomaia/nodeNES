@@ -14,7 +14,9 @@
   "devDependencies": {
     "jquery": "2.1.1",
     "canvas": "1.1.6",
-    "connect": "2.15.0",
+    "connect": "3.2.0",
+    "serve-static": "1.6.3",
+    "compression": "1.1.0",
     "async": "0.8.0",
     "nopt": "2.2.0",
     "temp": "0.7.0",

@@ -1,18 +1,26 @@
 #!/usr/bin/env node
 
-var os = require('os'),
-    connect = require('connect');
+var os = require('os');
+var connect = require('connect');
+var http = require('http');
+var serveStatic = require('serve-static');
+
+var _static = serveStatic('static');
+var _external = serveStatic('external');
+var _lib = serveStatic('lib');
+
+var app = connect();
+var compression = require('compression');
+
+app.use(compression());
+app.use(_static);
+app.use(_external);
+app.use(_lib);
 
 var port = 8888;
-var webServer = connect();
-webServer
-    .use(connect.logger())
-    .use(connect.static('static'))
-    .use(connect.static('external'))
-    .use(connect.static('lib'))
-    .use(connect.bodyParser());
 
 console.log("=======================================");
 console.log("Listening on http://" + os.hostname() + ":" + port + "/");
 console.log("=======================================");
-webServer.listen(port);
+
+http.createServer(app).listen(port);
