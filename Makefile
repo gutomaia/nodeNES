@@ -82,34 +82,34 @@ external/jsnes.src.js: external bower_components
 	@touch $@
 
 external/dynamicaudio-min.js: external bower_components
-	@echo "Coping dynamicaudio-min.js: \c"
+	@echo "Copping dynamicaudio-min.js: \c"
 	@cp bower_components/jsnes/lib/dynamicaudio-min.js $@ && touch $@
 	${CHECK}
 
 external/dynamicaudio.swf: external bower_components
-	@echo "Coping dynamicaudio-swf.js: \c"
+	@echo "Copping dynamicaudio-swf.js: \c"
 	@cp bower_components/jsnes/lib/dynamicaudio.swf $@ && touch $@
 	${CHECK}
 
 external/underscore.js: external bower_components
-	@echo "Coping underscore.js: \c"
+	@echo "Copping underscore.js: \c"
 	@cp bower_components/underscore/underscore.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
 external/backbone.js: external bower_components
-	@echo "Coping backbone.js: \c"
+	@echo "Copping backbone.js: \c"
 	@cp bower_components/backbone/backbone.js $@ && touch $@
 	${CHECK}
 	@touch $@
 
 external/codemirror.js: external bower_components
-	@echo "Coping codemirror.js: \c"
+	@echo "Copping codemirror.js: \c"
 	@cp bower_components/codemirror/lib/codemirror.js $@ && touch $@
 	${CHECK}
 
 external/codemirror.css: external bower_components
-	@echo "Coping codemirror.css: \c"
+	@echo "Copping codemirror.css: \c"
 	@cp bower_components/codemirror/lib/codemirror.css $@ && touch $@
 	${CHECK}
 
@@ -128,17 +128,17 @@ deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 	@touch $@
 
 external/fast_backward.png: external deps/glyphicons_free/.done
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
 	${CHECK}
 
 external/fast_forward.png: external deps/glyphicons_free/.done
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
 	${CHECK}
 
 external/check.png: external deps/glyphicons_free/.done
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
 	${CHECK}
 
@@ -156,22 +156,22 @@ external/bootstrap-responsive.css: bower_components
 	${CHECK}
 
 external/bootstrap-tab.js: bower_components
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp bower_components/bootstrap/js/bootstrap-tab.js $@ && touch $@
 	${CHECK}
 
 external/bootstrap-dropdown.js: bower_components
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp bower_components/bootstrap/js/bootstrap-dropdown.js $@ && touch $@
 	${CHECK}
 
 external/jquery.js: external bower_components
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp bower_components/jquery/jquery.min.js $@ && touch $@
 	${CHECK}
 
 external/require.js: external bower_components
-	@echo "Coping $@: \c"
+	@echo "Copping $@: \c"
 	@cp bower_components/requirejs/require.js $@ && touch $@
 	${CHECK}
 
