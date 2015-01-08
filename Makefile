@@ -131,17 +131,17 @@ deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 
 external/fast_backward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons-172-fast-backward.png external/fast_backward.png
 	${CHECK}
 
 external/fast_forward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons-178-fast-forward.png external/fast_forward.png
 	${CHECK}
 
 external/check.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
+	@cp deps/glyphicons_free/glyphicons/png/glyphicons-153-check.png external/check.png
 	${CHECK}
 
 external/bootstrap.css: external ${BOWER_CHECK}
