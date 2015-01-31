@@ -321,7 +321,7 @@ dist/nodenes-min.js: dist/.check ${SRC_JS}
 	@./node_modules/.bin/r.js -o name=lib/compiler excludeShallow=jquery out=dist/nodenes-min.js baseUrl=.
 
 dist/init-min.js: dist/.check  ${SRC_JS}
-    @./node_modules/.bin/r.js -o name=lib/init excludeShallow=jquery out=dist/nodenes-min.js baseUrl=.
+	@./node_modules/.bin/r.js -o name=lib/init excludeShallow=jquery out=dist/init-min.js baseUrl=.
 
 dist: ${NODE_CHECK} dist/nodenes-min.js dist/init-min.js
 
