@@ -297,6 +297,7 @@ clean:
 	@find . -iname \*~ -delete
 	@rm -rf external
 	@rm -rf reports
+	@rm -rf dist
 	@rm -rf tests_browser
 
 purge: clean
@@ -308,6 +309,18 @@ purge: clean
 
 run: download_deps
 	@./node_modules/.bin/supervisor ./app.js
+
+dist/.check:
+	@mkdir -p $@
+	touch $@
+
+dist/nodenes-min.js: dist/.check ${SRC_JS}
+	@./node_modules/.bin/r.js -o name=lib/compiler excludeShallow=jquery out=dist/nodenes-min.js baseUrl=.
+
+dist/init-min.js: dist/.check  ${SRC_JS}
+    @./node_modules/.bin/r.js -o name=lib/init excludeShallow=jquery out=dist/nodenes-min.js baseUrl=.
+
+dist: ${NODE_CHECK} dist/nodenes-min.js dist/init-min.js
 
 
 before-tag:
