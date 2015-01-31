@@ -131,17 +131,20 @@ deps/glyphicons_free/.done: deps/.done deps/glyphicons_free.zip
 
 external/fast_backward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_171_fast_backward.png external/fast_backward.png
+	@find deps/glyphicons_free/ -type f  -iname *.png | grep -P 'glyphicons\-\d+\-fast.backward' | \
+		xargs -I []	cp [] $@
 	${CHECK}
 
 external/fast_forward.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_177_fast_forward.png external/fast_forward.png
+	@find deps/glyphicons_free/ -type f  -iname *.png | grep -P 'glyphicons\-\d+\-fast.forward' | \
+		xargs -I []	cp [] $@
 	${CHECK}
 
 external/check.png: external deps/glyphicons_free/.done
 	@echo "Copping $@: \c"
-	@cp deps/glyphicons_free/glyphicons/png/glyphicons_152_check.png external/check.png
+	@find deps/glyphicons_free/ -type f  -iname *.png | grep -P 'glyphicons\-\d+\-check' | \
+		xargs -I []	cp [] $@
 	${CHECK}
 
 external/bootstrap.css: external ${BOWER_CHECK}
