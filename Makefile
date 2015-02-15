@@ -7,13 +7,19 @@ CHROMEDRIVER_VERSION = 2.9
 
 BOWER_BIN = ./node_modules/.bin/bower
 
-
 ifeq "Linux" "${PLATFORM}"
 CHROMEDRIVER_ZIP = chromedriver_linux64.zip
 CHROMEDRIVER_BIN = chromedriver
+LIBRARY_INSTALL_CMD=sudo apt-get install
+LIBRARIES = libgif-dev \
+			libcairo2
 else ifeq "Darwin" "${PLATFORM}"
 CHROMEDRIVER_ZIP = chromedriver_mac32.zip
 CHROMEDRIVER_BIN = chromedriver
+LIBRARY_INSTALL_CMD=brew install
+LIBRARIES = libjpeg \
+			giflib \
+			cairo
 endif
 
 CHROMEDRIVER_URL = http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/${CHROMEDRIVER_ZIP}
@@ -30,11 +36,13 @@ ERROR=/tmp/nodeNES_error
 
 WGET = wget -q --user-agent="Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
 
+
 SRC_JS = bin/nodenes \
          $(shell find lib tests -type f -iname "*.js") \
          app.js \
          tdd.js
 
+LIBRARY_CHECK=.library.check
 NODE_CHECK=node_modules/.check
 BOWER_CHECK=bower_components/.check
 
@@ -54,7 +62,10 @@ endif
 		touch $@
 	${CHECK}
 
-${NODE_CHECK}: .git/hooks/pre-commit package.json
+${LIBRARY_CHECK}:
+	${LIBRARY_INSTALL_CMD} ${LIBRARIES} && touch $@
+
+${NODE_CHECK}: .git/hooks/pre-commit package.json ${LIBRARY_CHECK}
 	@echo "NPM installing packages:"
 	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@
