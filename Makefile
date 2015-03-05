@@ -12,7 +12,8 @@ CHROMEDRIVER_ZIP = chromedriver_linux64.zip
 CHROMEDRIVER_BIN = chromedriver
 LIBRARY_INSTALL_CMD=sudo apt-get install
 LIBRARIES = libgif-dev \
-			libcairo2
+			libjpeg8-dev \
+			libcairo2-dev
 else ifeq "Darwin" "${PLATFORM}"
 CHROMEDRIVER_ZIP = chromedriver_mac32.zip
 CHROMEDRIVER_BIN = chromedriver
