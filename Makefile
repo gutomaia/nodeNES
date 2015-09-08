@@ -306,7 +306,7 @@ ifeq "1" "${ACCEPTANCE_FAIL}"
 	exit(1)
 endif
 
-ci: test browser acceptance
+ci: test browser
 
 clean:
 	@find . -iname \*~ -delete
