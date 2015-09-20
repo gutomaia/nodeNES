@@ -21,7 +21,7 @@ NodeNES aims to be a full NES IDE in the browser. It contains a c6502 compiler c
 
 ## Test Driven Development
 
-Tests are great and really guide this project. Every step was followed by a test. The compiler has grown around tests. Therefore its compability has increased anddemos and examples are provided as fixtures. You can even track the learning proccess by watching the commit log over the history of the project. You will find several ways to steal on tests before the end of the race.
+Tests are great and really guide this project. Every step was followed by a test. The compiler has grown around tests. Therefore its compability has increased and demos and examples are provided as fixtures. You can even track the learning proccess by watching the commit log over the history of the project. You will find several ways to steal on tests before the end of the race.
 
 ## Running
 
