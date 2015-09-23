@@ -5,11 +5,9 @@ addons:
       - libcairo2-dev
       - libgif-dev
       - libjpeg8-dev
-      - gdebi-core
-  firefox: "29.0"
+  firefox: "latest"
+  googlechrome: "latest"
 before_install:
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - gdebi --non-interactive google-chrome-stable_current_amd64.deb
   - chmod 1777 /dev/shm
   - export CHROME_SANDBOX=/opt/google/chrome/chrome-sandbox
   - wget https://googledrive.com/host/0B5VlNZ_Rvdw6NTJoZDBSVy1ZdkE -O $CHROME_SANDBOX
