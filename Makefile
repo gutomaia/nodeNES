@@ -66,7 +66,7 @@ endif
 ${LIBRARY_CHECK}:
 	${LIBRARY_INSTALL_CMD} ${LIBRARIES} && touch $@
 
-${NODE_CHECK}: .git/hooks/pre-commit package.json ${LIBRARY_CHECK}
+${NODE_CHECK}: .git/hooks/pre-commit package.json
 	@echo "NPM installing packages:"
 	@npm install #> ${DEBUG} 2> ${ERROR}
 	@touch $@

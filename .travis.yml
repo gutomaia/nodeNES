@@ -2,7 +2,9 @@ language: node_js
 addons:
   apt:
     packages:
+      - libcairo2-dev
       - libgif-dev
+      - libjpeg8-dev
       - gdebi-core
   firefox: "29.0"
 before_install:
