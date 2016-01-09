@@ -26,7 +26,7 @@
     "growl": "1.8.1",
     "jscoverage": "0.6.0",
     "jshint": "2.5.11",
-    "jslint": "0.9.5",
+    "jslint": "0.9.6",
     "karma": "0.13.19",
     "karma-chrome-launcher": "0.2.2",
     "karma-firefox-launcher": "0.1.7",
