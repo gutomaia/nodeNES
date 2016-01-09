@@ -169,14 +169,27 @@
 -->
     </div> <!-- /container -->
 
-    <script src="/component/jquery/jquery.js"></script>
-    <script src="/component/codemirror/codemirror.js"></script>
-    <script src="asm.js"></script>
-    <script type="text/javascript" src="/component/jsnes/dynamicaudio-min.js"></script>
-    <script type="text/javascript" src="jsnes.src.js"></script>
-    <script type="text/javascript" src="/component/underscore/underscore.js"></script>
-    <script type="text/javascript" src="/component/backbone/backbone.js"></script>
-    <script type="text/javascript" src="/component/bootstrap/bootstrap.js"></script>
+    <script>
+      var require = {
+        shim : {
+            // TODO: "asm": {"deps": ['codemirror']},
+            "bootstrap" : { "deps" : ["jquery"] },
+            "backbone":  { "deps" : ["underscore"] },
+            "codemirror": { "exports": "CodeMirror" },
+            "jsnes": { "deps": ["dynamicaudio"], "exports": "JSNES" }
+        },
+        paths: {
+            // TODO: "asm": "/asm",
+            "backbone": "/component/backbone/backbone",
+            "bootstrap" :  "/component/bootstrap/bootstrap",
+            "codemirror": "/component/codemirror/codemirror",
+            "jquery" : "/component/jquery/jquery",
+            "jsnes": "/jsnes.src",
+            "dynamicaudio": "/component/jsnes/dynamicaudio-min",
+            "underscore": "/component/underscore/underscore"
+        }
+      };
+    </script>
 
     <!-- nodeNES Script -->
     <script type="text/javascript" data-main="init.js" src="/component/requirejs/require.js"></script>
