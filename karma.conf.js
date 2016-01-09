@@ -15,9 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      "external/jquery.js",
-      "external/underscore.js",
-      "external/require.js",
+      "external/component/jquery/jquery.js",
+      "external/component/underscore/underscore.js",
+      "external/component/requirejs/require.js",
 
       {pattern: 'lib/**/*.js', included: false},
       {pattern: 'tests_browser/*.js', included: false},

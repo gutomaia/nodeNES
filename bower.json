@@ -15,6 +15,28 @@
     "requirejs": "2.1.0",
     "jsnes": "https://github.com/bfirsh/jsnes.git"
   },
+  "install" : {
+    "path" : {
+      "js": "external/component",
+      "swf": "external/component/{name}/swf",
+      "css": "external/component/{name}/css",
+      "eot": "external/component/{name}/fonts",
+      "otf": "external/component/{name}/fonts",
+      "svg": "external/component/{name}/fonts",
+      "ttf": "external/component/{name}/fonts",
+      "woff": "external/component/{name}/fonts"
+    },
+    "sources" : {
+      "bootstrap" : [
+                     "bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css",
+                     "bower_components/bootstrap/docs/assets/js/bootstrap.js",
+                     "bower_components/bootstrap/docs/assets/js/bootstrap-dropdown.js",
+                     "bower_components/bootstrap/docs/assets/js/bootstrap-tap.js"],
+      "jsnes": ["bower_components/jsnes/lib/dynamicaudio-min.js",
+                "bower_components/jsnes/lib/dynamicaudio.swf",
+                "bower_components/jsnes/source/*"]
+    }
+  },
   "ignore": [
     "**/.*",
     "node_modules",

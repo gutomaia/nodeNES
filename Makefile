@@ -5,7 +5,9 @@ NODENES_VERSION = ${shell node -e "console.log(require('./package.json').version
 SELENIUM_VERSION = 2.40.0
 CHROMEDRIVER_VERSION = 2.9
 
-BOWER_BIN = ./node_modules/.bin/bower
+NODE_BIN=./node_modules/.bin
+BOWER_BIN = ${NODE_BIN}/bower
+BOWER_INSTALLER_BIN = ${NODE_BIN}/bower-installer
 
 ifeq "Linux" "${PLATFORM}"
 CHROMEDRIVER_ZIP = chromedriver_linux64.zip
@@ -46,6 +48,7 @@ SRC_JS = bin/nodenes \
 LIBRARY_CHECK=.library.check
 NODE_CHECK=node_modules/.check
 BOWER_CHECK=bower_components/.check
+BOWER_INSTALLER_CHECK=bower_components/.check-installer
 
 ifeq "" "$(shell which npm)"
 default:
@@ -72,9 +75,7 @@ ${NODE_CHECK}: .git/hooks/pre-commit package.json
 	@touch $@
 	${CHECK}
 
-${BOWER_BIN}: ${NODE_CHECK}
-
-${BOWER_CHECK}: bower.json ${BOWER_BIN}
+${BOWER_CHECK}: bower.json ${NODE_CHECK}
 	@${BOWER_BIN} install && touch $@
 
 external:
@@ -82,50 +83,21 @@ external:
 	@mkdir -p external
 	${CHECK}
 
+${BOWER_INSTALLER_CHECK}: bower.json ${BOWER_CHECK} ${NODE_CHECK} external
+	@${BOWER_INSTALLER_BIN} && touch $@
+
 deps/.done:
 	@echo "Creating dependencies dir: \c"
 	@mkdir -p deps
 	@touch $@
 	${CHECK}
 
-external/jsnes.src.js: external ${BOWER_CHECK}
+external/component/jsnes/jsnes.src.js: external ${BOWER_CHECK}
 	@echo "Packing jsnes.src.js: \c"
 	@cd bower_components/jsnes/source && \
 		cat header.js nes.js utils.js cpu.js keyboard.js mappers.js papu.js ppu.js rom.js ui.js > ../../../external/jsnes.src.js
 	${CHECK}
 	@touch $@
-
-external/dynamicaudio-min.js: external ${BOWER_CHECK}
-	@echo "Copping dynamicaudio-min.js: \c"
-	@cp bower_components/jsnes/lib/dynamicaudio-min.js $@ && touch $@
-	${CHECK}
-
-external/dynamicaudio.swf: external ${BOWER_CHECK}
-	@echo "Copping dynamicaudio-swf.js: \c"
-	@cp bower_components/jsnes/lib/dynamicaudio.swf $@ && touch $@
-	${CHECK}
-
-external/underscore.js: external ${BOWER_CHECK}
-	@echo "Copping underscore.js: \c"
-	@cp bower_components/underscore/underscore.js $@ && touch $@
-	${CHECK}
-	@touch $@
-
-external/backbone.js: external ${BOWER_CHECK}
-	@echo "Copping backbone.js: \c"
-	@cp bower_components/backbone/backbone.js $@ && touch $@
-	${CHECK}
-	@touch $@
-
-external/codemirror.js: external ${BOWER_CHECK}
-	@echo "Copping codemirror.js: \c"
-	@cp bower_components/codemirror/lib/codemirror.js $@ && touch $@
-	${CHECK}
-
-external/codemirror.css: external ${BOWER_CHECK}
-	@echo "Copping codemirror.css: \c"
-	@cp bower_components/codemirror/lib/codemirror.css $@ && touch $@
-	${CHECK}
 
 deps/glyphicons_free.zip: deps/.done
 	@echo "Downloading glyphicons_free.zip: \c"
@@ -159,54 +131,11 @@ external/check.png: external deps/glyphicons_free/.done
 		xargs -I []	cp [] $@
 	${CHECK}
 
-external/bootstrap.css: external ${BOWER_CHECK}
-	#TODO: cp snippets/variables.less deps/bootstrap/less
-	@echo "Compiling $@: \c"
-	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_LESS} > $@
-	cp bower_components/bootstrap/docs/assets/css/bootstrap.css $@
-	${CHECK}
-
-external/bootstrap-responsive.css: external ${BOWER_CHECK}
-	@echo "Compiling $@: \c"
-	#@./node_modules/recess/bin/recess --compile ${BOOTSTRAP_RESPONSIVE_LESS} > $@
-	@cp bower_components/bootstrap/docs/assets/css/bootstrap-responsive.css $@
-	${CHECK}
-
-external/bootstrap-tab.js: external ${BOWER_CHECK}
-	@echo "Copping $@: \c"
-	@cp bower_components/bootstrap/js/bootstrap-tab.js $@ && touch $@
-	${CHECK}
-
-external/bootstrap-dropdown.js: external ${BOWER_CHECK}
-	@echo "Copping $@: \c"
-	@cp bower_components/bootstrap/js/bootstrap-dropdown.js $@ && touch $@
-	${CHECK}
-
-external/jquery.js: external ${BOWER_CHECK}
-	@echo "Copping $@: \c"
-	@cp bower_components/jquery/jquery.min.js $@ && touch $@
-	${CHECK}
-
-external/require.js: external ${BOWER_CHECK}
-	@echo "Copping $@: \c"
-	@cp bower_components/requirejs/require.js $@ && touch $@
-	${CHECK}
-
-download_deps: external/jsnes.src.js \
-	external/dynamicaudio-min.js \
-	external/dynamicaudio.swf \
-	external/underscore.js \
-	external/backbone.js \
-	external/codemirror.js \
-	external/codemirror.css \
-	external/jquery.js \
+download_deps: ${BOWER_INSTALLER_CHECK} \
+	external/component/jsnes/jsnes.src.js \
 	external/fast_backward.png \
 	external/fast_forward.png \
-	external/check.png \
-	external/bootstrap.css \
-	external/bootstrap-dropdown.js \
-	external/bootstrap-tab.js \
-	external/require.js
+	external/check.png
 
 jshint:
 	@./node_modules/.bin/jshint ${SRC_JS} --config jshint.config
@@ -256,11 +185,7 @@ tests_browser/.check:
 	./node_modules/.bin/r.js -convert tests/ tests_browser/
 	touch $@
 
-browser_deps: external/underscore.js \
-	external/jquery.js \
-	external/require.js
-
-browser: tests_browser/.check browser_deps
+browser: tests_browser/.check ${BOWER_INSTALLER_CHECK}
 	./node_modules/karma/bin/karma start
 
 deps/selenium-server-standalone-${SELENIUM_VERSION}.jar: deps/.done

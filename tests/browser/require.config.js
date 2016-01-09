@@ -12,15 +12,6 @@ Object.keys(window.__karma__.files).forEach(function (file) {
 
 requirejs.config({
     baseUrl: '/base',
-    paths: {
-        'jquery': '../external/jquery',
-        'underscore': '../external/underscore',
-    },
-    shim: {
-        'underscore': {
-            exports: '_'
-        }
-    },
     deps: test_files,
     callback: window.__karma__.start
 });
