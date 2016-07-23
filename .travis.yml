@@ -16,7 +16,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3
 node_js:
-  - "0.10"
+  - "4.4.x"
 script: "make ci"
 after_script:
   - make coverage
