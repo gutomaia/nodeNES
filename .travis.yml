@@ -5,10 +5,13 @@ cache:
     - bower_components
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
       - libcairo2-dev
       - libgif-dev
       - libjpeg8-dev
+      - g++-4.8
   firefox: "latest"
   googlechrome: "latest"
 before_script:
@@ -17,6 +20,8 @@ before_script:
   - sleep 3
 node_js:
   - "4.4"
+env:
+  - CXX=g++-4.8
 script: "make ci"
 after_script:
   - make coverage
