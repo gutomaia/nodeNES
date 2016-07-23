@@ -14,7 +14,7 @@
   "devDependencies": {
     "bower": "1.7.9",
     "bower-installer": "1.2.0",
-    "jquery": "2.1.4",
+    "jquery": "3.1.0",
     "canvas": "1.4.0",
     "connect": "3.4.1",
     "serve-static": "1.11.1",
@@ -35,7 +35,7 @@
     "recess": "1.1.9",
     "requirejs": "2.1.22",
     "uglify-js": "2.7.0",
-    "selenium-webdriver": "2.48.2",
+    "selenium-webdriver": "2.53.3",
     "sinon": "1.17.4",
     "supervisor": "0.11.0",
     "colors": "1.1.2"
