@@ -30,6 +30,7 @@
     "karma": "1.1.1",
     "karma-chrome-launcher": "1.0.1",
     "karma-firefox-launcher": "1.0.0",
+    "karma-phantomjs-launcher": "1.0.1",
     "karma-nodeunit": "0.2.0",
     "recess": "1.1.9",
     "requirejs": "2.1.22",
