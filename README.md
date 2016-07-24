@@ -1,5 +1,7 @@
 # nodeNES
 
+[![Join the chat at https://gitter.im/gutomaia/nodeNES](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gutomaia/nodeNES?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM version](http://img.shields.io/npm/v/nodeNES.svg)](https://www.npmjs.org/package/nodeNES)
 [![Build Status](http://img.shields.io/travis/gutomaia/nodeNES.svg)](http://travis-ci.org/gutomaia/nodeNES)
 [![Coverage Status](http://img.shields.io/coveralls/gutomaia/nodeNES/master.svg)](https://coveralls.io/r/gutomaia/nodeNES?branch=master)
