@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/gutomaia/nodenes.png?label=ready&title=Ready)](https://waffle.io/gutomaia/nodenes)
 # nodeNES
 
 [![NPM version](http://img.shields.io/npm/v/nodeNES.svg)](https://www.npmjs.org/package/nodeNES)
